@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CAAIP CMS</title>
     <link rel="icon" href="/favicon.svg" />
+    <!-- Hint Decap/Netlify CMS where to find config if it ever tries to fetch one -->
+    <link rel="cms-config-url" href="/admin/config.yml" />
   </head>
   <body>
     <!-- Decap CMS (manual init to avoid loading external config.yml) -->
@@ -14,7 +16,7 @@
       // For safety, if any fallback path is used, point it to the correct file under /admin
       window.CMS_CONFIG_PATH = '/admin/config.yml';
     </script>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" data-cms-config-path="/admin/config.yml"></script>
     <script>
       (function () {
         // If we were redirected back with a hash containing the authorization message,
