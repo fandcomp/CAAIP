@@ -28,18 +28,29 @@ function successHtml(token: string, provider = 'github') {
     (function() {
       var payload = ${JSON.stringify(payload)}; // JSON string, e.g. "{\"token\":\"...\"}"
       var message = 'authorization:${provider}:success:' + payload;
-      function send() {
+      var attempts = 10;
+      function trySend() {
+        var sent = false;
         try {
           if (window.opener && typeof window.opener.postMessage === 'function') {
-            window.opener.postMessage(message, '*');
-            window.close();
-            return;
+            // Prefer same-origin target for stricter listeners
+            try { window.opener.postMessage(message, window.location.origin); sent = true; } catch (e) {}
+            // Also send with wildcard to cover permissive listeners
+            try { window.opener.postMessage(message, '*'); sent = true; } catch (e) {}
           }
         } catch (e) {}
-        // Fallback: show a simple message if window.opener is unavailable
-        document.body.innerText = 'Authorization complete. You can close this window.';
+        attempts--;
+        if (sent || attempts <= 0) {
+          if (!sent) {
+            document.body.innerText = 'Authorization complete, but the opener did not acknowledge. You can close this window and retry.';
+          } else {
+            window.close();
+          }
+        } else {
+          setTimeout(trySend, 100);
+        }
       }
-      send();
+      trySend();
     })();
   </script>
   </body></html>`;
