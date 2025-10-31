@@ -53,7 +53,10 @@
           try { console.log('[CAAIP CMS] message:', event.data); } catch (e) {}
         });
 
+        // Important: embed load_config_file: false inside the config object
+        // so Decap won't attempt to fetch /config.yml at all.
         const config = {
+          load_config_file: false,
           backend: {
             name: 'github',
             repo: 'fandcomp/CAAIP',
@@ -135,7 +138,7 @@
         // Initialize Decap CMS as early as possible to catch OAuth postMessage
         (function initCMS() {
           if (window.CMS && typeof window.CMS.init === 'function') {
-            window.CMS.init({ config, load_config_file: false });
+            window.CMS.init({ config });
           } else {
             // Retry shortly until CMS is available
             setTimeout(initCMS, 50);
