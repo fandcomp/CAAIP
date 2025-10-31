@@ -20,9 +20,20 @@
             if (h && h.length > 1) {
               var decoded = decodeURIComponent(h.substring(1));
               if (decoded.startsWith('authorization:')) {
-                // Dispatch a message event so Decap can consume the token
-                var evt = new MessageEvent('message', { data: decoded, origin: window.location.origin });
-                window.dispatchEvent(evt);
+                // Save and repeatedly dispatch the message to ensure CMS listener catches it
+                window.__CAAIP_AUTH_MSG__ = decoded;
+                var attempts = 15;
+                function dispatchAuth() {
+                  try {
+                    if (window.__CAAIP_AUTH_MSG__) {
+                      var evt = new MessageEvent('message', { data: window.__CAAIP_AUTH_MSG__, origin: window.location.origin });
+                      window.dispatchEvent(evt);
+                    }
+                  } catch (e) {}
+                  attempts--;
+                  if (attempts > 0) setTimeout(dispatchAuth, 300);
+                }
+                dispatchAuth();
                 // Clean the hash to avoid re-processing on reload
                 history.replaceState(null, document.title, window.location.pathname);
               }
