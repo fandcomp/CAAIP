@@ -19,17 +19,23 @@ async function exchangeCodeForToken(code: string) {
 }
 
 function successHtml(token: string, provider = 'github') {
-  const payload = JSON.stringify({ token });
+  // Create a JSON string payload and escape '<' to avoid HTML/script parsing issues
+  const payload = JSON.stringify({ token }).replace(/</g, '\\u003c');
   return `<!doctype html><html><body>
   <script>
     (function() {
+      var payload = ${JSON.stringify(payload)}; // JSON string, e.g. "{\"token\":\"...\"}"
+      var message = 'authorization:${provider}:success:' + payload;
       function send() {
-        if (window.opener) {
-          window.opener.postMessage('authorization:${provider}:success:' + ${JSON.stringify(payload)}, '*');
-          window.close();
-        } else {
-          document.body.innerText = 'Token received. You can close this window.';
-        }
+        try {
+          if (window.opener && typeof window.opener.postMessage === 'function') {
+            window.opener.postMessage(message, '*');
+            window.close();
+            return;
+          }
+        } catch (e) {}
+        // Fallback: show a simple message if window.opener is unavailable
+        document.body.innerText = 'Authorization complete. You can close this window.';
       }
       send();
     })();
