@@ -59,14 +59,32 @@
                 var payload = JSON.parse(jsonStr);
                 var token = payload && (payload.token || payload.access_token);
                 if (token) {
-                  // Persist user for Decap/Netlify CMS (supporting both legacy and new keys)
-                  var userLegacy = { token: token, backendName: 'github' };
-                  var userDecap = { token: token, provider: 'github' };
-                  try { localStorage.setItem('netlify-cms-user', JSON.stringify(userLegacy)); } catch (e) {}
-                  try { localStorage.setItem('decap-cms-user', JSON.stringify(userDecap)); } catch (e) {}
-                  try { sessionStorage.setItem('caaip-cms-authed', '1'); } catch (e) {}
-                  // Reload once to let CMS pick up the stored credentials
-                  setTimeout(function(){ window.location.reload(); }, 100);
+                  // Fetch GitHub user profile to store a complete user object Decap expects
+                  fetch('https://api.github.com/user', {
+                    headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json' }
+                  })
+                    .then(function(res){ return res.json(); })
+                    .then(function(gh){
+                      var login = gh && (gh.login || gh.username) || undefined;
+                      var name = gh && (gh.name || login) || 'GitHub User';
+                      var avatar = gh && (gh.avatar_url || '');
+                      // Persist user for Decap/Netlify CMS (legacy and new keys)
+                      var userLegacy = { token: token, backendName: 'github', login: login, name: name, avatar_url: avatar };
+                      var userDecap = { token: token, provider: 'github', login: login, name: name, avatar_url: avatar };
+                      try { localStorage.setItem('netlify-cms-user', JSON.stringify(userLegacy)); } catch (e) {}
+                      try { localStorage.setItem('decap-cms-user', JSON.stringify(userDecap)); } catch (e) {}
+                      try { sessionStorage.setItem('caaip-cms-authed', '1'); } catch (e) {}
+                      // Reload once to let CMS pick up the stored credentials
+                      setTimeout(function(){ window.location.reload(); }, 100);
+                    })
+                    .catch(function(){
+                      // Fallback: store minimal user if GitHub fetch fails
+                      var userLegacy = { token: token, backendName: 'github' };
+                      var userDecap = { token: token, provider: 'github' };
+                      try { localStorage.setItem('netlify-cms-user', JSON.stringify(userLegacy)); } catch (e) {}
+                      try { localStorage.setItem('decap-cms-user', JSON.stringify(userDecap)); } catch (e) {}
+                      setTimeout(function(){ window.location.reload(); }, 100);
+                    });
                 }
               } catch (e) {
                 console.warn('[CAAIP CMS] Failed to parse auth payload', e);
