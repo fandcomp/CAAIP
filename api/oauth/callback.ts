@@ -2,7 +2,7 @@ export const config = { runtime: 'edge' };
 
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID as string;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET as string;
-const REDIRECT_URI = process.env.OAUTH_REDIRECT_URI || `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''}/api/oauth/callback`;
+const REDIRECT_URI = process.env.OAUTH_REDIRECT_URI as string; // must be set explicitly
 
 async function exchangeCodeForToken(code: string) {
   const params = new URLSearchParams({
@@ -51,6 +51,14 @@ export default async function handler(req: Request): Promise<Response> {
       const html = `<!doctype html><html><body>
       <h1>OAuth Misconfiguration</h1>
       <p>Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET.</p>
+      </body></html>`;
+      return new Response(html, { status: 500, headers: { 'content-type': 'text/html' } });
+    }
+    if (!REDIRECT_URI) {
+      const html = `<!doctype html><html><body>
+      <h1>OAuth Misconfiguration</h1>
+      <p>Missing OAUTH_REDIRECT_URI. Set it to the exact callback registered in your GitHub OAuth App.</p>
+      <p>Expected value example: <code>https://caaip.vercel.app/api/oauth/callback</code></p>
       </body></html>`;
       return new Response(html, { status: 500, headers: { 'content-type': 'text/html' } });
     }
