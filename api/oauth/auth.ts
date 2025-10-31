@@ -29,6 +29,26 @@ export default async function handler(req: Request): Promise<Response> {
       allow_signup: 'true',
     });
     const url = `https://github.com/login/oauth/authorize?${params.toString()}`;
+
+    // Debug mode: append ?debug=1 to inspect values without redirecting
+    const current = new URL(req.url);
+    const debug = current.searchParams.get('debug') === '1' || current.searchParams.get('inspect') === '1';
+    if (debug) {
+      const host = req.headers.get('host') || '';
+      const maskedClient = CLIENT_ID ? CLIENT_ID.replace(/.(?=.{4})/g, '•') : '';
+      const html = `<!doctype html><html><body>
+        <h1>OAuth Debug</h1>
+        <ul>
+          <li>Host: <code>${host}</code></li>
+          <li>CLIENT_ID: <code>${maskedClient}</code></li>
+          <li>REDIRECT_URI: <code>${REDIRECT_URI}</code></li>
+          <li>Authorize URL:<br/><a href="${url}">${url}</a></li>
+        </ul>
+        <p>Ensure your GitHub OAuth App Authorization callback URL matches <code>${REDIRECT_URI}</code> exactly.</p>
+      </body></html>`;
+      return new Response(html, { status: 200, headers: { 'content-type': 'text/html' } });
+    }
+
     return Response.redirect(url, 302);
   } catch (err: any) {
     const html = `<!doctype html><html><body>
