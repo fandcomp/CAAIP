@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: YOUR_GITHUB_ORG/YOUR_REPO # TODO: set repository, e.g., caaip-org/caaip-website
+  repo: fandcomp/CAAIP # TODO: set repository, e.g., caaip-org/caaip-website
   branch: main
   # GitHub OAuth via Vercel Functions
   base_url: "/api/oauth"
