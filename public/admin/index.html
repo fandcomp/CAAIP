@@ -7,7 +7,23 @@
     <link rel="icon" href="/favicon.svg" />
   </head>
   <body>
-    <!-- Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+      <!-- Force Decap CMS to load config from /admin/config.yml to avoid 404 on some hosts -->
+      <script>
+        (function () {
+          try {
+            var qp = new URLSearchParams(window.location.search);
+            if (!qp.has('config')) {
+              qp.set('config', '/admin/config.yml');
+              var url = new URL(window.location.href);
+              url.search = qp.toString();
+              window.location.replace(url.toString());
+            }
+          } catch (e) {
+            // no-op; Decap will try default /admin/config.yml
+          }
+        })();
+      </script>
+      <!-- Decap CMS -->
+      <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
