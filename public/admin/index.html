@@ -96,12 +96,15 @@
           ],
         };
 
-        // Initialize Decap CMS with inline config after page load to ensure CMS is ready
-        window.addEventListener('load', function () {
+        // Initialize Decap CMS as early as possible to catch OAuth postMessage
+        (function initCMS() {
           if (window.CMS && typeof window.CMS.init === 'function') {
             window.CMS.init({ config });
+          } else {
+            // Retry shortly until CMS is available
+            setTimeout(initCMS, 50);
           }
-        });
+        })();
       })();
     </script>
   </body>
