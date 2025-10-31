@@ -71,8 +71,11 @@
                       // Persist user for Decap/Netlify CMS (legacy and new keys)
                       var userLegacy = { token: token, backendName: 'github', login: login, name: name, avatar_url: avatar };
                       var userDecap = { token: token, provider: 'github', login: login, name: name, avatar_url: avatar };
+                      // Store across multiple known keys for maximum compatibility
                       try { localStorage.setItem('netlify-cms-user', JSON.stringify(userLegacy)); } catch (e) {}
+                      try { localStorage.setItem('netlify-cms.user', JSON.stringify(userLegacy)); } catch (e) {}
                       try { localStorage.setItem('decap-cms-user', JSON.stringify(userDecap)); } catch (e) {}
+                      try { localStorage.setItem('decap-cms.user', JSON.stringify(userDecap)); } catch (e) {}
                       try { sessionStorage.setItem('caaip-cms-authed', '1'); } catch (e) {}
                       // Reload once to let CMS pick up the stored credentials
                       setTimeout(function(){ window.location.reload(); }, 100);
@@ -82,7 +85,9 @@
                       var userLegacy = { token: token, backendName: 'github' };
                       var userDecap = { token: token, provider: 'github' };
                       try { localStorage.setItem('netlify-cms-user', JSON.stringify(userLegacy)); } catch (e) {}
+                      try { localStorage.setItem('netlify-cms.user', JSON.stringify(userLegacy)); } catch (e) {}
                       try { localStorage.setItem('decap-cms-user', JSON.stringify(userDecap)); } catch (e) {}
+                      try { localStorage.setItem('decap-cms.user', JSON.stringify(userDecap)); } catch (e) {}
                       setTimeout(function(){ window.location.reload(); }, 100);
                     });
                 }
