@@ -1,0 +1,19 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const items = await getCollection('kabarDuka', ({ data }) => !data.draft);
+  return items.map((i) => ({ params: { slug: i.slug }, props: { item: i } }));
+}
+
+const { item } = Astro.props as { item: any };
+---
+<BaseLayout title={`Kabar Duka — ${item.data.name}`} description={item.data.message}>
+  <section class="section container-px mx-auto">
+    <p class="text-sm text-slate-500">{new Date(item.data.date).toLocaleDateString('id-ID')}</p>
+    <h1 class="text-2xl font-bold text-caaip-blue">{item.data.name}</h1>
+    {item.data.relation && <p class="mt-1 text-slate-700">{item.data.relation}</p>}
+    {item.data.message && <p class="mt-4 text-slate-700">{item.data.message}</p>}
+  </section>
+</BaseLayout>

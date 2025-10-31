@@ -1,0 +1,51 @@
+{
+  "$ref": "#/definitions/alumni",
+  "definitions": {
+    "alumni": {
+      "type": "object",
+      "properties": {
+        "angkatan": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "program": {
+                "type": "string"
+              },
+              "year": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "lang": {
+          "type": "string",
+          "enum": [
+            "id",
+            "en"
+          ],
+          "default": "id"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "angkatan",
+        "members"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,59 @@
+const CLIENT_ID = process.env.GITHUB_CLIENT_ID as string;
+const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET as string;
+const REDIRECT_URI = process.env.OAUTH_REDIRECT_URI || `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''}/api/oauth/callback`;
+
+async function exchangeCodeForToken(code: string) {
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+    code,
+    redirect_uri: REDIRECT_URI,
+  });
+  const res = await fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body: params,
+  });
+  if (!res.ok) throw new Error(`GitHub token error: ${res.status}`);
+  return res.json() as Promise<{ access_token?: string; token_type?: string; scope?: string; error?: string; error_description?: string }>;
+}
+
+function successHtml(token: string, provider = 'github') {
+  const payload = JSON.stringify({ token });
+  return `<!doctype html><html><body>
+  <script>
+    (function() {
+      function send() {
+        if (window.opener) {
+          window.opener.postMessage('authorization:${provider}:success:' + ${JSON.stringify(payload)}, '*');
+          window.close();
+        } else {
+          document.body.innerText = 'Token received. You can close this window.';
+        }
+      }
+      send();
+    })();
+  </script>
+  </body></html>`;
+}
+
+export default async function handler(req: Request): Promise<Response> {
+  try {
+    if (!CLIENT_ID || !CLIENT_SECRET) {
+      return new Response('Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET', { status: 500 });
+    }
+    const url = new URL(req.url);
+    const code = url.searchParams.get('code');
+    if (!code) return new Response('Missing code', { status: 400 });
+
+    const data = await exchangeCodeForToken(code);
+    if (!data.access_token) {
+      return new Response(`OAuth failed: ${data.error || 'no_token'} ${data.error_description || ''}`, { status: 400 });
+    }
+
+    const html = successHtml(data.access_token);
+    return new Response(html, { status: 200, headers: { 'content-type': 'text/html' } });
+  } catch (err: any) {
+    return new Response(`OAuth error: ${err?.message || String(err)}`, { status: 500 });
+  }
+}

@@ -1,0 +1,29 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const all = await getCollection('alumni');
+  return all.map((item) => {
+    const slug = item.slug ?? (item.id || '').split('/').pop()?.replace(/\.[^.]+$/, '');
+    if (!slug) throw new Error('Alumni entry missing slug or id');
+    return { params: { angkatan: slug }, props: { entry: item } };
+  });
+}
+
+const { entry } = Astro.props as { entry: any };
+---
+<BaseLayout title={`Alumni ${entry.data.angkatan} — CAAIP`} description={`Daftar Alumni Angkatan ${entry.data.angkatan}`}>
+  <section class="section container-px mx-auto">
+    <h1 class="text-2xl font-bold text-caaip-blue">Alumni Angkatan {entry.data.angkatan}</h1>
+    <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {entry.data.members.map((m: any) => (
+        <li class="border rounded-lg p-4">
+          <p class="font-semibold">{m.name}</p>
+          {m.program && <p class="text-sm text-slate-600">{m.program}</p>}
+          {m.year && <p class="text-xs text-slate-500">{m.year}</p>}
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

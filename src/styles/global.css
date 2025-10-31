@@ -1,0 +1,27 @@
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #ffffff;
+  --fg: #0B3C68;
+}
+
+html, body {
+  @apply bg-white text-slate-800 antialiased;
+}
+
+/**** Reusable components ****/
+.container-px {
+  @apply px-4 sm:px-6 lg:px-8;
+}
+.btn-primary {
+  @apply inline-flex items-center gap-2 rounded-md bg-caaip-blue px-4 py-2 text-white hover:bg-caaip-blueLight transition-colors;
+}
+.section {
+  @apply py-12 sm:py-16;
+}

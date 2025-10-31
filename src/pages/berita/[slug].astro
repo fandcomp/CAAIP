@@ -1,0 +1,20 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('berita', ({ data }) => !data.draft);
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+}
+
+const { post } = Astro.props as { post: any };
+---
+<BaseLayout title={`${post.data.title} — CAAIP`} description={post.data.excerpt}>
+  <section class="section container-px mx-auto prose prose-slate max-w-none">
+    <p class="text-sm text-slate-500">{new Date(post.data.date).toLocaleDateString('id-ID')}</p>
+    <h1 class="mt-1">{post.data.title}</h1>
+    <article class="mt-6">
+      <Fragment set:html={post.body} />
+    </article>
+  </section>
+</BaseLayout>

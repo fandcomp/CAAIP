@@ -1,0 +1,29 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  lang?: string;
+}
+const { title = 'CAAIP', description = 'Portal resmi CAAIP', lang = 'id' } = Astro.props as Props;
+import Navbar from "~/components/Navbar.astro";
+import Footer from "~/components/Footer.astro";
+import '~/styles/global.css';
+---
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-slate-900">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-caaip-blue text-white px-3 py-2 rounded">Loncat ke konten</a>
+    <Navbar />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

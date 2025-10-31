@@ -1,0 +1,23 @@
+---
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string; // e.g. '/berita'
+}
+const { currentPage, totalPages, basePath } = Astro.props as Props;
+const prevPage = currentPage > 1 ? `${basePath}${currentPage - 1 === 1 ? '' : `/page/${currentPage - 1}`}` : null;
+const nextPage = currentPage < totalPages ? `${basePath}/page/${currentPage + 1}` : null;
+---
+<nav class="flex items-center justify-center gap-2 mt-8" aria-label="Pagination">
+  {prevPage ? (
+    <a href={prevPage} class="px-3 py-1.5 border rounded hover:bg-slate-50">Sebelumnya</a>
+  ) : (
+    <span class="px-3 py-1.5 border rounded text-slate-400 cursor-not-allowed">Sebelumnya</span>
+  )}
+  <span class="px-3 py-1.5">Hal {currentPage} / {totalPages}</span>
+  {nextPage ? (
+    <a href={nextPage} class="px-3 py-1.5 border rounded hover:bg-slate-50">Berikutnya</a>
+  ) : (
+    <span class="px-3 py-1.5 border rounded text-slate-400 cursor-not-allowed">Berikutnya</span>
+  )}
+</nav>

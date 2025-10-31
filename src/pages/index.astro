@@ -1,0 +1,35 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Hero from "~/components/Hero.astro";
+import ArticleCard from "~/components/ArticleCard.astro";
+
+const mockNews = [
+  {
+    title: 'Peluncuran Portal Resmi CAAIP',
+    href: '/berita/peluncuran-portal-caaip',
+    date: new Date().toISOString(),
+    excerpt: 'CAAIP merilis portal resmi sebagai pusat informasi kegiatan, berita, dan publikasi.',
+  },
+  {
+    title: 'Kegiatan Akademik Semester Ganjil',
+    href: '/berita/kegiatan-akademik-ganjil',
+    date: new Date().toISOString(),
+    excerpt: 'Rangkaian kegiatan akademik dibuka dengan kuliah umum dan lokakarya.',
+  },
+];
+---
+<BaseLayout title="CAAIP — Beranda" description="Portal resmi CAAIP">
+  <Hero title="CAAIP" subtitle="Portal resmi CAAIP — sederhana, elegan, dan kuat secara visual" ctaText="Lihat Berita" ctaHref="/berita" />
+
+  <section class="section container-px mx-auto">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-semibold">Berita Terbaru</h2>
+      <a href="/berita" class="text-caaip-blue hover:underline">Lihat semua</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {mockNews.map((n) => (
+        <ArticleCard {...n} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

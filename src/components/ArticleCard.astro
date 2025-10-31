@@ -1,0 +1,16 @@
+---
+export interface Props {
+  title: string;
+  href: string;
+  date?: string;
+  excerpt?: string;
+}
+const { title, href, date, excerpt } = Astro.props as Props;
+---
+<article class="group border border-slate-200 rounded-lg p-5 hover:shadow-sm transition-shadow bg-white">
+  <a href={href} class="block">
+    <h3 class="text-lg font-semibold text-slate-900 group-hover:text-caaip-blue">{title}</h3>
+    {date && <p class="text-xs text-slate-500 mt-1">{new Date(date).toLocaleDateString('id-ID')}</p>}
+    {excerpt && <p class="text-sm text-slate-600 mt-3 line-clamp-3">{excerpt}</p>}
+  </a>
+</article>

@@ -1,0 +1,23 @@
+---
+export interface Props {
+  title: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+const { title, subtitle, ctaText, ctaHref = '#' } = Astro.props as Props;
+---
+<section class="relative overflow-hidden bg-gradient-to-b from-caaip-blue to-caaip-blueLight text-white">
+  <div class="container-px mx-auto py-20 sm:py-28">
+    <h1 class="text-3xl sm:text-5xl font-bold tracking-tight">{title}</h1>
+    {subtitle && <p class="mt-4 max-w-2xl text-white/90 text-base sm:text-lg">{subtitle}</p>}
+    {ctaText && (
+      <div class="mt-8">
+        <a href={ctaHref} class="btn-primary bg-white text-caaip-blue hover:bg-white/90">{ctaText}</a>
+      </div>
+    )}
+  </div>
+  <div class="absolute inset-0 -z-10 opacity-10" aria-hidden="true">
+    <div class="w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.6),rgba(255,255,255,0))]"></div>
+  </div>
+</section>

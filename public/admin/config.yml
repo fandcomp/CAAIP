@@ -1,0 +1,68 @@
+backend:
+  name: github
+  repo: YOUR_GITHUB_ORG/YOUR_REPO # TODO: set repository, e.g., caaip-org/caaip-website
+  branch: main
+  # GitHub OAuth via Vercel Functions
+  base_url: "/api/oauth"
+  auth_endpoint: "auth"
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+publish_mode: editorial_workflow
+
+i18n:
+  structure: multiple_folders
+  locales: [id, en]
+  default_locale: id
+
+collections:
+  - name: "berita"
+    label: "Berita"
+    folder: "src/content/berita"
+    create: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    i18n: true
+    fields:
+      - { label: "Judul", name: "title", widget: "string", i18n: true }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Penulis", name: "author", widget: "string", required: false }
+      - { label: "Ringkasan", name: "excerpt", widget: "text", required: false, i18n: true }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Cover", name: "cover", widget: "image", required: false }
+      - { label: "Konten", name: "body", widget: "markdown", i18n: true }
+
+  - name: "kabarDuka"
+    label: "Kabar Duka"
+    folder: "src/content/kabarDuka"
+    create: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    i18n: true
+    fields:
+      - { label: "Nama", name: "name", widget: "string" }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Keterangan", name: "relation", widget: "string", required: false }
+      - { label: "Pesan", name: "message", widget: "text", required: false, i18n: true }
+      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+
+  - name: "alumni"
+    label: "Alumni (Per Angkatan)"
+    folder: "src/content/alumni"
+    create: true
+    format: "json"
+    slug: "{{fields.angkatan}}"
+    fields:
+      - { label: "Angkatan", name: "angkatan", widget: "string" }
+      - label: "Daftar Alumni"
+        name: "members"
+        widget: "list"
+        fields:
+          - { label: "Nama", name: "name", widget: "string" }
+          - { label: "Program", name: "program", widget: "string", required: false }
+          - { label: "Tahun", name: "year", widget: "string", required: false }
+      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }

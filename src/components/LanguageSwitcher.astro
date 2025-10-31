@@ -1,0 +1,13 @@
+---
+// Simple placeholder language switcher. In a future step, integrate proper i18n routing.
+const langs = [
+  { code: 'id', label: 'ID' },
+  { code: 'en', label: 'EN' },
+];
+const current = 'id';
+---
+<div class="inline-flex items-center gap-1 border rounded-md p-1 text-xs">
+  {langs.map((l) => (
+    <a href="#" class={`px-2 py-1 rounded ${l.code === current ? 'bg-caaip-blue text-white' : 'hover:bg-slate-100'}`}>{l.label}</a>
+  ))}
+</div>
