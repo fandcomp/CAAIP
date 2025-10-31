@@ -1,3 +1,5 @@
+export const config = { runtime: 'edge' };
+
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID as string;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET as string;
 const REDIRECT_URI = process.env.OAUTH_REDIRECT_URI || `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''}/api/oauth/callback`;
@@ -46,11 +48,21 @@ function successHtml(token: string, provider = 'github') {
 export default async function handler(req: Request): Promise<Response> {
   try {
     if (!CLIENT_ID || !CLIENT_SECRET) {
-      return new Response('Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET', { status: 500 });
+      const html = `<!doctype html><html><body>
+      <h1>OAuth Misconfiguration</h1>
+      <p>Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET.</p>
+      </body></html>`;
+      return new Response(html, { status: 500, headers: { 'content-type': 'text/html' } });
     }
     const url = new URL(req.url);
     const code = url.searchParams.get('code');
-    if (!code) return new Response('Missing code', { status: 400 });
+    if (!code) {
+      const html = `<!doctype html><html><body>
+      <h1>OAuth Error</h1>
+      <p>Missing <code>code</code> parameter from GitHub.</p>
+      </body></html>`;
+      return new Response(html, { status: 400, headers: { 'content-type': 'text/html' } });
+    }
 
     const data = await exchangeCodeForToken(code);
     if (!data.access_token) {
@@ -60,6 +72,10 @@ export default async function handler(req: Request): Promise<Response> {
     const html = successHtml(data.access_token);
     return new Response(html, { status: 200, headers: { 'content-type': 'text/html' } });
   } catch (err: any) {
-    return new Response(`OAuth error: ${err?.message || String(err)}`, { status: 500 });
+    const html = `<!doctype html><html><body>
+    <h1>OAuth error</h1>
+    <pre>${(err?.message || String(err))}</pre>
+    </body></html>`;
+    return new Response(html, { status: 500, headers: { 'content-type': 'text/html' } });
   }
 }
