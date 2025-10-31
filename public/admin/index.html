@@ -12,6 +12,11 @@
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
       (function () {
+        // Debug: log OAuth messages received from popup
+        window.addEventListener('message', function (event) {
+          try { console.log('[CAAIP CMS] message:', event.data); } catch (e) {}
+        });
+
         const config = {
           backend: {
             name: 'github',
@@ -91,10 +96,12 @@
           ],
         };
 
-        // Initialize Decap CMS with inline config to avoid fetching /admin/config.yml
-        if (window.CMS && typeof window.CMS.init === 'function') {
-          window.CMS.init({ config });
-        }
+        // Initialize Decap CMS with inline config after page load to ensure CMS is ready
+        window.addEventListener('load', function () {
+          if (window.CMS && typeof window.CMS.init === 'function') {
+            window.CMS.init({ config });
+          }
+        });
       })();
     </script>
   </body>
