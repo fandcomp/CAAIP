@@ -12,6 +12,24 @@
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
       (function () {
+        // If we were redirected back with a hash containing the authorization message,
+        // synthesize the message event Decap expects, then clean the hash.
+        (function synthesizeAuthFromHash() {
+          try {
+            var h = window.location.hash || '';
+            if (h && h.length > 1) {
+              var decoded = decodeURIComponent(h.substring(1));
+              if (decoded.startsWith('authorization:')) {
+                // Dispatch a message event so Decap can consume the token
+                var evt = new MessageEvent('message', { data: decoded, origin: window.location.origin });
+                window.dispatchEvent(evt);
+                // Clean the hash to avoid re-processing on reload
+                history.replaceState(null, document.title, window.location.pathname);
+              }
+            }
+          } catch (e) {}
+        })();
+
         // Debug: log OAuth messages received from popup
         window.addEventListener('message', function (event) {
           try { console.log('[CAAIP CMS] message:', event.data); } catch (e) {}

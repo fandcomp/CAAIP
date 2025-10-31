@@ -42,7 +42,14 @@ function successHtml(token: string, provider = 'github') {
         attempts--;
         if (sent || attempts <= 0) {
           if (!sent) {
-            document.body.innerText = 'Authorization complete, but the opener did not acknowledge. You can close this window and retry.';
+            // Fallback: redirect this window to /admin with the message in the URL hash,
+            // then the admin page will synthesize the postMessage and continue login.
+            try {
+              var hash = encodeURIComponent(message);
+              window.location.replace('/admin/#' + hash);
+            } catch (e) {
+              document.body.innerText = 'Authorization complete, but the opener did not acknowledge. You can close this window and retry.';
+            }
           } else {
             window.close();
           }
