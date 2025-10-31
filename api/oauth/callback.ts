@@ -21,8 +21,8 @@ async function exchangeCodeForToken(code: string) {
 }
 
 function successHtml(token: string, provider = 'github') {
-  // Create a JSON string payload and escape '<' to avoid HTML/script parsing issues
-  const payload = JSON.stringify({ token }).replace(/</g, '\\u003c');
+  // Include provider in payload; escape '<' to avoid HTML/script parsing issues
+  const payload = JSON.stringify({ token, provider }).replace(/</g, '\\u003c');
   return `<!doctype html><html><body>
   <script>
     (function() {
