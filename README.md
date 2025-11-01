@@ -68,6 +68,32 @@ Decap CMS sudah dikonfigurasi untuk menggunakan backend GitHub dengan proxy OAut
 
 Catatan lokal: endpoint OAuth `/api/oauth/*` hanya tersedia di lingkungan Vercel. Login CMS sebaiknya diuji di URL produksi/pratinjau Vercel, bukan di `astro dev` lokal.
 
+### Plan B (Direkomendasikan untuk stabilitas cepat): Direct Login via Fine‑grained PAT
+Jika OAuth standar bermasalah atau butuh jalur cepat yang stabil, gunakan login langsung berbasis token GitHub yang diproteksi secret.
+
+1) Buat Fine‑grained Personal Access Token di GitHub
+   - Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token
+   - Repository access: Only selected repositories → pilih repo ini
+   - Permissions minimal:
+     - Contents: Read and write
+     - Metadata: Read-only
+     - Pull requests: Read and write (jika memakai editorial workflow)
+   - Generate dan simpan token (hanya tampil sekali)
+
+2) Set env var di Vercel (Project → Settings → Environment Variables)
+   - `GITHUB_DIRECT_TOKEN` = Fine‑grained PAT dari langkah 1
+   - `OAUTH_DIRECT_SECRET` = string acak kuat (32–64 char)
+   - Deploy ulang agar env aktif
+
+3) Uji konfigurasi
+   - Buka `/api/oauth/direct?debug=1` untuk melihat status konfigurasi (YES/NO)
+
+4) Login admin
+   - Buka `/admin/login.html?s=YOUR_SECRET` → popup akan terbuka dan menyimpan token ke browser, lalu redirect ke `/admin`
+   - Alternatif: buka `/admin/login.html`, masukkan secret, klik “Login (Direct)”
+
+Catatan keamanan: batasi token ke repo ini, rotasi token & secret berkala, dan simpan URL helper ini hanya untuk admin.
+
 ## Deploy ke Vercel
 1. Import repo ke Vercel.
 2. Set variabel env:

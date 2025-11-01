@@ -45,6 +45,20 @@
   </head>
   <body>
   <!-- Load Decap CMS from jsDelivr (pinned) -->
-  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js"></script>
+  <div id="cms-fallback" style="display:none;padding:16px;margin:16px;border:1px solid #e5e7eb;border-radius:8px;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;">
+    <strong>Troubleshooting:</strong> CMS belum dimuat. Coba <a href="/admin/login.html" style="color:#0B3C68;text-decoration:underline;">Login Helper</a> atau refresh halaman.
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js" defer></script>
+  <script>
+    // Show helpful hint if CMS global failed to appear
+    setTimeout(function(){
+      try {
+        if (!(window.CMS && typeof window.CMS === 'object')) {
+          var el = document.getElementById('cms-fallback');
+          if (el) el.style.display = 'block';
+        }
+      } catch (e) {}
+    }, 2500);
+  </script>
   </body>
   </html>

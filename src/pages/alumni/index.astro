@@ -4,11 +4,14 @@ import { getCollection } from 'astro:content';
 
 const data = await getCollection('alumni');
 const entries = data
-  .map((d) => ({
-    angkatan: d.data.angkatan || d.slug,
-    members: d.data.members || [],
-    slug: d.slug,
-  }))
+  .map((d) => {
+    const baseSlug = d.slug ?? (d.id || '').split('/').pop()?.replace(/\.[^.]+$/, '');
+    return {
+      angkatan: d.data.angkatan || baseSlug || '',
+      members: d.data.members || [],
+      slug: baseSlug || '',
+    };
+  })
   .sort((a, b) => a.angkatan.localeCompare(b.angkatan));
 ---
 <BaseLayout title="Alumni — CAAIP" description="Direktori Alumni CAAIP">
