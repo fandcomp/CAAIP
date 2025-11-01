@@ -17,6 +17,19 @@ import '~/styles/global.css';
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
+    <script is:inline>
+      {`
+        (function(){
+          try {
+            var h = window.location.hash || '';
+            if (h && (h.indexOf('recovery_token=') >= 0 || h.indexOf('confirmation_token=') >= 0 || h.indexOf('invite_token=') >= 0)) {
+              // Redirect token-based flows to the Admin page where Identity widget is loaded
+              window.location.replace('/admin/' + h);
+            }
+          } catch (e) {}
+        })();
+      `}
+    </script>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-slate-900">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-caaip-blue text-white px-3 py-2 rounded">Loncat ke konten</a>
