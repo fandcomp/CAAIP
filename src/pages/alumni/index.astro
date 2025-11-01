@@ -3,25 +3,89 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from 'astro:content';
 
 const data = await getCollection('alumni');
-const angkatan = data
-  .map((d) => d.slug)
-  .sort((a, b) => a.localeCompare(b));
+const entries = data
+  .map((d) => ({
+    angkatan: d.data.angkatan || d.slug,
+    members: d.data.members || [],
+    slug: d.slug,
+  }))
+  .sort((a, b) => a.angkatan.localeCompare(b.angkatan));
 ---
 <BaseLayout title="Alumni — CAAIP" description="Direktori Alumni CAAIP">
   <section class="section container-px mx-auto">
     <h1 class="text-2xl font-bold text-caaip-blue">Alumni</h1>
     <p class="mt-2 text-slate-600">Pilih angkatan untuk melihat daftar alumni.</p>
 
-    {angkatan.length === 0 ? (
+    {entries.length === 0 ? (
       <p class="mt-6 text-slate-600">Data alumni belum tersedia.</p>
     ) : (
-      <ul class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {angkatan.map((tahun) => (
-          <li>
-            <a href={`/alumni/${tahun}`} class="block border rounded-lg p-4 text-center hover:border-caaip-blue hover:text-caaip-blue">{tahun}</a>
-          </li>
-        ))}
-      </ul>
+      <>
+        <div id="alumni-browser" class="mt-6">
+          <div class="flex flex-wrap gap-2">
+            {entries.map((e, idx) => (
+              <button type="button" class={`angkatan-btn px-3 py-2 rounded border text-sm ${idx === 0 ? 'border-caaip-blue text-white bg-caaip-blue' : 'border-slate-300 hover:border-caaip-blue hover:text-caaip-blue'}`} data-angkatan={e.angkatan}>{e.angkatan}</button>
+            ))}
+          </div>
+          <div class="mt-6">
+            {entries.map((e, idx) => (
+              <div id={`panel-${e.angkatan}`} class={`${idx === 0 ? '' : 'hidden'}`} aria-hidden={idx === 0 ? 'false' : 'true'}>
+                <h2 class="text-xl font-semibold text-caaip-blue">Alumni Angkatan {e.angkatan}</h2>
+                {e.members && e.members.length > 0 ? (
+                  <ul class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {e.members.map((m) => (
+                      <li class="border rounded-lg p-4">
+                        <p class="font-semibold">{m.name}</p>
+                        {m.program && <p class="text-sm text-slate-600">{m.program}</p>}
+                        {m.year && <p class="text-xs text-slate-500">{m.year}</p>}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p class="mt-4 text-slate-600">Belum ada data anggota.</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <script>
+          (function(){
+            const root = document.getElementById('alumni-browser');
+            if (!root) return;
+            const buttons = Array.from(root.querySelectorAll('.angkatan-btn'));
+            function select(angk) {
+              buttons.forEach(btn => {
+                const isActive = btn.getAttribute('data-angkatan') === angk;
+                btn.classList.toggle('bg-caaip-blue', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('border-caaip-blue', isActive);
+                btn.classList.toggle('hover:border-caaip-blue', !isActive);
+                btn.classList.toggle('hover:text-caaip-blue', !isActive);
+                btn.classList.toggle('border-slate-300', !isActive);
+              });
+              const panels = Array.from(root.querySelectorAll('[id^="panel-"]'));
+              panels.forEach(p => {
+                const match = p.id === `panel-${angk}`;
+                p.classList.toggle('hidden', !match);
+                p.setAttribute('aria-hidden', match ? 'false' : 'true');
+              });
+            }
+            buttons.forEach(btn => {
+              btn.addEventListener('click', () => select(btn.getAttribute('data-angkatan')));
+            });
+          })();
+        </script>
+
+        <noscript>
+          <ul class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {entries.map((e) => (
+              <li>
+                <a href={`/alumni/${e.slug}`} class="block border rounded-lg p-4 text-center hover:border-caaip-blue hover:text-caaip-blue">{e.angkatan}</a>
+              </li>
+            ))}
+          </ul>
+        </noscript>
+      </>
     )}
   </section>
 </BaseLayout>
