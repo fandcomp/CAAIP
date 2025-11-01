@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Optional: Security headers
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "same-origin"
+
+# Ensure trailing slash for /admin so Netlify serves /admin/index.html
+[[redirects]]
+  from = "/admin"
+  to = "/admin/"
+  status = 301
+  force = true

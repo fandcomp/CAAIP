@@ -5,60 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CAAIP CMS</title>
     <link rel="icon" href="/favicon.svg" />
-    <!-- Let Decap auto-initialize and read config from /config.yml (we provide it under public/) -->
-    <link rel="cms-config-url" href="/config.yml" />
-    <script>
-      // Capture OAuth success messages and persist user, then reload so Decap picks it up
-      (function () {
-        function handleAuthMessage(data) {
-          try {
-            if (typeof data !== 'string') return;
-            var prefix = 'authorization:github:success:';
-            if (data.indexOf(prefix) !== 0) return;
-            var jsonStr = data.substring(prefix.length);
-            var payload = {};
-            try { payload = JSON.parse(jsonStr); } catch (e) {}
-            var token = payload && (payload.token || payload.access_token);
-            if (!token) return;
-            // Store to both legacy and new keys for max compatibility
-            var userLegacy = { token: token, backendName: 'github' };
-            var userDecap = { token: token, provider: 'github' };
-            try { localStorage.setItem('netlify-cms-user', JSON.stringify(userLegacy)); } catch (e) {}
-            try { localStorage.setItem('netlify-cms.user', JSON.stringify(userLegacy)); } catch (e) {}
-            try { localStorage.setItem('decap-cms-user', JSON.stringify(userDecap)); } catch (e) {}
-            try { localStorage.setItem('decap-cms.user', JSON.stringify(userDecap)); } catch (e) {}
-            // Clean hash if present and reload
-            try { history.replaceState(null, document.title, location.pathname); } catch (e) {}
-            location.reload();
-          } catch (e) {}
-        }
-        window.addEventListener('message', function (evt) { handleAuthMessage(evt && evt.data); });
-        // Fallback: if callback redirected here with hash, synthesize the message
-        try {
-          if (location.hash && location.hash.length > 1) {
-            var decoded = decodeURIComponent(location.hash.substring(1));
-            handleAuthMessage(decoded);
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <link rel="cms-config-url" href="/admin/config.yml" />
+    <!-- Netlify Identity widget (required for git-gateway login UI) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-  <!-- Load Decap CMS from jsDelivr (pinned) -->
-  <div id="cms-fallback" style="display:none;padding:16px;margin:16px;border:1px solid #e5e7eb;border-radius:8px;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;">
-    <strong>Troubleshooting:</strong> CMS belum dimuat. Coba <a href="/admin/login.html" style="color:#0B3C68;text-decoration:underline;">Login Helper</a> atau refresh halaman.
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js" defer></script>
-  <script>
-    // Show helpful hint if CMS global failed to appear
-    setTimeout(function(){
-      try {
-        if (!(window.CMS && typeof window.CMS === 'object')) {
-          var el = document.getElementById('cms-fallback');
-          if (el) el.style.display = 'block';
-        }
-      } catch (e) {}
-    }, 2500);
-  </script>
+    <script>
+      // Refresh page after a successful Identity login so CMS picks up the session
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', function(user){
+          if (!user) {
+            window.netlifyIdentity.on('login', function(){ document.location.reload(); });
+          }
+        });
+      }
+    </script>
+    <!-- Load Decap CMS from jsDelivr (pinned) -->
+    <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js"></script>
   </body>
   </html>

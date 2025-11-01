@@ -1,15 +1,12 @@
 backend:
-  name: github
-  repo: fandcomp/CAAIP # TODO: set repository, e.g., caaip-org/caaip-website
+  name: git-gateway
   branch: main
-  # GitHub OAuth via Vercel Functions
-  base_url: "/api/oauth"
-  auth_endpoint: "auth"
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
 publish_mode: editorial_workflow
+logo_url: /favicon.svg
 
 i18n:
   structure: multiple_folders

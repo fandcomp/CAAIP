@@ -15,7 +15,7 @@
     </style>
     <script>
       // Capture OAuth message and persist token to Decap/Netlify CMS keys
-      window.addEventListener('message', function(e) {
+      window.addEventListener('message', async function(e) {
         try {
           var data = String(e.data || '');
           if (data.startsWith('authorization:github:success:')) {
@@ -23,11 +23,17 @@
             var payload = {};
             try { payload = JSON.parse(json); } catch (err) {}
             if (payload && payload.token) {
-              var user = { token: payload.token, provider: 'github' };
+              var ghUser = null;
+              try {
+                var resp = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'token ' + payload.token, 'Accept': 'application/vnd.github+json' } });
+                if (resp && resp.ok) ghUser = await resp.json();
+              } catch (e) {}
+              var userLegacy = { token: payload.token, backendName: 'github', user: ghUser || undefined };
+              var user = { token: payload.token, provider: 'github', user: ghUser || undefined };
               try { localStorage.setItem('decap-cms-user', JSON.stringify(user)); } catch (err) {}
               try { localStorage.setItem('decap-cms.user', JSON.stringify(user)); } catch (err) {}
-              try { localStorage.setItem('netlify-cms-user', JSON.stringify(user)); } catch (err) {}
-              try { localStorage.setItem('netlify-cms.user', JSON.stringify(user)); } catch (err) {}
+              try { localStorage.setItem('netlify-cms-user', JSON.stringify(userLegacy)); } catch (err) {}
+              try { localStorage.setItem('netlify-cms.user', JSON.stringify(userLegacy)); } catch (err) {}
               window.location.href = '/admin/';
             }
           }
