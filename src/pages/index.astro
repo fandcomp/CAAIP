@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
-import Hero from "~/components/Hero.astro";
+import HeroCarousel from "~/components/HeroCarousel.astro";
 import ArticleCard from "~/components/ArticleCard.astro";
 import { getCollection } from 'astro:content';
 
@@ -8,7 +8,18 @@ import { getCollection } from 'astro:content';
 const allBerita = await getCollection('berita', ({ data }) => !data.draft);
 const latestBerita = allBerita
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 3);
+  .slice(0, 6);
+
+// Prepare carousel slides from top 3 berita with images
+const carouselSlides = latestBerita
+  .slice(0, 3)
+  .map(item => ({
+    image: item.data.cover,
+    title: item.data.title,
+    excerpt: item.data.excerpt,
+    href: `/berita/${item.slug}`,
+    date: item.data.date,
+  }));
 
 // Fetch latest kabar duka (non-draft, sorted by date desc)
 const allKabarDuka = await getCollection('kabarDuka', ({ data }) => !data.draft);
@@ -17,12 +28,16 @@ const latestKabarDuka = allKabarDuka
   .slice(0, 3);
 ---
 <BaseLayout title="CAAIP — Beranda" description="Portal resmi CAAIP">
-  <Hero title="CAAIP" subtitle="Portal resmi CAAIP — sederhana, elegan, dan kuat secara visual" ctaText="Lihat Berita" ctaHref="/berita" />
+  <!-- Hero Carousel with latest news -->
+  {carouselSlides.length > 0 && (
+    <HeroCarousel slides={carouselSlides} />
+  )}
 
+  <!-- Latest News Section -->
   <section class="section container-px mx-auto">
     <div class="flex items-center justify-between mb-6">
-      <h2 class="text-xl font-semibold text-caaip-blue">Berita Terbaru</h2>
-      <a href="/berita" class="text-caaip-blue hover:underline">Lihat semua</a>
+      <h2 class="text-2xl font-bold text-caaip-blue">Berita Terbaru</h2>
+      <a href="/berita" class="text-caaip-blue hover:underline font-medium">Lihat semua →</a>
     </div>
     {latestBerita.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -32,12 +47,15 @@ const latestKabarDuka = allKabarDuka
             href={`/berita/${item.slug}`}
             date={item.data.date.toISOString()}
             excerpt={item.data.excerpt}
+            cover={item.data.cover}
+            author={item.data.author}
           />
         ))}
       </div>
     ) : (
       <p class="text-slate-600">Belum ada berita tersedia.</p>
     )}
+  </section>
   </section>
 
   <section class="section container-px mx-auto">
