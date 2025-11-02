@@ -1,9 +1,21 @@
 {
-  "angkatan": "1991",
+  "angkatan": "2004",
   "members": [
-    { "name": "Andi Pratama", "program": "Teknik", "year": "1991" },
-    { "name": "Budi Santoso", "program": "Manajemen", "year": "1991" },
-    { "name": "Citra Lestari", "program": "Informatika", "year": "1991" }
+    {
+      "name": "Andi Pratama",
+      "program": "Teknik",
+      "year": "1991"
+    },
+    {
+      "name": "Budi Santoso",
+      "program": "Manajemen",
+      "year": "1991"
+    },
+    {
+      "name": "Citra Lestari",
+      "program": "Informatika",
+      "year": "1991"
+    }
   ],
   "lang": "id"
 }
