@@ -4,7 +4,7 @@ const berita = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    date: z.string().transform((s) => new Date(s)),
+    date: z.coerce.date(),
     author: z.string().optional(),
     excerpt: z.string().optional(),
     tags: z.array(z.string()).optional(),
@@ -18,7 +18,7 @@ const kabarDuka = defineCollection({
   type: 'content',
   schema: z.object({
     name: z.string(),
-    date: z.string().transform((s) => new Date(s)),
+    date: z.coerce.date(),
     relation: z.string().optional(),
     message: z.string().optional(),
     lang: z.enum(['id', 'en']).default('id'),

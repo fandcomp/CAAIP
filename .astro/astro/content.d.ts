@@ -148,6 +148,13 @@ declare module 'astro:content' {
   collection: "berita";
   data: InferEntrySchema<"berita">
 } & { render(): Render[".md"] };
+"selamat-dan-sukses.md": {
+	id: "selamat-dan-sukses.md";
+  slug: "selamat-dan-sukses";
+  body: string;
+  collection: "berita";
+  data: InferEntrySchema<"berita">
+} & { render(): Render[".md"] };
 };
 "kabar-duka": {
 "in-memoriam-2025-10-31.md": {
@@ -159,6 +166,13 @@ declare module 'astro:content' {
 } & { render(): Render[".md"] };
 };
 "kabarDuka": {
+"2025-11-02-in-memoriam-justice.md": {
+	id: "2025-11-02-in-memoriam-justice.md";
+  slug: "2025-11-02-in-memoriam-justice";
+  body: string;
+  collection: "kabarDuka";
+  data: InferEntrySchema<"kabarDuka">
+} & { render(): Render[".md"] };
 "in-memoriam-2025-10-31.md": {
 	id: "in-memoriam-2025-10-31.md";
   slug: "in-memoriam-2025-10-31";

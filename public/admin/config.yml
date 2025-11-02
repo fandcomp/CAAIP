@@ -10,11 +10,6 @@ public_folder: "/uploads"
 publish_mode: simple
 logo_url: /favicon.svg
 
-i18n:
-  structure: multiple_folders
-  locales: [id, en]
-  default_locale: id
-
 collections:
   - name: "berita"
     label: "Berita"
@@ -22,30 +17,28 @@ collections:
     create: true
     slug: "{{slug}}"
     format: "frontmatter"
-    i18n: true
     fields:
-      - { label: "Judul", name: "title", widget: "string", i18n: true }
+      - { label: "Judul", name: "title", widget: "string" }
       - { label: "Tanggal", name: "date", widget: "datetime" }
       - { label: "Penulis", name: "author", widget: "string", required: false }
-      - { label: "Ringkasan", name: "excerpt", widget: "text", required: false, i18n: true }
+      - { label: "Ringkasan", name: "excerpt", widget: "text", required: false }
       - { label: "Tags", name: "tags", widget: "list", required: false }
       - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
       - { label: "Draft", name: "draft", widget: "boolean", default: false }
       - { label: "Cover", name: "cover", widget: "image", required: false }
-      - { label: "Konten", name: "body", widget: "markdown", i18n: true }
+      - { label: "Konten", name: "body", widget: "markdown" }
 
   - name: "kabarDuka"
     label: "Kabar Duka"
     folder: "src/content/kabarDuka"
     create: true
-    slug: "{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     format: "frontmatter"
-    i18n: true
     fields:
       - { label: "Nama", name: "name", widget: "string" }
       - { label: "Tanggal", name: "date", widget: "datetime" }
       - { label: "Keterangan", name: "relation", widget: "string", required: false }
-      - { label: "Pesan", name: "message", widget: "text", required: false, i18n: true }
+      - { label: "Pesan", name: "message", widget: "text", required: false }
       - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
       - { label: "Draft", name: "draft", widget: "boolean", default: false }
 
