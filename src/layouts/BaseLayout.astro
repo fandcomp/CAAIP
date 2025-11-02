@@ -17,18 +17,20 @@ import '~/styles/global.css';
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
+    <!-- Netlify Identity widget on all pages to handle email confirmation tokens -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script is:inline>
-      {`
-        (function(){
-          try {
-            var h = window.location.hash || '';
-            if (h && (h.indexOf('recovery_token=') >= 0 || h.indexOf('confirmation_token=') >= 0 || h.indexOf('invite_token=') >= 0)) {
-              // Redirect token-based flows to the Admin page where Identity widget is loaded
+      // Redirect Identity tokens to admin page
+      (function(){
+        try {
+          var h = window.location.hash || '';
+          if (h && (h.indexOf('recovery_token') >= 0 || h.indexOf('confirmation_token') >= 0 || h.indexOf('invite_token') >= 0)) {
+            if (window.location.pathname !== '/admin/' && window.location.pathname !== '/admin') {
               window.location.replace('/admin/' + h);
             }
-          } catch (e) {}
-        })();
-      `}
+          }
+        } catch (e) {}
+      })();
     </script>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-slate-900">
