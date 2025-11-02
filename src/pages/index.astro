@@ -2,34 +2,64 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Hero from "~/components/Hero.astro";
 import ArticleCard from "~/components/ArticleCard.astro";
+import { getCollection } from 'astro:content';
 
-const mockNews = [
-  {
-    title: 'Peluncuran Portal Resmi CAAIP',
-    href: '/berita/peluncuran-portal-caaip',
-    date: new Date().toISOString(),
-    excerpt: 'CAAIP merilis portal resmi sebagai pusat informasi kegiatan, berita, dan publikasi.',
-  },
-  {
-    title: 'Kegiatan Akademik Semester Ganjil',
-    href: '/berita/kegiatan-akademik-ganjil',
-    date: new Date().toISOString(),
-    excerpt: 'Rangkaian kegiatan akademik dibuka dengan kuliah umum dan lokakarya.',
-  },
-];
+// Fetch latest berita (non-draft, sorted by date desc)
+const allBerita = await getCollection('berita', ({ data }) => !data.draft);
+const latestBerita = allBerita
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
+
+// Fetch latest kabar duka (non-draft, sorted by date desc)
+const allKabarDuka = await getCollection('kabarDuka', ({ data }) => !data.draft);
+const latestKabarDuka = allKabarDuka
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
 ---
 <BaseLayout title="CAAIP — Beranda" description="Portal resmi CAAIP">
   <Hero title="CAAIP" subtitle="Portal resmi CAAIP — sederhana, elegan, dan kuat secara visual" ctaText="Lihat Berita" ctaHref="/berita" />
 
   <section class="section container-px mx-auto">
     <div class="flex items-center justify-between mb-6">
-      <h2 class="text-xl font-semibold">Berita Terbaru</h2>
+      <h2 class="text-xl font-semibold text-caaip-blue">Berita Terbaru</h2>
       <a href="/berita" class="text-caaip-blue hover:underline">Lihat semua</a>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {mockNews.map((n) => (
-        <ArticleCard {...n} />
-      ))}
+    {latestBerita.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {latestBerita.map((item) => (
+          <ArticleCard
+            title={item.data.title}
+            href={`/berita/${item.slug}`}
+            date={item.data.date.toISOString()}
+            excerpt={item.data.excerpt}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-slate-600">Belum ada berita tersedia.</p>
+    )}
+  </section>
+
+  <section class="section container-px mx-auto">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-semibold text-caaip-blue">Kabar Duka</h2>
+      <a href="/kabar-duka" class="text-caaip-blue hover:underline">Lihat semua</a>
     </div>
+    {latestKabarDuka.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {latestKabarDuka.map((item) => (
+          <div class="border rounded-lg p-4 hover:shadow-lg transition-shadow">
+            <a href={`/kabar-duka/${item.slug}`} class="block">
+              <h3 class="font-semibold text-lg text-caaip-blue hover:underline">{item.data.name}</h3>
+              <p class="text-sm text-slate-500 mt-1">{new Date(item.data.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              {item.data.relation && <p class="text-sm text-slate-600 mt-2">{item.data.relation}</p>}
+              {item.data.message && <p class="text-slate-700 mt-2 line-clamp-2">{item.data.message}</p>}
+            </a>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p class="text-slate-600">Belum ada kabar duka.</p>
+    )}
   </section>
 </BaseLayout>

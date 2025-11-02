@@ -5,7 +5,9 @@ backend:
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-publish_mode: editorial_workflow
+# Change to simple to publish directly without PR
+# Use editorial_workflow if you want PR-based review
+publish_mode: simple
 logo_url: /favicon.svg
 
 i18n:
