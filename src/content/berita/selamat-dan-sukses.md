@@ -5,6 +5,6 @@ author: Fandi
 excerpt: befggit
 lang: id
 draft: false
-cover: /uploads/rosa.png
+cover: /uploads/screenshot-2025-01-15-183309.png
 ---
 selamat sukses di tempat baru
