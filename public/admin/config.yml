@@ -8,7 +8,7 @@ public_folder: "/uploads"
 # Change to simple to publish directly without PR
 # Use editorial_workflow if you want PR-based review
 publish_mode: simple
-logo_url: /favicon.svg
+logo_url: /caaip-logo.png
 
 collections:
   - name: "berita"
@@ -49,12 +49,18 @@ collections:
     format: "json"
     slug: "{{fields.angkatan}}"
     fields:
-      - { label: "Angkatan", name: "angkatan", widget: "string" }
+      - { label: "Angkatan", name: "angkatan", widget: "string", hint: "Contoh: 1991, 2020" }
+      - label: "File CSV Alumni"
+        name: "csvData"
+        widget: "file"
+        hint: "Upload file CSV dengan format: No | Nama | Jurusan"
+        required: false
       - label: "Daftar Alumni"
         name: "members"
         widget: "list"
+        hint: "Atau input manual satu per satu"
         fields:
+          - { label: "No", name: "no", widget: "string", required: false }
           - { label: "Nama", name: "name", widget: "string" }
-          - { label: "Program", name: "program", widget: "string", required: false }
-          - { label: "Tahun", name: "year", widget: "string", required: false }
+          - { label: "Jurusan", name: "program", widget: "string", required: false }
       - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }

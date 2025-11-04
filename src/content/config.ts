@@ -30,10 +30,11 @@ const alumni = defineCollection({
   type: 'data',
   schema: z.object({
     angkatan: z.string(),
+    csvData: z.string().optional(),
     members: z.array(z.object({
+      no: z.string().optional(),
       name: z.string(),
       program: z.string().optional(),
-      year: z.string().optional(),
     })),
     lang: z.enum(['id', 'en']).default('id'),
   }),

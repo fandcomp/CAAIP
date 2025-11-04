@@ -7,18 +7,21 @@
         "angkatan": {
           "type": "string"
         },
+        "csvData": {
+          "type": "string"
+        },
         "members": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
+              "no": {
+                "type": "string"
+              },
               "name": {
                 "type": "string"
               },
               "program": {
-                "type": "string"
-              },
-              "year": {
                 "type": "string"
               }
             },

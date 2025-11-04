@@ -191,6 +191,11 @@ declare module 'astro:content' {
   collection: "alumni";
   data: InferEntrySchema<"alumni">
 };
+"2005": {
+	id: "2005";
+  collection: "alumni";
+  data: InferEntrySchema<"alumni">
+};
 };
 
 	};

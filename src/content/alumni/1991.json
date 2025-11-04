@@ -1,20 +1,20 @@
 {
-  "angkatan": "2004",
+  "angkatan": "1991",
   "members": [
     {
+      "no": "1",
       "name": "Andi Pratama",
-      "program": "Teknik",
-      "year": "1991"
+      "program": "Teknik Mesin"
     },
     {
+      "no": "2",
       "name": "Budi Santoso",
-      "program": "Manajemen",
-      "year": "1991"
+      "program": "Teknik Elektro"
     },
     {
+      "no": "3",
       "name": "Citra Lestari",
-      "program": "Informatika",
-      "year": "1991"
+      "program": "Teknik Informatika"
     }
   ],
   "lang": "id"
