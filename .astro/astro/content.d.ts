@@ -141,6 +141,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"berita": {
+"kkb-ditangkap-kst.md": {
+	id: "kkb-ditangkap-kst.md";
+  slug: "kkb-ditangkap-kst";
+  body: string;
+  collection: "berita";
+  data: InferEntrySchema<"berita">
+} & { render(): Render[".md"] };
 "peluncuran-portal-caaip.md": {
 	id: "peluncuran-portal-caaip.md";
   slug: "peluncuran-portal-caaip";
@@ -173,6 +180,13 @@ declare module 'astro:content' {
   collection: "kabarDuka";
   data: InferEntrySchema<"kabarDuka">
 } & { render(): Render[".md"] };
+"2025-11-03-map-lang-id-draft-false-name-kolonel-sus-iskandar-date-2025-11-01t14-59-00-000-07-00-message-telah-berpulang-ke-rahmatullah-kolonel-arm-mamat.md": {
+	id: "2025-11-03-map-lang-id-draft-false-name-kolonel-sus-iskandar-date-2025-11-01t14-59-00-000-07-00-message-telah-berpulang-ke-rahmatullah-kolonel-arm-mamat.md";
+  slug: "2025-11-03-map-lang-id-draft-false-name-kolonel-sus-iskandar-date-2025-11-01t14-59-00-000-07-00-message-telah-berpulang-ke-rahmatullah-kolonel-arm-mamat";
+  body: string;
+  collection: "kabarDuka";
+  data: InferEntrySchema<"kabarDuka">
+} & { render(): Render[".md"] };
 "in-memoriam-2025-10-31.md": {
 	id: "in-memoriam-2025-10-31.md";
   slug: "in-memoriam-2025-10-31";
@@ -193,6 +207,11 @@ declare module 'astro:content' {
 };
 "2005": {
 	id: "2005";
+  collection: "alumni";
+  data: InferEntrySchema<"alumni">
+};
+"2019": {
+	id: "2019";
   collection: "alumni";
   data: InferEntrySchema<"alumni">
 };
