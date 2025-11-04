@@ -1,17 +1,23 @@
 ---
 import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const prefix = lang === 'en' ? '/en' : '';
+
 const nav = [
-  { href: '/', label: 'Beranda' },
-  { href: '/profil', label: 'Profil' },
-  { href: '/berita', label: 'Berita' },
-  { href: '/kabar-duka', label: 'Kabar Duka' },
-  { href: '/alumni', label: 'Alumni' },
+  { href: `${prefix}/`, label: t('nav.home') },
+  { href: `${prefix}/profil`, label: t('nav.profile') },
+  { href: `${prefix}/berita`, label: t('nav.news') },
+  { href: `${prefix}/kabar-duka`, label: t('nav.obituary') },
+  { href: `${prefix}/alumni`, label: t('nav.alumni') },
 ];
 ---
 <header class="sticky top-0 z-40 backdrop-blur bg-white/80 border-b border-slate-200">
   <div class="container-px mx-auto">
     <div class="flex items-center justify-between h-16">
-      <a href="/" class="flex items-center gap-3 font-semibold text-caaip-blue">
+      <a href={`${prefix}/`} class="flex items-center gap-3 font-semibold text-caaip-blue">
         <img src="/caaip-logo.png" alt="CAAIP Logo" class="h-10 w-auto" />
       </a>
       <nav class="hidden md:flex items-center gap-6 text-sm font-medium">

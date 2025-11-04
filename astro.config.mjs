@@ -3,9 +3,16 @@ import tailwind from '@astrojs/tailwind';
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
-  site: 'https://caaip.example.com', // TODO: update to final domain
+  site: 'https://caaip.netlify.app',
   integrations: [tailwind({
     applyBaseStyles: true,
   })],
   output: 'static',
+  i18n: {
+    defaultLocale: 'id',
+    locales: ['id', 'en'],
+    routing: {
+      prefixDefaultLocale: false
+    }
+  }
 });

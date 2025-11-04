@@ -1,13 +1,32 @@
 ---
-// Simple placeholder language switcher. In a future step, integrate proper i18n routing.
-const langs = [
-  { code: 'id', label: 'ID' },
-  { code: 'en', label: 'EN' },
-];
-const current = 'id';
+import { languages } from '~/i18n/ui';
+import { getLangFromUrl, translatePath } from '~/i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const currentPath = Astro.url.pathname;
+
+// Remove language prefix if present
+const basePath = currentPath.replace(/^\/(en|id)/, '') || '/';
 ---
-<div class="inline-flex items-center gap-1 border rounded-md p-1 text-xs">
-  {langs.map((l) => (
-    <a href="#" class={`px-2 py-1 rounded ${l.code === current ? 'bg-caaip-blue text-white' : 'hover:bg-slate-100'}`}>{l.label}</a>
-  ))}
+
+<div class="inline-flex items-center gap-1 border border-slate-300 rounded-md p-1 text-xs">
+  {Object.entries(languages).map(([lang, label]) => {
+    const href = lang === 'id' ? basePath : `/en${basePath}`;
+    const isActive = lang === currentLang;
+    
+    return (
+      <a 
+        href={href}
+        class={`px-2 py-1 rounded transition-colors ${
+          isActive 
+            ? 'bg-caaip-blue text-white font-semibold' 
+            : 'text-slate-600 hover:bg-slate-100 hover:text-caaip-blue'
+        }`}
+        aria-label={`Switch to ${label}`}
+        aria-current={isActive ? 'true' : 'false'}
+      >
+        {lang.toUpperCase()}
+      </a>
+    );
+  })}
 </div>

@@ -5,10 +5,10 @@ import ArticleCard from "~/components/ArticleCard.astro";
 import { getCollection } from 'astro:content';
 import { useTranslations } from '~/i18n/utils';
 
-const t = useTranslations('id');
+const t = useTranslations('en');
 
 // Fetch latest berita (non-draft, sorted by date desc)
-const allBerita = await getCollection('berita', ({ data }) => !data.draft);
+const allBerita = await getCollection('berita', ({ data }) => !data.draft && data.lang === 'en');
 const latestBerita = allBerita
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 6);
@@ -20,17 +20,17 @@ const carouselSlides = latestBerita
     image: item.data.cover,
     title: item.data.title,
     excerpt: item.data.excerpt,
-    href: `/berita/${item.slug}`,
+    href: `/en/berita/${item.slug}`,
     date: item.data.date,
   }));
 
 // Fetch latest kabar duka (non-draft, sorted by date desc)
-const allKabarDuka = await getCollection('kabarDuka', ({ data }) => !data.draft);
+const allKabarDuka = await getCollection('kabarDuka', ({ data }) => !data.draft && data.lang === 'en');
 const latestKabarDuka = allKabarDuka
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 3);
 ---
-<BaseLayout title="CAAIP — Beranda" description="Portal resmi CAAIP">
+<BaseLayout title="CAAIP — Home" description="Official CAAIP Portal" lang="en">
   <!-- Hero Carousel with latest news -->
   {carouselSlides.length > 0 && (
     <HeroCarousel slides={carouselSlides} />
@@ -40,14 +40,14 @@ const latestKabarDuka = allKabarDuka
   <section class="section container-px mx-auto">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold text-caaip-blue">{t('home.news.title')}</h2>
-      <a href="/berita" class="text-caaip-blue hover:underline font-medium">{t('home.news.viewAll')} →</a>
+      <a href="/en/berita" class="text-caaip-blue hover:underline font-medium">{t('home.news.viewAll')} →</a>
     </div>
     {latestBerita.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {latestBerita.map((item) => (
           <ArticleCard
             title={item.data.title}
-            href={`/berita/${item.slug}`}
+            href={`/en/berita/${item.slug}`}
             date={item.data.date.toISOString()}
             excerpt={item.data.excerpt}
             cover={item.data.cover}
@@ -64,15 +64,15 @@ const latestKabarDuka = allKabarDuka
   <section class="section container-px mx-auto">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold text-caaip-blue">{t('home.obituary.title')}</h2>
-      <a href="/kabar-duka" class="text-caaip-blue hover:underline font-medium">{t('home.obituary.viewAll')} →</a>
+      <a href="/en/kabar-duka" class="text-caaip-blue hover:underline font-medium">{t('home.obituary.viewAll')} →</a>
     </div>
     {latestKabarDuka.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {latestKabarDuka.map((item) => (
           <div class="border rounded-lg p-4 hover:shadow-lg transition-shadow">
-            <a href={`/kabar-duka/${item.slug}`} class="block">
+            <a href={`/en/kabar-duka/${item.slug}`} class="block">
               <h3 class="font-semibold text-lg text-caaip-blue hover:underline">{item.data.name}</h3>
-              <p class="text-sm text-slate-500 mt-1">{new Date(item.data.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              <p class="text-sm text-slate-500 mt-1">{new Date(item.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
               {item.data.relation && <p class="text-sm text-slate-600 mt-2">{item.data.relation}</p>}
               {item.data.message && <p class="text-slate-700 mt-2 line-clamp-2">{item.data.message}</p>}
             </a>
