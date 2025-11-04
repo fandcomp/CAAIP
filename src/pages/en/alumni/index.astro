@@ -1,0 +1,98 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from 'astro:content';
+import { useTranslations } from "~/i18n/utils";
+
+const t = useTranslations('en');
+
+// Get all alumni data and extract unique years
+const alumni = await getCollection('alumni');
+const angkatanSet = new Set<number>();
+
+alumni.forEach(item => {
+  const tahun = parseInt(item.id);
+  if (!isNaN(tahun)) {
+    angkatanSet.add(tahun);
+  }
+});
+
+const years = Array.from(angkatanSet).sort((a, b) => b - a);
+---
+<BaseLayout title={`Alumni — CAAIP`} description="Air Navigation Academy Alumni Directory" lang="en">
+  <div class="container-px mx-auto py-16">
+    <!-- Page Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+        {t('alumni.title')}
+      </h1>
+      <p class="text-xl text-slate-600">
+        Directory of Air Navigation Academy Alumni
+      </p>
+    </div>
+
+    {years.length === 0 ? (
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-slate-50 border border-slate-200 rounded-lg p-12 text-center">
+          <svg class="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <p class="text-slate-600 text-lg">No alumni data available yet</p>
+        </div>
+      </div>
+    ) : (
+      <div class="max-w-6xl mx-auto">
+        <!-- Years Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {years.map((year) => {
+            const yearData = alumni.find(item => parseInt(item.id) === year);
+            const count = yearData?.data.csvData?.length || 0;
+            
+            return (
+              <a 
+                href={`/en/alumni/${year}`}
+                class="group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-transparent hover:border-caaip-blue"
+              >
+                <div class="p-6 text-center">
+                  <div class="text-4xl font-bold text-caaip-blue group-hover:scale-110 transition-transform">
+                    {year}
+                  </div>
+                  <div class="mt-2 text-sm text-slate-600">
+                    Class of {year}
+                  </div>
+                  {count > 0 && (
+                    <div class="mt-3 pt-3 border-t border-slate-100">
+                      <div class="flex items-center justify-center gap-2 text-slate-700">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <span class="text-sm font-semibold">{count} {count === 1 ? 'alumnus' : 'alumni'}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        <!-- Info Box -->
+        <div class="mt-12 bg-gradient-to-br from-caaip-blue to-blue-700 rounded-lg shadow-lg p-8 text-white">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2">Alumni Information</h3>
+              <p class="text-blue-100 leading-relaxed">
+                Click on a year to view the list of alumni from that class. 
+                If you are an alumnus and your name is not listed, please contact the CAAIP administration.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+</BaseLayout>

@@ -1,0 +1,168 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { useTranslations } from "~/i18n/utils";
+
+const t = useTranslations('en');
+---
+<BaseLayout title={`About Us — CAAIP`} description="Get to know CAAIP - Air Navigation Academy Alumni Association of the Indonesian Polytechnic" lang="en">
+  <div class="container-px mx-auto py-16">
+    <!-- Page Header -->
+    <div class="max-w-4xl mx-auto text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+        About CAAIP
+      </h1>
+      <p class="text-xl text-slate-600 leading-relaxed">
+        Air Navigation Academy Alumni Association of the Indonesian Polytechnic
+      </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto space-y-12">
+      <!-- History Section -->
+      <section class="bg-white rounded-lg shadow-lg p-8 md:p-12">
+        <h2 class="text-3xl font-bold text-caaip-blue mb-6">Our History</h2>
+        <div class="prose prose-slate prose-lg max-w-none">
+          <p class="text-slate-600 leading-relaxed">
+            The Air Navigation Academy Alumni Association (CAAIP) is a forum and means of 
+            communication for alumni of the Air Navigation Academy of the Indonesian Polytechnic. 
+            This organization was founded to strengthen bonds of brotherhood among alumni and 
+            make positive contributions to the development of civil aviation in Indonesia.
+          </p>
+        </div>
+      </section>
+
+      <!-- Vision Section -->
+      <section class="bg-gradient-to-br from-caaip-blue to-blue-700 rounded-lg shadow-lg p-8 md:p-12 text-white">
+        <h2 class="text-3xl font-bold mb-6">Vision</h2>
+        <p class="text-lg leading-relaxed">
+          To become an outstanding alumni organization that contributes to the advancement of 
+          civil aviation in Indonesia and provides benefits to alumni and society.
+        </p>
+      </section>
+
+      <!-- Mission Section -->
+      <section class="bg-white rounded-lg shadow-lg p-8 md:p-12">
+        <h2 class="text-3xl font-bold text-caaip-blue mb-6">Mission</h2>
+        <div class="space-y-4">
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-caaip-blue text-white rounded-full flex items-center justify-center font-bold">
+              1
+            </div>
+            <p class="text-slate-600 leading-relaxed flex-1">
+              Strengthening the bond of brotherhood and cooperation among Air Navigation Academy 
+              alumni through various activities and programs.
+            </p>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-caaip-blue text-white rounded-full flex items-center justify-center font-bold">
+              2
+            </div>
+            <p class="text-slate-600 leading-relaxed flex-1">
+              Developing competence and professionalism of alumni in the civil aviation sector 
+              through training and knowledge sharing.
+            </p>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-caaip-blue text-white rounded-full flex items-center justify-center font-bold">
+              3
+            </div>
+            <p class="text-slate-600 leading-relaxed flex-1">
+              Contributing to the development of civil aviation in Indonesia through collaboration 
+              with relevant institutions and stakeholders.
+            </p>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-caaip-blue text-white rounded-full flex items-center justify-center font-bold">
+              4
+            </div>
+            <p class="text-slate-600 leading-relaxed flex-1">
+              Providing support and assistance to fellow alumni in their career development and 
+              dealing with various challenges.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Organization Structure -->
+      <section class="bg-white rounded-lg shadow-lg p-8 md:p-12">
+        <h2 class="text-3xl font-bold text-caaip-blue mb-6">Organization Structure</h2>
+        <div class="prose prose-slate prose-lg max-w-none">
+          <p class="text-slate-600 leading-relaxed mb-6">
+            CAAIP is led by a board of trustees elected through a deliberation of alumni. 
+            The organizational structure consists of:
+          </p>
+          <ul class="list-disc list-inside space-y-3 text-slate-600">
+            <li><strong class="text-slate-900">Board of Trustees:</strong> Provides guidance and direction to the organization</li>
+            <li><strong class="text-slate-900">Chairman:</strong> Leads the organization and coordinates all activities</li>
+            <li><strong class="text-slate-900">Secretary:</strong> Manages administration and communication</li>
+            <li><strong class="text-slate-900">Treasurer:</strong> Manages finances and organizational assets</li>
+            <li><strong class="text-slate-900">Division Coordinators:</strong> Lead various work programs and activities</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Activities -->
+      <section class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg shadow-lg p-8 md:p-12">
+        <h2 class="text-3xl font-bold text-caaip-blue mb-6">Our Activities</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-lg p-6">
+            <div class="text-caaip-blue mb-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Alumni Gathering</h3>
+            <p class="text-slate-600">Regular meetings and reunions to strengthen alumni bonds</p>
+          </div>
+          
+          <div class="bg-white rounded-lg p-6">
+            <div class="text-caaip-blue mb-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Training & Seminars</h3>
+            <p class="text-slate-600">Knowledge enhancement programs and professional development</p>
+          </div>
+          
+          <div class="bg-white rounded-lg p-6">
+            <div class="text-caaip-blue mb-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Career Support</h3>
+            <p class="text-slate-600">Job networking and career opportunities for alumni</p>
+          </div>
+          
+          <div class="bg-white rounded-lg p-6">
+            <div class="text-caaip-blue mb-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Social Activities</h3>
+            <p class="text-slate-600">Charity programs and community service</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="bg-caaip-blue rounded-lg shadow-lg p-8 md:p-12 text-white text-center">
+        <h2 class="text-3xl font-bold mb-4">Join Us</h2>
+        <p class="text-lg mb-6 max-w-2xl mx-auto">
+          Are you an Air Navigation Academy alumnus? Join CAAIP and be part of our great alumni family.
+        </p>
+        <a 
+          href="mailto:info@caaip.net" 
+          class="inline-flex items-center gap-2 bg-white text-caaip-blue px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          Contact Us
+        </a>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

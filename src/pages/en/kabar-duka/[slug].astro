@@ -1,0 +1,115 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('kabarDuka', ({ data }) => !data.draft && data.lang === 'en');
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+}
+
+const { post } = Astro.props as { post: any };
+const { Content } = await post.render();
+---
+<BaseLayout title={`${post.data.title} — CAAIP`} description={post.data.excerpt} lang="en">
+  <article class="pb-16">
+    <!-- Cover Image -->
+    {post.data.cover && (
+      <div class="w-full h-[400px] md:h-[500px] overflow-hidden bg-slate-100">
+        <img 
+          src={post.data.cover} 
+          alt={post.data.title}
+          class="w-full h-full object-cover"
+        />
+      </div>
+    )}
+
+    <!-- Article Header -->
+    <div class="container-px mx-auto max-w-4xl">
+      <div class="mt-8 mb-6">
+        <!-- In Memoriam Badge -->
+        <div class="inline-flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-full mb-4">
+          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.53 2.53 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path>
+          </svg>
+          <span class="text-slate-600 font-medium">In Memoriam</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 text-sm text-slate-600 mb-4">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <time datetime={post.data.date.toISOString()}>
+              {new Date(post.data.date).toLocaleDateString('en-US', { 
+                weekday: 'long',
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </time>
+          </div>
+          {post.data.author && (
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+              <span>{post.data.author}</span>
+            </div>
+          )}
+        </div>
+        
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
+          {post.data.title}
+        </h1>
+        
+        {post.data.excerpt && (
+          <p class="text-lg text-slate-600 mt-4 leading-relaxed">
+            {post.data.excerpt}
+          </p>
+        )}
+
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {post.data.tags.map((tag: string) => (
+              <span class="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-full">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- Article Content -->
+      <div class="prose prose-slate prose-lg max-w-none">
+        <Content />
+      </div>
+
+      <!-- Condolence Box -->
+      <div class="mt-12 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg shadow-lg p-8 text-white">
+        <div class="flex items-center gap-3 mb-4">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+          </svg>
+          <h3 class="text-2xl font-bold">May They Rest in Peace</h3>
+        </div>
+        <p class="text-slate-300 leading-relaxed">
+          We extend our deepest condolences to the family and loved ones. May their soul rest in eternal peace, 
+          and may their contributions to civil aviation always be remembered.
+        </p>
+      </div>
+
+      <!-- Back Link -->
+      <div class="mt-12 pt-8 border-t">
+        <a 
+          href="/en/kabar-duka" 
+          class="inline-flex items-center gap-2 text-caaip-blue hover:underline font-medium"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to In Memoriam
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
