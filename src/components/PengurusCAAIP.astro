@@ -39,6 +39,8 @@ const pengurusList = allPengurus.sort((a, b) => a.data.order - b.data.order);
                   src={item.data.photo} 
                   alt={item.data.name}
                   class="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                   onerror="this.src='/images/default-avatar.png'"
                 />
               </div>

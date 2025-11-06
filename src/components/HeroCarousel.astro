@@ -28,6 +28,9 @@ const defaultImage = '/favicon.svg';
               src={slide.image} 
               alt={slide.title}
               class="w-full h-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(to bottom right, #1e40af, #1e293b)';"
             />
           ) : (
             <div class="w-full h-full bg-gradient-to-br from-caaip-blue to-slate-800"></div>
@@ -100,15 +103,18 @@ const defaultImage = '/favicon.svg';
 </div>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', function() {
-  // Carousel functionality
-  let currentSlide = 0;
-  let autoplayInterval = null;
-  
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.dot');
-  const prevBtn = document.querySelector('.nav-arrow.prev');
-  const nextBtn = document.querySelector('.nav-arrow.next');
+  // Initialize carousel after page load, with slight delay to ensure smooth loading
+  window.addEventListener('load', function() {
+    // Use requestIdleCallback for better performance, fallback to setTimeout
+    var initCarousel = function() {
+      // Carousel functionality
+      var currentSlide = 0;
+      var autoplayInterval = null;
+      
+      var slides = document.querySelectorAll('.slide');
+      var dots = document.querySelectorAll('.dot');
+      var prevBtn = document.querySelector('.nav-arrow.prev');
+      var nextBtn = document.querySelector('.nav-arrow.next');
   
   function goToSlide(index) {
     // Hide all slides
@@ -136,12 +142,12 @@ const defaultImage = '/favicon.svg';
   }
   
   function nextSlide() {
-    const next = (currentSlide + 1) % slides.length;
+    var next = (currentSlide + 1) % slides.length;
     goToSlide(next);
   }
   
   function prevSlide() {
-    const prev = (currentSlide - 1 + slides.length) % slides.length;
+    var prev = (currentSlide - 1 + slides.length) % slides.length;
     goToSlide(prev);
   }
   
@@ -164,30 +170,36 @@ const defaultImage = '/favicon.svg';
   }
   
   // Event listeners
-  prevBtn?.addEventListener('click', () => {
-    prevSlide();
-    resetAutoplay();
-  });
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function() {
+      prevSlide();
+      resetAutoplay();
+    });
+  }
   
-  nextBtn?.addEventListener('click', () => {
-    nextSlide();
-    resetAutoplay();
-  });
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function() {
+      nextSlide();
+      resetAutoplay();
+    });
+  }
   
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
+  dots.forEach(function(dot, index) {
+    dot.addEventListener('click', function() {
       goToSlide(index);
       resetAutoplay();
     });
   });
   
   // Pause on hover
-  const carousel = document.querySelector('.hero-carousel');
-  carousel?.addEventListener('mouseenter', stopAutoplay);
-  carousel?.addEventListener('mouseleave', startAutoplay);
+  var carousel = document.querySelector('.hero-carousel');
+  if (carousel) {
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+  }
   
   // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowLeft') {
       prevSlide();
       resetAutoplay();
@@ -198,23 +210,25 @@ const defaultImage = '/favicon.svg';
   });
   
   // Touch/swipe support
-  let touchStartX = 0;
-  let touchEndX = 0;
+  var touchStartX = 0;
+  var touchEndX = 0;
   
-  carousel?.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    stopAutoplay();
-  });
-  
-  carousel?.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].clientX;
-    handleSwipe();
-    startAutoplay();
-  });
+  if (carousel) {
+    carousel.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+      stopAutoplay();
+    });
+    
+    carousel.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+      startAutoplay();
+    });
+  }
   
   function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
+    var swipeThreshold = 50;
+    var diff = touchStartX - touchEndX;
     
     if (Math.abs(diff) > swipeThreshold) {
       if (diff > 0) {
@@ -227,6 +241,14 @@ const defaultImage = '/favicon.svg';
   
   // Start autoplay on load
   startAutoplay();
+    };
+    
+    // Use requestIdleCallback if available, otherwise setTimeout
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initCarousel);
+    } else {
+      setTimeout(initCarousel, 1);
+    }
   });
 </script>
 

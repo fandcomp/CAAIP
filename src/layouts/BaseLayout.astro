@@ -20,19 +20,22 @@ import '~/styles/global.css';
     <title>{title}</title>
     <!-- Load Netlify Identity widget asynchronously to avoid blocking page load -->
     <script async src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script is:inline>
-      // Redirect Identity tokens to admin page (runs after widget loads)
-      window.addEventListener('load', function() {
-        try {
-          var h = window.location.hash || '';
-          if (h && (h.indexOf('recovery_token') >= 0 || h.indexOf('confirmation_token') >= 0 || h.indexOf('invite_token') >= 0)) {
-            if (window.location.pathname !== '/admin/' && window.location.pathname !== '/admin') {
-              window.location.replace('/admin/' + h);
+    <script>
+      // Redirect Identity tokens to admin page (non-blocking, deferred execution)
+      if (typeof window !== 'undefined') {
+        setTimeout(function() {
+          try {
+            var h = window.location.hash || '';
+            if (h && (h.indexOf('recovery_token') >= 0 || h.indexOf('confirmation_token') >= 0 || h.indexOf('invite_token') >= 0)) {
+              if (window.location.pathname !== '/admin/' && window.location.pathname !== '/admin') {
+                window.location.replace('/admin/' + h);
+              }
             }
-          }
-        } catch (e) {}
-      });
+          } catch (e) {}
+        }, 100);
+      }
     </script>
+    <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col bg-white text-slate-900">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-caaip-blue text-white px-3 py-2 rounded">Loncat ke konten</a>

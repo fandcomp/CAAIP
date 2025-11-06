@@ -18,6 +18,8 @@ const { title, href, date, excerpt, cover, author } = Astro.props as Props;
           alt={title}
           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
+          decoding="async"
+          onerror="this.parentElement.style.display='none'"
         />
       </div>
     )}
