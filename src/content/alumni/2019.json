@@ -1,16 +1,15 @@
 {
-  "lang": "id",
-  "angkatan": "2019",
-  "members": [
+  "year": "2019",
+  "csvData": [
     {
+      "no": "1",
       "name": "Ali Muntaha",
-      "program": "KH",
-      "year": "2019"
+      "program": "KH"
     },
     {
+      "no": "2",
       "name": "Bahrul",
-      "program": "KH",
-      "year": "2019"
+      "program": "KH"
     }
   ]
 }

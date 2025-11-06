@@ -1,8 +1,8 @@
 {
-  "lang": "id",
-  "angkatan": "2005",
-  "members": [
+  "year": "2005",
+  "csvData": [
     {
+      "no": "1",
       "name": "Fandi",
       "program": "makan"
     }

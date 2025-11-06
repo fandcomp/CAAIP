@@ -1,0 +1,92 @@
+---
+interface Pengurus {
+  name: string;
+  position: string;
+  photo: string;
+}
+
+const pengurusList: Pengurus[] = [
+  {
+    name: "Kolonel Laut (KH) Dr. Ahmad Budiman",
+    position: "Ketua Umum",
+    photo: "/images/pengurus/ketua-umum.jpg"
+  },
+  {
+    name: "Kolonel Laut (KH) Ir. Budi Santoso, M.T.",
+    position: "Wakil Ketua",
+    photo: "/images/pengurus/wakil-ketua.jpg"
+  },
+  {
+    name: "Mayor Laut (T) Drs. Cahyono",
+    position: "Sekretaris",
+    photo: "/images/pengurus/sekretaris.jpg"
+  },
+  {
+    name: "Mayor Laut (KH) Ir. Dwi Putra, M.M.",
+    position: "Bendahara",
+    photo: "/images/pengurus/bendahara.jpg"
+  }
+];
+---
+
+<div class="pengurus-section bg-white rounded-lg shadow-md p-6 sticky top-20">
+  <h3 class="text-xl font-bold text-caaip-blue mb-6 text-center border-b-2 border-caaip-blue pb-3">
+    Pengurus CAAIP
+  </h3>
+  
+  <div class="grid grid-cols-1 gap-6">
+    {pengurusList.map((pengurus) => (
+      <div class="pengurus-card group text-center transition-all duration-300">
+        <p class="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-3">
+          {pengurus.position}
+        </p>
+        
+        <div class="relative inline-block mb-3">
+          <div class="pengurus-photo-wrapper overflow-hidden rounded-full w-24 h-24 mx-auto shadow-md group-hover:shadow-xl transition-shadow duration-300">
+            <img 
+              src={pengurus.photo} 
+              alt={pengurus.name}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              onerror="this.src='/images/default-avatar.png'"
+            />
+          </div>
+        </div>
+        
+        <h4 class="font-semibold text-sm text-slate-800 leading-tight px-2">
+          {pengurus.name}
+        </h4>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .pengurus-section {
+    border-left: 4px solid #1e3a8a;
+  }
+  
+  .pengurus-card {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+  
+  .pengurus-card:hover {
+    background-color: #f8fafc;
+  }
+  
+  .pengurus-photo-wrapper {
+    border: 3px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+  
+  .pengurus-card:hover .pengurus-photo-wrapper {
+    border-color: #3b82f6;
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+  }
+
+  @media (max-width: 1024px) {
+    .pengurus-section {
+      position: static;
+    }
+  }
+</style>

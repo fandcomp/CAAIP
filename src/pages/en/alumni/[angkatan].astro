@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 
 const { alumni } = Astro.props as { alumni: any };
-const tahun = alumni.id;
+const tahun = alumni.data.year || alumni.id;
 const data = alumni.data.csvData || [];
 ---
 <BaseLayout title={`Class of ${tahun} Alumni — CAAIP`} description={`List of Air Navigation Academy Alumni Class of ${tahun}`} lang="en">

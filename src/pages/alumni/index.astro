@@ -7,12 +7,12 @@ const entries = data
   .map((d) => {
     const baseSlug = d.slug ?? (d.id || '').split('/').pop()?.replace(/\.[^.]+$/, '');
     return {
-      angkatan: d.data.angkatan || baseSlug || '',
-      members: d.data.members || [],
+      year: d.data.year || baseSlug || '',
+      csvData: d.data.csvData || [],
       slug: baseSlug || '',
     };
   })
-  .sort((a, b) => a.angkatan.localeCompare(b.angkatan));
+  .sort((a, b) => b.year.localeCompare(a.year)); // Sort descending (newest first)
 ---
 <BaseLayout title="Alumni — CAAIP" description="Direktori Alumni CAAIP">
   <section class="section container-px mx-auto">
@@ -26,20 +26,19 @@ const entries = data
         <div id="alumni-browser" class="mt-6">
           <div class="flex flex-wrap gap-2">
             {entries.map((e, idx) => (
-              <button type="button" class={`angkatan-btn px-3 py-2 rounded border text-sm ${idx === 0 ? 'border-caaip-blue text-white bg-caaip-blue' : 'border-slate-300 hover:border-caaip-blue hover:text-caaip-blue'}`} data-angkatan={e.angkatan}>{e.angkatan}</button>
+              <button type="button" class={`angkatan-btn px-3 py-2 rounded border text-sm ${idx === 0 ? 'border-caaip-blue text-white bg-caaip-blue' : 'border-slate-300 hover:border-caaip-blue hover:text-caaip-blue'}`} data-angkatan={e.year}>{e.year}</button>
             ))}
           </div>
           <div class="mt-6">
             {entries.map((e, idx) => (
-              <div id={`panel-${e.angkatan}`} class={`${idx === 0 ? '' : 'hidden'}`} aria-hidden={idx === 0 ? 'false' : 'true'}>
-                <h2 class="text-xl font-semibold text-caaip-blue">Alumni Angkatan {e.angkatan}</h2>
-                {e.members && e.members.length > 0 ? (
+              <div id={`panel-${e.year}`} class={`${idx === 0 ? '' : 'hidden'}`} aria-hidden={idx === 0 ? 'false' : 'true'}>
+                <h2 class="text-xl font-semibold text-caaip-blue">Alumni Angkatan {e.year}</h2>
+                {e.csvData && e.csvData.length > 0 ? (
                   <ul class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {e.members.map((m) => (
+                    {e.csvData.map((m) => (
                       <li class="border rounded-lg p-4">
                         <p class="font-semibold">{m.name}</p>
                         {m.program && <p class="text-sm text-slate-600">{m.program}</p>}
-                        {m.year && <p class="text-xs text-slate-500">{m.year}</p>}
                       </li>
                     ))}
                   </ul>

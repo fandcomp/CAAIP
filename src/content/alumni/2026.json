@@ -1,5 +1,20 @@
 {
-  "lang": "id",
-  "csvData": "/uploads/2026.csv",
-  "angkatan": "2026"
+  "year": "2026",
+  "csvData": [
+    {
+      "no": "1",
+      "name": "Taufiq",
+      "program": "RB"
+    },
+    {
+      "no": "2",
+      "name": "Fandi",
+      "program": "RPL"
+    },
+    {
+      "no": "3",
+      "name": "Hasan",
+      "program": "Kripto"
+    }
+  ]
 }

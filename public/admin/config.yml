@@ -47,20 +47,23 @@ collections:
     folder: "src/content/alumni"
     create: true
     format: "json"
-    slug: "{{fields.angkatan}}"
+    extension: "json"
+    slug: "{{year}}"
     fields:
-      - { label: "Angkatan", name: "angkatan", widget: "string", hint: "Contoh: 1991, 2020" }
+      - { label: "Tahun Angkatan", name: "year", widget: "string", hint: "Contoh: 1991, 2005, 2026" }
       - label: "File CSV Alumni"
-        name: "csvData"
+        name: "csvFile"
         widget: "file"
-        hint: "Upload file CSV dengan format: No | Nama | Jurusan"
+        hint: "Upload file CSV dengan format: No;Nama;Jurusan (gunakan semicolon sebagai pemisah)"
+        media_folder: "/public/alumni-csv"
+        public_folder: "/alumni-csv"
         required: false
-      - label: "Daftar Alumni"
-        name: "members"
+      - label: "Data Alumni (Auto-generated dari CSV atau input manual)"
+        name: "csvData"
         widget: "list"
-        hint: "Atau input manual satu per satu"
+        required: false
+        summary: "{{fields.name}} - {{fields.program}}"
         fields:
           - { label: "No", name: "no", widget: "string", required: false }
           - { label: "Nama", name: "name", widget: "string" }
-          - { label: "Jurusan", name: "program", widget: "string", required: false }
-      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
+          - { label: "Jurusan/Program", name: "program", widget: "string", required: false }

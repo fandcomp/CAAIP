@@ -1,6 +1,6 @@
 {
-  "angkatan": "1991",
-  "members": [
+  "year": "1991",
+  "csvData": [
     {
       "no": "1",
       "name": "Andi Pratama",
@@ -16,6 +16,5 @@
       "name": "Citra Lestari",
       "program": "Teknik Informatika"
     }
-  ],
-  "lang": "id"
+  ]
 }

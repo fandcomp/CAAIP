@@ -12,8 +12,10 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props as { entry: any };
+const tahun = entry.data.year || entry.id;
+const data = entry.data.csvData || [];
 ---
-<BaseLayout title={`Alumni ${entry.data.angkatan} — CAAIP`} description={`Daftar Alumni Angkatan ${entry.data.angkatan}`}>
+<BaseLayout title={`Alumni Angkatan ${tahun} — CAAIP`} description={`Daftar Alumni Angkatan ${tahun}`}>
   <section class="section container-px mx-auto">
     <div class="mb-8">
       <a href="/alumni" class="inline-flex items-center gap-2 text-caaip-blue hover:underline mb-4">
@@ -22,8 +24,8 @@ const { entry } = Astro.props as { entry: any };
         </svg>
         Kembali ke Daftar Angkatan
       </a>
-      <h1 class="text-3xl font-bold text-caaip-blue">Alumni Angkatan {entry.data.angkatan}</h1>
-      <p class="text-slate-600 mt-2">Total: {entry.data.members.length} alumni</p>
+      <h1 class="text-3xl font-bold text-caaip-blue">Alumni Angkatan {tahun}</h1>
+      <p class="text-slate-600 mt-2">Total: {data.length} alumni</p>
     </div>
 
     <!-- Table View for Desktop -->
@@ -37,7 +39,7 @@ const { entry } = Astro.props as { entry: any };
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-200">
-          {entry.data.members.map((m: any, index: number) => (
+          {data.map((m: any, index: number) => (
             <tr class="hover:bg-slate-50 transition-colors">
               <td class="px-6 py-4 text-sm text-slate-600">{m.no || (index + 1)}</td>
               <td class="px-6 py-4 text-sm font-medium text-slate-900">{m.name}</td>
@@ -50,7 +52,7 @@ const { entry } = Astro.props as { entry: any };
 
     <!-- Card View for Mobile -->
     <div class="md:hidden space-y-4">
-      {entry.data.members.map((m: any, index: number) => (
+      {data.map((m: any, index: number) => (
         <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
           <div class="flex items-start gap-3">
             <div class="flex-shrink-0 w-10 h-10 bg-caaip-blue text-white rounded-full flex items-center justify-center font-semibold text-sm">

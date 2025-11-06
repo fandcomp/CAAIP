@@ -10,7 +10,7 @@ const alumni = await getCollection('alumni');
 const angkatanSet = new Set<number>();
 
 alumni.forEach(item => {
-  const tahun = parseInt(item.id);
+  const tahun = parseInt(item.data.year || item.id);
   if (!isNaN(tahun)) {
     angkatanSet.add(tahun);
   }
@@ -44,7 +44,7 @@ const years = Array.from(angkatanSet).sort((a, b) => b - a);
         <!-- Years Grid -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {years.map((year) => {
-            const yearData = alumni.find(item => parseInt(item.id) === year);
+            const yearData = alumni.find(item => parseInt(item.data.year || item.id) === year);
             const count = yearData?.data.csvData?.length || 0;
             
             return (

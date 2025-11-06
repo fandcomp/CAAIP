@@ -4,13 +4,13 @@
     "alumni": {
       "type": "object",
       "properties": {
-        "angkatan": {
+        "year": {
+          "type": "string"
+        },
+        "csvFile": {
           "type": "string"
         },
         "csvData": {
-          "type": "string"
-        },
-        "members": {
           "type": "array",
           "items": {
             "type": "object",
@@ -31,21 +31,12 @@
             "additionalProperties": false
           }
         },
-        "lang": {
-          "type": "string",
-          "enum": [
-            "id",
-            "en"
-          ],
-          "default": "id"
-        },
         "$schema": {
           "type": "string"
         }
       },
       "required": [
-        "angkatan",
-        "members"
+        "year"
       ],
       "additionalProperties": false
     }
