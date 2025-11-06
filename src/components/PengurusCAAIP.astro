@@ -15,78 +15,149 @@ const pengurusList: Pengurus[] = [
     name: "Kolonel Laut (KH) Ir. Budi Santoso, M.T.",
     position: "Wakil Ketua",
     photo: "/images/pengurus/wakil-ketua.jpg"
-  },
-  {
-    name: "Mayor Laut (T) Drs. Cahyono",
-    position: "Sekretaris",
-    photo: "/images/pengurus/sekretaris.jpg"
-  },
-  {
-    name: "Mayor Laut (KH) Ir. Dwi Putra, M.M.",
-    position: "Bendahara",
-    photo: "/images/pengurus/bendahara.jpg"
   }
 ];
 ---
 
-<div class="pengurus-section bg-white rounded-lg shadow-md p-6 sticky top-20">
-  <h3 class="text-xl font-bold text-caaip-blue mb-6 text-center border-b-2 border-caaip-blue pb-3">
-    Pengurus CAAIP
-  </h3>
-  
-  <div class="grid grid-cols-1 gap-6">
-    {pengurusList.map((pengurus) => (
-      <div class="pengurus-card group text-center transition-all duration-300">
-        <p class="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-3">
-          {pengurus.position}
-        </p>
-        
-        <div class="relative inline-block mb-3">
-          <div class="pengurus-photo-wrapper overflow-hidden rounded-full w-24 h-24 mx-auto shadow-md group-hover:shadow-xl transition-shadow duration-300">
-            <img 
-              src={pengurus.photo} 
-              alt={pengurus.name}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              onerror="this.src='/images/default-avatar.png'"
-            />
-          </div>
-        </div>
-        
-        <h4 class="font-semibold text-sm text-slate-800 leading-tight px-2">
-          {pengurus.name}
-        </h4>
+<div class="pengurus-container sticky top-24">
+  <div class="pengurus-card bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+    <!-- Header Section -->
+    <div class="header-section bg-gradient-to-r from-caaip-blue to-blue-700 text-white px-6 py-5">
+      <div class="flex items-center gap-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <h3 class="text-xl font-bold tracking-wide">Pengurus CAAIP</h3>
       </div>
-    ))}
+    </div>
+
+    <!-- Pengurus List -->
+    <div class="pengurus-list p-6 space-y-6">
+      {pengurusList.map((pengurus, index) => (
+        <div class="pengurus-item group">
+          <div class="flex flex-col items-center text-center space-y-4 p-5 rounded-xl transition-all duration-300 hover:bg-white hover:shadow-md">
+            <!-- Position Badge -->
+            <div class="position-badge">
+              <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-sm">
+                {pengurus.position}
+              </span>
+            </div>
+            
+            <!-- Photo with Decorative Ring -->
+            <div class="photo-wrapper relative">
+              <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full animate-pulse-slow opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div class="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300">
+                <img 
+                  src={pengurus.photo} 
+                  alt={pengurus.name}
+                  class="w-full h-full object-cover"
+                  onerror="this.src='/images/default-avatar.png'"
+                />
+              </div>
+              <!-- Decorative Corner Accent -->
+              <div class="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full border-4 border-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg class="w-full h-full p-1 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Name -->
+            <div class="name-section">
+              <h4 class="font-bold text-base text-slate-800 leading-tight group-hover:text-caaip-blue transition-colors duration-300">
+                {pengurus.name}
+              </h4>
+            </div>
+          </div>
+          
+          <!-- Divider (only between items) -->
+          {index < pengurusList.length - 1 && (
+            <div class="divider-line mt-6">
+              <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <!-- Footer Accent -->
+    <div class="footer-accent h-1.5 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600"></div>
   </div>
 </div>
 
 <style>
-  .pengurus-section {
-    border-left: 4px solid #1e3a8a;
-  }
-  
-  .pengurus-card {
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-  }
-  
-  .pengurus-card:hover {
-    background-color: #f8fafc;
-  }
-  
-  .pengurus-photo-wrapper {
-    border: 3px solid #e2e8f0;
-    transition: all 0.3s ease;
-  }
-  
-  .pengurus-card:hover .pengurus-photo-wrapper {
-    border-color: #3b82f6;
-    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+  .pengurus-container {
+    animation: slideInRight 0.6s ease-out;
   }
 
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  /* Smooth sticky behavior */
+  .pengurus-container.sticky {
+    transition: top 0.3s ease;
+  }
+
+  /* Responsive adjustments */
   @media (max-width: 1024px) {
-    .pengurus-section {
+    .pengurus-container {
       position: static;
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pengurus-list {
+      padding: 1rem;
+    }
+    
+    .photo-wrapper .relative {
+      width: 6rem;
+      height: 6rem;
+    }
+  }
+
+  /* Hover effects */
+  .pengurus-item:hover .photo-wrapper .relative {
+    box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.4);
+  }
+
+  /* Gradient animation on hover */
+  .pengurus-card:hover .header-section {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  }
+
+  .pengurus-card:hover .footer-accent {
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -100% 0;
+    }
+    100% {
+      background-position: 200% 0;
     }
   }
 </style>
