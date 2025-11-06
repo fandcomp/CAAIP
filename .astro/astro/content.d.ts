@@ -172,53 +172,33 @@ declare module 'astro:content' {
   data: any
 } & { render(): Render[".md"] };
 };
-"kabarDuka": {
-"2025-11-02-in-memoriam-justice.md": {
-	id: "2025-11-02-in-memoriam-justice.md";
-  slug: "2025-11-02-in-memoriam-justice";
+"kabarDuka": Record<string, {
+  id: string;
+  slug: string;
   body: string;
   collection: "kabarDuka";
-  data: InferEntrySchema<"kabarDuka">
-} & { render(): Render[".md"] };
-"2025-11-03-map-lang-id-draft-false-name-kolonel-sus-iskandar-date-2025-11-01t14-59-00-000-07-00-message-telah-berpulang-ke-rahmatullah-kolonel-arm-mamat.md": {
-	id: "2025-11-03-map-lang-id-draft-false-name-kolonel-sus-iskandar-date-2025-11-01t14-59-00-000-07-00-message-telah-berpulang-ke-rahmatullah-kolonel-arm-mamat.md";
-  slug: "2025-11-03-map-lang-id-draft-false-name-kolonel-sus-iskandar-date-2025-11-01t14-59-00-000-07-00-message-telah-berpulang-ke-rahmatullah-kolonel-arm-mamat";
-  body: string;
-  collection: "kabarDuka";
-  data: InferEntrySchema<"kabarDuka">
-} & { render(): Render[".md"] };
-"in-memoriam-2025-10-31.md": {
-	id: "in-memoriam-2025-10-31.md";
-  slug: "in-memoriam-2025-10-31";
-  body: string;
-  collection: "kabarDuka";
-  data: InferEntrySchema<"kabarDuka">
-} & { render(): Render[".md"] };
-};
+  data: InferEntrySchema<"kabarDuka">;
+  render(): Render[".md"];
+}>;
 
 	};
 
 	type DataEntryMap = {
-		"alumni": {
-"1991": {
-	id: "1991";
+		"alumni": Record<string, {
+  id: string;
   collection: "alumni";
-  data: InferEntrySchema<"alumni">
+  data: InferEntrySchema<"alumni">;
+}>;
+"pengurus": {
+"ketua-umum": {
+	id: "ketua-umum";
+  collection: "pengurus";
+  data: InferEntrySchema<"pengurus">
 };
-"2005": {
-	id: "2005";
-  collection: "alumni";
-  data: InferEntrySchema<"alumni">
-};
-"2019": {
-	id: "2019";
-  collection: "alumni";
-  data: InferEntrySchema<"alumni">
-};
-"2026": {
-	id: "2026";
-  collection: "alumni";
-  data: InferEntrySchema<"alumni">
+"wakil-ketua": {
+	id: "wakil-ketua";
+  collection: "pengurus";
+  data: InferEntrySchema<"pengurus">
 };
 };
 

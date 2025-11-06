@@ -1,22 +1,10 @@
 ---
-interface Pengurus {
-  name: string;
-  position: string;
-  photo: string;
-}
+import { getCollection } from 'astro:content';
 
-const pengurusList: Pengurus[] = [
-  {
-    name: "Kolonel Laut (KH) Dr. Ahmad Budiman",
-    position: "Ketua Umum",
-    photo: "/images/pengurus/ketua-umum.jpg"
-  },
-  {
-    name: "Kolonel Laut (KH) Ir. Budi Santoso, M.T.",
-    position: "Wakil Ketua",
-    photo: "/images/pengurus/wakil-ketua.jpg"
-  }
-];
+// Fetch pengurus data from content collection
+const allPengurus = await getCollection('pengurus');
+// Sort by order field
+const pengurusList = allPengurus.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <div class="pengurus-container sticky top-24">
@@ -33,13 +21,13 @@ const pengurusList: Pengurus[] = [
 
     <!-- Pengurus List -->
     <div class="pengurus-list p-6 space-y-6">
-      {pengurusList.map((pengurus, index) => (
+      {pengurusList.map((item, index) => (
         <div class="pengurus-item group">
           <div class="flex flex-col items-center text-center space-y-4 p-5 rounded-xl transition-all duration-300 hover:bg-white hover:shadow-md">
             <!-- Position Badge -->
             <div class="position-badge">
               <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-sm">
-                {pengurus.position}
+                {item.data.position}
               </span>
             </div>
             
@@ -48,8 +36,8 @@ const pengurusList: Pengurus[] = [
               <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full animate-pulse-slow opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
               <div class="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300">
                 <img 
-                  src={pengurus.photo} 
-                  alt={pengurus.name}
+                  src={item.data.photo} 
+                  alt={item.data.name}
                   class="w-full h-full object-cover"
                   onerror="this.src='/images/default-avatar.png'"
                 />
@@ -65,7 +53,7 @@ const pengurusList: Pengurus[] = [
             <!-- Name -->
             <div class="name-section">
               <h4 class="font-bold text-base text-slate-800 leading-tight group-hover:text-caaip-blue transition-colors duration-300">
-                {pengurus.name}
+                {item.data.name}
               </h4>
             </div>
           </div>

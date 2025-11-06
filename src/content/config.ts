@@ -39,4 +39,14 @@ const alumni = defineCollection({
   }),
 });
 
-export const collections = { berita, kabarDuka, alumni };
+const pengurus = defineCollection({
+  type: 'data',
+  schema: z.object({
+    name: z.string(),
+    position: z.string(),
+    photo: z.string(),
+    order: z.number().default(1),
+  }),
+});
+
+export const collections = { berita, kabarDuka, alumni, pengurus };

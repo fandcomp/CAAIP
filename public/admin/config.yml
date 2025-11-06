@@ -67,3 +67,18 @@ collections:
           - { label: "No", name: "no", widget: "string", required: false }
           - { label: "Nama", name: "name", widget: "string" }
           - { label: "Jurusan/Program", name: "program", widget: "string", required: false }
+
+  - name: "pengurus"
+    label: "Pengurus CAAIP"
+    folder: "src/content/pengurus"
+    create: true
+    format: "json"
+    extension: "json"
+    slug: "{{slug}}"
+    identifier_field: "position"
+    fields:
+      - { label: "Nama", name: "name", widget: "string" }
+      - { label: "Jabatan", name: "position", widget: "string", hint: "Contoh: Ketua Umum, Wakil Ketua" }
+      - { label: "Foto", name: "photo", widget: "image", media_folder: "/public/images/pengurus", public_folder: "/images/pengurus" }
+      - { label: "Urutan", name: "order", widget: "number", default: 1, hint: "Nomor urutan tampilan (1 = paling atas)" }
+
