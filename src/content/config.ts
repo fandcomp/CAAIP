@@ -49,4 +49,20 @@ const pengurus = defineCollection({
   }),
 });
 
-export const collections = { berita, kabarDuka, alumni, pengurus };
+const profil = defineCollection({
+  type: 'data',
+  schema: z.object({
+    lang: z.enum(['id', 'en']).default('id'),
+    sejarah_title: z.string(),
+    sejarah_content: z.string(),
+    visi_title: z.string(),
+    visi_content: z.string(),
+    misi_title: z.string(),
+    misi_content: z.string(),
+    struktur_title: z.string(),
+    struktur_image: z.string().optional(),
+    struktur_content: z.string().optional(),
+  }),
+});
+
+export const collections = { berita, kabarDuka, alumni, pengurus, profil };

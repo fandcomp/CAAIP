@@ -201,6 +201,18 @@ declare module 'astro:content' {
   data: InferEntrySchema<"pengurus">
 };
 };
+"profil": {
+"profil-en": {
+	id: "profil-en";
+  collection: "profil";
+  data: InferEntrySchema<"profil">
+};
+"profil-id": {
+	id: "profil-id";
+  collection: "profil";
+  data: InferEntrySchema<"profil">
+};
+};
 
 	};
 

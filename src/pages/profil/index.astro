@@ -1,5 +1,20 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getEntry } from 'astro:content';
+import { marked } from 'marked';
+
+const profil = await getEntry('profil', 'profil-id');
+if (!profil) {
+  return Astro.redirect('/404');
+}
+
+const { sejarah_title, sejarah_content, visi_title, visi_content, misi_title, misi_content, struktur_title, struktur_image, struktur_content } = profil.data;
+
+// Convert markdown to HTML
+const sejarahHtml = marked.parse(sejarah_content);
+const visiHtml = marked.parse(visi_content);
+const misiHtml = marked.parse(misi_content);
+const strukturHtml = struktur_content ? marked.parse(struktur_content) : '';
 ---
 <BaseLayout title="Profil — CAAIP" description="Profil CAAIP">
   <section class="section container-px mx-auto">
@@ -8,20 +23,28 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 
     <div class="mt-8 grid gap-8">
       <section>
-        <h2 class="text-xl font-semibold">Sejarah</h2>
-        <p class="mt-2 text-slate-700">Teks sejarah singkat CAAIP. (Konten akan dikelola melalui CMS)</p>
+        <h2 class="text-xl font-semibold text-caaip-blue">{sejarah_title}</h2>
+        <div class="mt-2 text-slate-700 prose max-w-none" set:html={sejarahHtml}></div>
       </section>
+      
       <section>
-        <h2 class="text-xl font-semibold">Visi dan Misi</h2>
-        <p class="mt-2 text-slate-700">Visi dan misi CAAIP. (Konten akan dikelola melalui CMS)</p>
+        <h2 class="text-xl font-semibold text-caaip-blue">{visi_title}</h2>
+        <div class="mt-2 text-slate-700 prose max-w-none" set:html={visiHtml}></div>
       </section>
+      
       <section>
-        <h2 class="text-xl font-semibold">Struktur Organisasi</h2>
-        <p class="mt-2 text-slate-700">Bagan struktur organisasi. (Konten akan dikelola melalui CMS)</p>
+        <h2 class="text-xl font-semibold text-caaip-blue">{misi_title}</h2>
+        <div class="mt-2 text-slate-700 prose max-w-none" set:html={misiHtml}></div>
       </section>
+      
       <section>
-        <h2 class="text-xl font-semibold">Profil Pimpinan</h2>
-        <p class="mt-2 text-slate-700">Daftar pimpinan beserta biodata singkat. (Konten akan dikelola melalui CMS)</p>
+        <h2 class="text-xl font-semibold text-caaip-blue">{struktur_title}</h2>
+        {struktur_image && (
+          <img src={struktur_image} alt={struktur_title} class="mt-4 max-w-full h-auto rounded-lg shadow-md" />
+        )}
+        {strukturHtml && (
+          <div class="mt-2 text-slate-700 prose max-w-none" set:html={strukturHtml}></div>
+        )}
       </section>
     </div>
   </section>

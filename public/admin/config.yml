@@ -82,3 +82,39 @@ collections:
       - { label: "Foto", name: "photo", widget: "image", media_folder: "/public/images/pengurus", public_folder: "/images/pengurus" }
       - { label: "Urutan", name: "order", widget: "number", default: 1, hint: "Nomor urutan tampilan (1 = paling atas)" }
 
+  - name: "profil"
+    label: "Profil CAAIP"
+    files:
+      - label: "Halaman Profil (Indonesia)"
+        name: "profil_id"
+        file: "src/content/profil/profil-id.json"
+        format: "json"
+        fields:
+          - { label: "Bahasa", name: "lang", widget: "hidden", default: "id" }
+          - { label: "Sejarah - Judul", name: "sejarah_title", widget: "string", default: "Sejarah" }
+          - { label: "Sejarah - Konten", name: "sejarah_content", widget: "markdown" }
+          - { label: "Visi - Judul", name: "visi_title", widget: "string", default: "Visi" }
+          - { label: "Visi - Konten", name: "visi_content", widget: "markdown" }
+          - { label: "Misi - Judul", name: "misi_title", widget: "string", default: "Misi" }
+          - { label: "Misi - Konten", name: "misi_content", widget: "markdown" }
+          - { label: "Struktur Organisasi - Judul", name: "struktur_title", widget: "string", default: "Struktur Organisasi" }
+          - { label: "Struktur Organisasi - Gambar", name: "struktur_image", widget: "image", required: false, media_folder: "/public/images", public_folder: "/images" }
+          - { label: "Struktur Organisasi - Konten", name: "struktur_content", widget: "markdown", required: false }
+
+      - label: "Halaman Profil (English)"
+        name: "profil_en"
+        file: "src/content/profil/profil-en.json"
+        format: "json"
+        fields:
+          - { label: "Language", name: "lang", widget: "hidden", default: "en" }
+          - { label: "History - Title", name: "sejarah_title", widget: "string", default: "History" }
+          - { label: "History - Content", name: "sejarah_content", widget: "markdown" }
+          - { label: "Vision - Title", name: "visi_title", widget: "string", default: "Vision" }
+          - { label: "Vision - Content", name: "visi_content", widget: "markdown" }
+          - { label: "Mission - Title", name: "misi_title", widget: "string", default: "Mission" }
+          - { label: "Mission - Content", name: "misi_content", widget: "markdown" }
+          - { label: "Organizational Structure - Title", name: "struktur_title", widget: "string", default: "Organizational Structure" }
+          - { label: "Organizational Structure - Image", name: "struktur_image", widget: "image", required: false, media_folder: "/public/images", public_folder: "/images" }
+          - { label: "Organizational Structure - Content", name: "struktur_content", widget: "markdown", required: false }
+
+

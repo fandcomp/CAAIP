@@ -1,0 +1,59 @@
+{
+  "$ref": "#/definitions/profil",
+  "definitions": {
+    "profil": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "type": "string",
+          "enum": [
+            "id",
+            "en"
+          ],
+          "default": "id"
+        },
+        "sejarah_title": {
+          "type": "string"
+        },
+        "sejarah_content": {
+          "type": "string"
+        },
+        "visi_title": {
+          "type": "string"
+        },
+        "visi_content": {
+          "type": "string"
+        },
+        "misi_title": {
+          "type": "string"
+        },
+        "misi_content": {
+          "type": "string"
+        },
+        "struktur_title": {
+          "type": "string"
+        },
+        "struktur_image": {
+          "type": "string"
+        },
+        "struktur_content": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "sejarah_title",
+        "sejarah_content",
+        "visi_title",
+        "visi_content",
+        "misi_title",
+        "misi_content",
+        "struktur_title"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
