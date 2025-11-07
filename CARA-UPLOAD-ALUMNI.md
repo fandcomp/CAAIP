@@ -22,7 +22,7 @@ No;Nama;Jurusan
 
 ---
 
-## 🚀 Cara Upload Melalui CMS
+## 🚀 Cara Upload Melalui CMS (BARU - Upload File Langsung!)
 
 ### Langkah 1: Login ke CMS
 1. Buka: https://caaip.netlify.app/admin
@@ -37,97 +37,139 @@ No;Nama;Jurusan
 #### A. **Tahun Angkatan**
 - Isi tahun angkatan, contoh: `2026`, `1991`, `2005`
 
-#### B. **Paste Data CSV Alumni**
-Ada 2 cara:
+#### B. **Upload File CSV** ⭐ FITUR BARU!
+1. Klik area **"Upload File CSV Alumni"**
+2. Pilih file CSV dari komputer Anda
+3. **OTOMATIS** file akan diproses dan ditampilkan di bawahnya
 
-**Cara 1: Copy-Paste dari File CSV**
-1. Buka file CSV Anda (misalnya `2026.csv`)
-2. Copy **SEMUA ISI** file (termasuk header)
-3. Paste di field **"Paste Data CSV Alumni"**
+#### C. **Preview & Edit Data Alumni**
+Setelah upload, Anda akan melihat:
+- ✅ **Total jumlah alumni** yang berhasil di-upload
+- ✅ **Tabel interaktif** dengan semua data alumni
+- ✅ Setiap baris bisa di-**EDIT** langsung (No, Nama, Jurusan)
+- ✅ Tombol **HAPUS** untuk menghapus alumni tertentu
+- ✅ Tombol **+ Tambah Alumni** untuk menambah manual
 
-Contoh isi yang di-paste:
+**Screenshot Preview:**
 ```
-No;Nama;Jurusan
-1;Taufiq;RB
-2;Fandi;RPL
-3;Hasan;Kripto
+┌─────────────────────────────────────────────┐
+│ Upload File CSV Alumni                      │
+│ [Choose File] alumni-2026.csv               │
+├─────────────────────────────────────────────┤
+│ Total: 3 alumni          [+ Tambah Alumni]  │
+├────┬──────────────┬──────────┬──────────────┤
+│ No │ Nama         │ Jurusan  │ Aksi         │
+├────┼──────────────┼──────────┼──────────────┤
+│ 1  │ [Taufiq   ]  │ [RB   ]  │ [Hapus]      │
+│ 2  │ [Fandi    ]  │ [RPL  ]  │ [Hapus]      │
+│ 3  │ [Hasan    ]  │ [Kripto] │ [Hapus]      │
+└────┴──────────────┴──────────┴──────────────┘
 ```
 
-**Cara 2: Ketik Manual** (jika data sedikit)
-- Ketik langsung dengan format yang sama
-- Jangan lupa header di baris pertama
-- Gunakan semicolon (;) sebagai pemisah
+### Langkah 4: Edit Data (Opsional)
+- **Edit**: Klik di field yang ingin diubah, ketik langsung
+- **Hapus**: Klik tombol "Hapus" di kolom Aksi
+- **Tambah**: Klik tombol "+ Tambah Alumni" di atas tabel
 
-#### C. **Data Alumni (List)**
-- Field ini akan **OTOMATIS terisi** saat Anda publish
-- CSV yang Anda paste akan di-parse menjadi list data
-- Anda juga bisa menambah/edit manual jika perlu
-
-### Langkah 4: Simpan & Publish
-1. Klik tombol **"Save"** (draft)
-2. Klik tombol **"Publish"** (publish ke website)
-3. Tunggu beberapa detik untuk build & deploy
-4. Website akan otomatis update dengan data alumni baru
+### Langkah 5: Simpan & Publish
+1. Pastikan semua data sudah benar
+2. Klik tombol **"Save"** (menyimpan draft)
+3. Klik tombol **"Publish"** (publish ke website)
+4. Tunggu beberapa detik untuk build & deploy
+5. Website akan otomatis update dengan data alumni baru!
 
 ---
 
-## 🔄 Cara Kerja Otomatis
+## 🔄 Cara Kerja Otomatis (Behind The Scenes)
 
-Ketika Anda klik **Publish**, sistem akan:
-
-1. ✅ Membaca text CSV yang Anda paste
-2. ✅ Memisahkan per baris (skip baris header)
-3. ✅ Memisahkan per kolom dengan delimiter semicolon (;)
-4. ✅ Membuat object untuk setiap alumni:
-   ```json
-   {
-     "no": "1",
-     "name": "Taufiq",
-     "program": "RB"
-   }
-   ```
-5. ✅ Menyimpan ke field `csvData` sebagai array
-6. ✅ Commit ke GitHub repository
-7. ✅ Trigger Netlify rebuild
-8. ✅ Deploy ke website
+```
+1. User upload file CSV
+         ↓
+2. File dibaca oleh browser (JavaScript FileReader API)
+         ↓
+3. Parsing otomatis:
+   - Baca baris per baris
+   - Skip header (baris 1)
+   - Split dengan delimiter ";"
+   - Trim whitespace
+         ↓
+4. Generate array of objects:
+   [
+     { "no": "1", "name": "Taufiq", "program": "RB" },
+     { "no": "2", "name": "Fandi", "program": "RPL" },
+     ...
+   ]
+         ↓
+5. Tampilkan di tabel editor (editable)
+         ↓
+6. User bisa edit/hapus/tambah
+         ↓
+7. Klik Publish → Save to GitHub → Build → Deploy
+```
 
 ---
 
-## 📝 Tips & Troubleshooting
+## ✨ Fitur-Fitur Widget Upload CSV
+
+| Fitur | Deskripsi |
+|-------|-----------|
+| **Upload Drag & Drop** | Klik area upload atau drag file CSV |
+| **Auto-Parse** | Otomatis parsing CSV dengan delimiter `;` |
+| **Live Preview** | Lihat data langsung setelah upload |
+| **Inline Edit** | Edit No, Nama, Jurusan langsung di tabel |
+| **Delete Row** | Hapus baris yang tidak diperlukan |
+| **Add Row** | Tambah alumni manual setelah upload |
+| **Validation** | Hanya accept file `.csv` |
+| **Error Handling** | Tampilkan error jika ada masalah parsing |
+| **Responsive Table** | Scroll horizontal untuk data banyak |
+
+---
+
+## 📝 Tips & Best Practices
 
 ### ✅ DO (Lakukan):
 - Gunakan semicolon (;) sebagai pemisah
-- Pastikan baris pertama adalah header
-- Gunakan text editor biasa untuk edit CSV (Notepad, VS Code)
-- Hapus spasi berlebih sebelum/sesudah nama
+- Pastikan baris pertama adalah header: `No;Nama;Jurusan`
+- Simpan file dengan encoding UTF-8
+- Hapus baris kosong sebelum upload
+- Cek preview sebelum publish
 
 ### ❌ DON'T (Jangan):
 - Jangan gunakan koma (,) sebagai pemisah
-- Jangan gunakan Excel (bisa mengubah format)
-- Jangan tambahkan kolom ekstra tanpa update header
+- Jangan ada semicolon di dalam nama (contoh: "Budi; S.Kom")
 - Jangan lupa header di baris pertama
+- Jangan upload file Excel (.xlsx) - harus .csv
 
-### Jika Ada Masalah:
+---
 
-**1. Data tidak muncul setelah publish**
-- Cek apakah format CSV sudah benar (semicolon)
-- Cek di browser console untuk error
+## 🆘 Troubleshooting
+
+### 1. **"File harus berformat .csv"**
+**Solusi:** Pastikan file Anda berekstensi `.csv`, bukan `.xlsx` atau `.txt`
+
+### 2. **Data tidak muncul setelah upload**
+**Solusi:** 
+- Cek format CSV (semicolon sebagai pemisah)
+- Buka file CSV dengan Notepad untuk memastikan formatnya benar
+- Pastikan ada minimal 2 baris (header + 1 data)
+
+### 3. **Data terpotong atau salah**
+**Solusi:**
+- Cek tidak ada semicolon di dalam nama/jurusan
+- Pastikan setiap baris punya 3 kolom (No;Nama;Jurusan)
+- Edit manual di tabel preview jika ada yang salah
+
+### 4. **Website tidak update setelah publish**
+**Solusi:**
 - Tunggu 1-2 menit untuk build selesai
-
-**2. Data terpotong/salah**
-- Cek apakah ada semicolon di dalam nama (harus dihapus)
-- Cek jumlah kolom setiap baris sama
-- Hapus baris kosong di tengah CSV
-
-**3. Website tidak update**
-- Buka https://app.netlify.com dan cek status deploy
+- Buka https://app.netlify.com untuk cek status deploy
 - Refresh browser dengan Ctrl+F5 (hard refresh)
-- Clear cache browser
 
 ---
 
 ## 📊 Contoh File CSV Lengkap
 
+**File: alumni-2026.csv**
 ```csv
 No;Nama;Jurusan
 1;Taufiq;RB
@@ -139,30 +181,46 @@ No;Nama;Jurusan
 7;Dewi Lestari;KALK
 8;Eko Prasetyo;TKP
 9;Fatimah Zahra;Teknika
-10;Gunawan;Elektronika
+10;Gunawan Putra;Elektronika
 ```
 
 ---
 
-## 🎯 Hasil Akhir
+## 🎯 Keunggulan Sistem Baru
 
-Setelah publish, data alumni akan tampil di:
-- **Halaman Daftar Alumni**: https://caaip.netlify.app/alumni
-- **Halaman Per Angkatan**: https://caaip.netlify.app/alumni/2026
-
-Dengan fitur:
-- ✅ Search/pencarian nama
-- ✅ Filter jurusan
-- ✅ Pagination (10/25/50/100/All entries)
-- ✅ Responsive (desktop & mobile)
+| Aspek | Sistem Lama | Sistem Baru ✨ |
+|-------|-------------|----------------|
+| **Input Method** | Copy-paste text | Upload file langsung |
+| **Preview** | Tidak ada | Ada (tabel interaktif) |
+| **Edit Data** | Harus edit text | Edit per field di tabel |
+| **Delete Row** | Manual di text | Tombol hapus per row |
+| **Add Row** | Manual ketik | Tombol tambah alumni |
+| **Validation** | Tidak ada | File type validation |
+| **User Experience** | ⭐⭐ | ⭐⭐⭐⭐⭐ |
 
 ---
 
-## 🆘 Butuh Bantuan?
+## 🎬 Demo Step-by-Step
+
+1. **Siapkan file CSV** dengan format benar
+2. **Login** ke https://caaip.netlify.app/admin
+3. **Buat alumni baru**: Klik "New Alumni (Per Angkatan)"
+4. **Isi tahun**: Ketik `2026`
+5. **Upload CSV**: Klik "Choose File" → pilih file → Open
+6. **Lihat preview**: Data otomatis muncul di tabel
+7. **Edit jika perlu**: Klik field yang ingin diubah
+8. **Publish**: Klik Save → Publish
+9. **Cek website**: Buka https://caaip.netlify.app/alumni/2026
+
+**Done!** Data alumni sudah live di website! 🎉
+
+---
+
+## 📞 Butuh Bantuan?
 
 Jika masih ada masalah:
 1. Screenshot error yang muncul
-2. Copy-paste isi CSV yang bermasalah
+2. Share file CSV yang bermasalah
 3. Hubungi admin teknis
 
-Selamat mencoba! 🎉
+Selamat mencoba sistem upload yang lebih mudah! 🚀

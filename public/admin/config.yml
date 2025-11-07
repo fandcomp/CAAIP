@@ -51,20 +51,10 @@ collections:
     slug: "{{year}}"
     fields:
       - { label: "Tahun Angkatan", name: "year", widget: "string", hint: "Contoh: 1991, 2005, 2026" }
-      - label: "Paste Data CSV Alumni"
-        name: "csvText"
-        widget: "text"
-        required: false
-        hint: "Copy-paste isi file CSV di sini. Format: No;Nama;Jurusan (gunakan semicolon/titik koma sebagai pemisah). Contoh:\nNo;Nama;Jurusan\n1;Taufiq;RB\n2;Fandi;RPL"
       - label: "Data Alumni"
         name: "csvData"
-        widget: "list"
+        widget: "csv-upload"
         required: false
-        summary: "{{fields.no}}. {{fields.name}} - {{fields.program}}"
-        fields:
-          - { label: "No", name: "no", widget: "string", required: false }
-          - { label: "Nama", name: "name", widget: "string" }
-          - { label: "Jurusan/Program", name: "program", widget: "string", required: false }
 
   - name: "pengurus"
     label: "Pengurus CAAIP"
