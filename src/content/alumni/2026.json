@@ -1,0 +1,21 @@
+{
+  "year": "2026",
+  "csvText": "No;Nama;Jurusan\n1;Taufiq;RB\n2;Fandi;RPL\n3;Hasan;Kripto",
+  "csvData": [
+    {
+      "no": "1",
+      "name": "Taufiq",
+      "program": "RB"
+    },
+    {
+      "no": "2",
+      "name": "Fandi",
+      "program": "RPL"
+    },
+    {
+      "no": "3",
+      "name": "Hasan",
+      "program": "Kripto"
+    }
+  ]
+}

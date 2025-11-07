@@ -22,5 +22,49 @@
     </script>
     <!-- Load Decap CMS from jsDelivr (pinned) -->
     <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js"></script>
+    
+    <!-- Custom CSV Parser for Alumni Collection -->
+    <script>
+      // Wait for CMS to load
+      CMS.registerEventListener({
+        name: 'prePublish',
+        handler: ({ entry }) => {
+          // Only process alumni collection
+          if (entry.get('collection') === 'alumni') {
+            const csvText = entry.getIn(['data', 'csvText']);
+            
+            // If csvText exists and csvData is empty, parse it
+            if (csvText && csvText.trim()) {
+              const lines = csvText.trim().split('\n');
+              const parsedData = [];
+              
+              // Skip header row (first line)
+              for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line) {
+                  // Split by semicolon and trim each value
+                  const parts = line.split(';').map(p => p.trim());
+                  
+                  if (parts.length >= 2) {
+                    parsedData.push({
+                      no: parts[0] || '',
+                      name: parts[1] || '',
+                      program: parts[2] || ''
+                    });
+                  }
+                }
+              }
+              
+              // Update csvData with parsed data
+              if (parsedData.length > 0) {
+                return entry.setIn(['data', 'csvData'], parsedData);
+              }
+            }
+          }
+          
+          return entry;
+        }
+      });
+    </script>
   </body>
   </html>

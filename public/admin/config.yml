@@ -51,18 +51,16 @@ collections:
     slug: "{{year}}"
     fields:
       - { label: "Tahun Angkatan", name: "year", widget: "string", hint: "Contoh: 1991, 2005, 2026" }
-      - label: "File CSV Alumni"
-        name: "csvFile"
-        widget: "file"
-        hint: "Upload file CSV dengan format: No;Nama;Jurusan (gunakan semicolon sebagai pemisah)"
-        media_folder: "/public/alumni-csv"
-        public_folder: "/alumni-csv"
+      - label: "Paste Data CSV Alumni"
+        name: "csvText"
+        widget: "text"
         required: false
-      - label: "Data Alumni (Auto-generated dari CSV atau input manual)"
+        hint: "Copy-paste isi file CSV di sini. Format: No;Nama;Jurusan (gunakan semicolon/titik koma sebagai pemisah). Contoh:\nNo;Nama;Jurusan\n1;Taufiq;RB\n2;Fandi;RPL"
+      - label: "Data Alumni"
         name: "csvData"
         widget: "list"
         required: false
-        summary: "{{fields.name}} - {{fields.program}}"
+        summary: "{{fields.no}}. {{fields.name}} - {{fields.program}}"
         fields:
           - { label: "No", name: "no", widget: "string", required: false }
           - { label: "Nama", name: "name", widget: "string" }
