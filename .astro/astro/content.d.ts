@@ -184,11 +184,13 @@ declare module 'astro:content' {
 	};
 
 	type DataEntryMap = {
-		"alumni": Record<string, {
-  id: string;
+		"alumni": {
+"1991": {
+	id: "1991";
   collection: "alumni";
-  data: InferEntrySchema<"alumni">;
-}>;
+  data: InferEntrySchema<"alumni">
+};
+};
 "pengurus": {
 "ketua-umum": {
 	id: "ketua-umum";
