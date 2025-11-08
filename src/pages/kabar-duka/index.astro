@@ -2,137 +2,184 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from 'astro:content';
 
-const items = (await getCollection('kabarDuka', ({ data }) => !data.draft))
-  .sort((a, b) => Number(b.data.date) - Number(a.data.date));
----
-<BaseLayout title="Kabar Duka — CAAIP" description="Pengumuman resmi duka cita">
-  <!-- Google Fonts - Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <section class="section container-px mx-auto py-5" style="font-family: 'Inter', sans-serif;">
-    <!-- Header -->
-    <div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
-      <div class="card-body text-white py-4">
-        <h1 class="h3 fw-bold mb-2">
-          <svg width="24" height="24" fill="currentColor" class="d-inline me-2" viewBox="0 0 16 16">
-            <path d="M8 0a.5.5 0 0 1 .5.5v.5H9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-.5v11h1.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5H7V3h-.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 6.5 1H7V.5A.5.5 0 0 1 8 0z"/>
-          </svg>
-          Kabar Duka
-        </h1>
-        <p class="mb-0 opacity-90">Pengumuman resmi duka cita dari sivitas CAAIP</p>
-      </div>
-    </div>
+// Get all kabar duka that are not drafts and in Indonesian
+const allKabarDuka = await getCollection('kabarDuka', ({ data }) => {
+  return !data.draft && data.lang === 'id';
+});
 
-    {items.length === 0 ? (
-      <div class="text-center py-5">
-        <div class="card border-0 shadow-sm" style="max-width: 500px; margin: 0 auto;">
-          <div class="card-body py-5">
-            <svg width="64" height="64" fill="currentColor" class="text-muted mb-3" viewBox="0 0 16 16">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
-            <p class="text-muted mb-0">Tidak ada pengumuman saat ini.</p>
+// Sort by date (newest first)
+const kabarDuka = allKabarDuka.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+<BaseLayout title="Kabar Duka — CAAIP" description="Kabar duka dan ucapan belasungkawa untuk keluarga besar CAAIP" lang="id">
+  <!-- Google Fonts - Inter & Merriweather -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <section class="py-5" style="font-family: 'Inter', sans-serif; background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);">
+    <div class="container-px mx-auto">
+      <!-- Page Header -->
+      <div class="text-center mb-5" style="max-width: 800px; margin: 0 auto;">
+        <div class="d-inline-block px-4 py-2 mb-3 rounded-pill" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: white;">
+          <small class="text-uppercase fw-semibold" style="letter-spacing: 1.5px;">Kabar Duka</small>
+        </div>
+        <h1 class="h2 fw-bold mb-3" style="font-family: 'Merriweather', serif; color: #1a1a1a;">
+          Turut Berduka Cita
+        </h1>
+        <p class="lead text-muted" style="font-size: 1.05rem;">
+          Mengenang dan menghormati mereka yang telah berpulang ke rahmatullah
+        </p>
+      </div>
+
+      {kabarDuka.length === 0 ? (
+        <div class="text-center py-5">
+          <div class="card border-0 shadow-sm" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-body p-5">
+              <svg class="mb-3" width="64" height="64" fill="#6c757d" viewBox="0 0 16 16">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <p class="text-muted mb-0">Belum ada kabar duka</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div class="row g-4">
+          {kabarDuka.map((item) => (
+            <div class="col-12 col-md-6 col-lg-4">
+              <a href={`/kabar-duka/${item.slug}`} class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden kabar-card" style="transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                  <!-- Image Hero (if exists) -->
+                  {item.data.image ? (
+                    <div class="position-relative" style="height: 250px; overflow: hidden; background: #1a1a1a;">
+                      <img 
+                        src={item.data.image} 
+                        alt={item.data.imageAlt || `Foto ${item.data.name}`}
+                        class="w-100 h-100"
+                        style="object-fit: cover; object-position: center; filter: brightness(0.9);"
+                      />
+                      <!-- Gradient Overlay -->
+                      <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%);"></div>
+                      
+                      <!-- Date Badge on Image -->
+                      <div class="position-absolute" style="top: 16px; right: 16px;">
+                        <div class="bg-white px-3 py-2 rounded shadow-sm">
+                          <div class="fw-bold" style="font-size: 1.25rem; line-height: 1; color: #1a1a1a;">
+                            {new Date(item.data.date).getDate()}
+                          </div>
+                          <div class="text-uppercase small text-muted" style="font-size: 0.7rem; line-height: 1;">
+                            {new Date(item.data.date).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <!-- No Image - Show Default Header -->
+                    <div class="position-relative" style="height: 180px; background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);">
+                      <div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                        <svg width="64" height="64" fill="rgba(255,255,255,0.2)" viewBox="0 0 16 16">
+                          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
+                      </div>
+                      <!-- Date Badge -->
+                      <div class="position-absolute" style="top: 16px; right: 16px;">
+                        <div class="bg-white px-3 py-2 rounded shadow-sm">
+                          <div class="fw-bold" style="font-size: 1.25rem; line-height: 1; color: #1a1a1a;">
+                            {new Date(item.data.date).getDate()}
+                          </div>
+                          <div class="text-uppercase small text-muted" style="font-size: 0.7rem; line-height: 1;">
+                            {new Date(item.data.date).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <!-- Card Content -->
+                  <div class="card-body p-4">
+                    <!-- Name -->
+                    <h3 class="h5 fw-bold mb-2" style="font-family: 'Merriweather', serif; color: #1a1a1a; line-height: 1.4;">
+                      {item.data.name}
+                    </h3>
+                    
+                    <!-- Relation -->
+                    {item.data.relation && (
+                      <p class="text-muted small mb-3" style="font-size: 0.9rem;">
+                        {item.data.relation}
+                      </p>
+                    )}
+
+                    <!-- Message Preview -->
+                    {item.data.message && (
+                      <p class="text-secondary mb-3" style="font-size: 0.95rem; line-height: 1.6;">
+                        {item.data.message.length > 120 
+                          ? item.data.message.substring(0, 120) + '...' 
+                          : item.data.message}
+                      </p>
+                    )}
+
+                    <!-- Read More Link -->
+                    <div class="d-flex align-items-center gap-2 text-dark fw-semibold" style="font-size: 0.9rem;">
+                      <span>Baca selengkapnya</span>
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="arrow-icon" style="transition: transform 0.2s;">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Bottom Accent -->
+                  <div style="height: 4px; background: linear-gradient(to right, #1a1a1a 0%, #6c757d 50%, #1a1a1a 100%);"></div>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- Info Box -->
+      <div class="mt-5">
+        <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); color: white;">
+          <div class="card-body p-4 p-md-5">
+            <div class="row align-items-center g-4">
+              <div class="col-auto">
+                <svg width="56" height="56" fill="currentColor" viewBox="0 0 16 16" style="opacity: 0.9;">
+                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+              </div>
+              <div class="col">
+                <h3 class="h5 fw-bold mb-2">Dukungan dan Belasungkawa</h3>
+                <p class="mb-0" style="opacity: 0.9; line-height: 1.7;">
+                  Jika Anda memiliki informasi tentang anggota CAAIP yang telah berpulang atau ingin berbagi kenangan, 
+                  silakan hubungi pengurus. Semoga amal ibadahnya diterima di sisi Allah SWT.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    ) : (
-      <div class="row g-4">
-        {items.map((i) => (
-          <div class="col-12">
-            <a href={`/kabar-duka/${i.slug}`} class="text-decoration-none">
-              <div class="card border-0 shadow-sm h-100 overflow-hidden position-relative" style="transition: all 0.3s ease;">
-                <!-- Left Accent Bar -->
-                <div class="position-absolute" style="left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #6c757d 0%, #343a40 100%);"></div>
-                
-                <div class="card-body p-4 ps-5">
-                  <div class="row align-items-center">
-                    <!-- Date Badge -->
-                    <div class="col-auto d-none d-md-block">
-                      <div class="text-center p-3 rounded" style="background: #f8f9fa; min-width: 80px;">
-                        <div class="fw-bold text-dark" style="font-size: 1.5rem; line-height: 1;">
-                          {new Date(i.data.date).getDate()}
-                        </div>
-                        <div class="text-muted small text-uppercase" style="font-size: 0.75rem;">
-                          {new Date(i.data.date).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="col">
-                      <!-- Mobile Date -->
-                      <div class="d-md-none mb-2">
-                        <span class="badge bg-secondary">
-                          <svg width="12" height="12" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                          </svg>
-                          {new Date(i.data.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                        </span>
-                      </div>
-
-                      <!-- Name -->
-                      <h3 class="h5 fw-bold text-dark mb-2">
-                        {i.data.name}
-                      </h3>
-
-                      <!-- Relation -->
-                      {i.data.relation && (
-                        <p class="text-muted mb-2" style="font-size: 0.95rem;">
-                          {i.data.relation}
-                        </p>
-                      )}
-
-                      <!-- Message Preview -->
-                      {i.data.message && (
-                        <p class="text-secondary mb-0" style="font-size: 0.9rem; line-height: 1.6;">
-                          {i.data.message.length > 150 
-                            ? i.data.message.substring(0, 150) + '...' 
-                            : i.data.message}
-                        </p>
-                      )}
-
-                      <!-- Read More -->
-                      <div class="mt-3">
-                        <span class="text-primary small fw-semibold">
-                          Baca selengkapnya
-                          <svg width="14" height="14" fill="currentColor" class="ms-1" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-
-                    <!-- Image Thumbnail (if exists) -->
-                    {i.data.image && (
-                      <div class="col-auto d-none d-lg-block">
-                        <div class="rounded overflow-hidden" style="width: 120px; height: 120px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                          <img 
-                            src={i.data.image} 
-                            alt={i.data.imageAlt || i.data.name}
-                            class="w-100 h-100"
-                            style="object-fit: cover;"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        ))}
-      </div>
-    )}
+    </div>
   </section>
 
   <style>
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    .kabar-card {
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .kabar-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15) !important;
     }
 
-    a:hover .text-primary {
-      text-decoration: underline;
+    .kabar-card:hover .arrow-icon {
+      transform: translateX(4px);
+    }
+
+    .kabar-card img {
+      transition: transform 0.4s ease;
+    }
+
+    .kabar-card:hover img {
+      transform: scale(1.05);
     }
   </style>
 </BaseLayout>

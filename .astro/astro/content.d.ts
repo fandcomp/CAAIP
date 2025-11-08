@@ -172,14 +172,15 @@ declare module 'astro:content' {
   data: any
 } & { render(): Render[".md"] };
 };
-"kabarDuka": Record<string, {
-  id: string;
-  slug: string;
+"kabarDuka": {
+"2025-11-08-map-lang-id-draft-false-name-haannan-date-2025-11-08t19-51-00-000-07-00-relation-hi-message-innnalillahi.md": {
+	id: "2025-11-08-map-lang-id-draft-false-name-haannan-date-2025-11-08t19-51-00-000-07-00-relation-hi-message-innnalillahi.md";
+  slug: "2025-11-08-map-lang-id-draft-false-name-haannan-date-2025-11-08t19-51-00-000-07-00-relation-hi-message-innnalillahi";
   body: string;
   collection: "kabarDuka";
-  data: InferEntrySchema<"kabarDuka">;
-  render(): Render[".md"];
-}>;
+  data: InferEntrySchema<"kabarDuka">
+} & { render(): Render[".md"] };
+};
 
 	};
 

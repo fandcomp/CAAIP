@@ -37,8 +37,11 @@ collections:
     fields:
       - { label: "Nama", name: "name", widget: "string" }
       - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Foto/Gambar Ucapan", name: "image", widget: "image", required: false, hint: "Upload foto almarhum/almarhumah atau gambar ucapan duka cita" }
+      - { label: "Alt Text Gambar", name: "imageAlt", widget: "string", required: false, hint: "Deskripsi gambar untuk accessibility" }
       - { label: "Keterangan", name: "relation", widget: "string", required: false }
       - { label: "Pesan", name: "message", widget: "text", required: false }
+      - { label: "Konten Tambahan", name: "body", widget: "markdown", required: false, hint: "Konten tambahan dalam format Markdown (opsional)" }
       - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
       - { label: "Draft", name: "draft", widget: "boolean", default: false }
 

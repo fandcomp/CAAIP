@@ -2,7 +2,7 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from 'astro:content';
 
-// Get all kabar duka (obituaries) that are not drafts and in English
+// Get all kabar duka that are not drafts and in English
 const allKabarDuka = await getCollection('kabarDuka', ({ data }) => {
   return !data.draft && data.lang === 'en';
 });
@@ -12,130 +12,146 @@ const kabarDuka = allKabarDuka.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 ---
-<BaseLayout title="In Memoriam — CAAIP" description="Tributes and condolences for CAAIP members" lang="en">
+<BaseLayout title="In Memoriam — CAAIP" description="Condolences and tributes for CAAIP family" lang="en">
   <!-- Google Fonts - Inter & Merriweather -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
   
-  <section class="container-px mx-auto py-5" style="font-family: 'Inter', sans-serif;">
-    <!-- Page Header -->
-    <div class="text-center mb-5" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 3rem 2rem; border-radius: 1rem; color: white;">
-      <!-- Candle Icon -->
-      <div class="mb-3">
-        <svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16" style="opacity: 0.9;">
-          <path d="M8 0a.5.5 0 0 1 .5.5v.5H9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-.5v11h1.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5H7V3h-.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 6.5 1H7V.5A.5.5 0 0 1 8 0z"/>
-        </svg>
+  <section class="py-5" style="font-family: 'Inter', sans-serif; background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);">
+    <div class="container-px mx-auto">
+      <!-- Page Header -->
+      <div class="text-center mb-5" style="max-width: 800px; margin: 0 auto;">
+        <div class="d-inline-block px-4 py-2 mb-3 rounded-pill" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: white;">
+          <small class="text-uppercase fw-semibold" style="letter-spacing: 1.5px;">In Memoriam</small>
+        </div>
+        <h1 class="h2 fw-bold mb-3" style="font-family: 'Merriweather', serif; color: #1a1a1a;">
+          In Loving Memory
+        </h1>
+        <p class="lead text-muted" style="font-size: 1.05rem;">
+          Honoring the lives and contributions of our beloved members who have passed away
+        </p>
       </div>
-      <h1 class="h2 fw-bold mb-3" style="font-family: 'Merriweather', serif; letter-spacing: -0.5px;">
-        In Memoriam
-      </h1>
-      <p class="lead mb-0" style="max-width: 600px; margin: 0 auto; opacity: 0.9;">
-        Honoring the lives and contributions of our beloved members who have passed away
-      </p>
-    </div>
 
-    {kabarDuka.length === 0 ? (
-      <div class="text-center py-5">
-        <div class="card border-0 shadow-sm" style="max-width: 600px; margin: 0 auto;">
-          <div class="card-body p-5">
-            <svg class="mb-3" width="64" height="64" fill="#6c757d" viewBox="0 0 16 16">
-              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
-            <p class="text-muted mb-0">No announcements available yet</p>
+      {kabarDuka.length === 0 ? (
+        <div class="text-center py-5">
+          <div class="card border-0 shadow-sm" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-body p-5">
+              <svg class="mb-3" width="64" height="64" fill="#6c757d" viewBox="0 0 16 16">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <p class="text-muted mb-0">No announcements available yet</p>
+            </div>
           </div>
         </div>
-      </div>
-    ) : (
-      <div class="row g-4">
-        {kabarDuka.map((item) => (
-          <div class="col-12 col-md-6 col-lg-4">
-            <a href={`/en/kabar-duka/${item.slug}`} class="text-decoration-none">
-              <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden kabar-card" style="transition: all 0.3s ease;">
-                <!-- Left Accent Bar -->
-                <div class="position-absolute" style="top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, #6c757d 0%, #343a40 100%);"></div>
-                
-                <div class="card-body p-4" style="padding-left: 1.5rem !important;">
-                  <!-- Date Badge - Desktop: Large Box -->
-                  <div class="d-none d-md-flex flex-column align-items-center justify-content-center bg-dark text-white rounded mb-3" style="width: 70px; height: 70px; flex-shrink: 0;">
-                    <div class="fw-bold" style="font-size: 1.5rem; line-height: 1;">{new Date(item.data.date).getDate()}</div>
-                    <div class="text-uppercase small" style="font-size: 0.7rem; opacity: 0.8;">
-                      {new Date(item.data.date).toLocaleDateString('en-US', { month: 'short' })}
-                    </div>
-                  </div>
-                  
-                  <!-- Date Badge - Mobile: Compact -->
-                  <div class="d-md-none mb-3">
-                    <span class="badge bg-dark px-3 py-2">
-                      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" class="me-1">
-                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                      </svg>
-                      {new Date(item.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-
-                  <!-- Name -->
-                  <h3 class="h5 fw-bold text-dark mb-2" style="font-family: 'Merriweather', serif;">
-                    {item.data.name}
-                  </h3>
-                  
-                  <!-- Relation -->
-                  {item.data.relation && (
-                    <p class="text-muted small mb-3">
-                      {item.data.relation}
-                    </p>
-                  )}
-
-                  <!-- Image Thumbnail (if exists) -->
-                  {item.data.image && (
-                    <div class="mb-3">
+      ) : (
+        <div class="row g-4">
+          {kabarDuka.map((item) => (
+            <div class="col-12 col-md-6 col-lg-4">
+              <a href={`/en/kabar-duka/${item.slug}`} class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden kabar-card" style="transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                  <!-- Image Hero (if exists) -->
+                  {item.data.image ? (
+                    <div class="position-relative" style="height: 250px; overflow: hidden; background: #1a1a1a;">
                       <img 
                         src={item.data.image} 
-                        alt={item.data.imageAlt || `In memoriam of ${item.data.name}`}
-                        class="img-fluid rounded"
-                        style="width: 120px; height: 120px; object-fit: cover; border: 2px solid #e9ecef;"
+                        alt={item.data.imageAlt || `Photo of ${item.data.name}`}
+                        class="w-100 h-100"
+                        style="object-fit: cover; object-position: center; filter: brightness(0.9);"
                       />
+                      <!-- Gradient Overlay -->
+                      <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%);"></div>
+                      
+                      <!-- Date Badge on Image -->
+                      <div class="position-absolute" style="top: 16px; right: 16px;">
+                        <div class="bg-white px-3 py-2 rounded shadow-sm">
+                          <div class="fw-bold" style="font-size: 1.25rem; line-height: 1; color: #1a1a1a;">
+                            {new Date(item.data.date).getDate()}
+                          </div>
+                          <div class="text-uppercase small text-muted" style="font-size: 0.7rem; line-height: 1;">
+                            {new Date(item.data.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <!-- No Image - Show Default Header -->
+                    <div class="position-relative" style="height: 180px; background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);">
+                      <div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                        <svg width="64" height="64" fill="rgba(255,255,255,0.2)" viewBox="0 0 16 16">
+                          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
+                      </div>
+                      <!-- Date Badge -->
+                      <div class="position-absolute" style="top: 16px; right: 16px;">
+                        <div class="bg-white px-3 py-2 rounded shadow-sm">
+                          <div class="fw-bold" style="font-size: 1.25rem; line-height: 1; color: #1a1a1a;">
+                            {new Date(item.data.date).getDate()}
+                          </div>
+                          <div class="text-uppercase small text-muted" style="font-size: 0.7rem; line-height: 1;">
+                            {new Date(item.data.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )}
+                  
+                  <!-- Card Content -->
+                  <div class="card-body p-4">
+                    <!-- Name -->
+                    <h3 class="h5 fw-bold mb-2" style="font-family: 'Merriweather', serif; color: #1a1a1a; line-height: 1.4;">
+                      {item.data.name}
+                    </h3>
+                    
+                    <!-- Relation -->
+                    {item.data.relation && (
+                      <p class="text-muted small mb-3" style="font-size: 0.9rem;">
+                        {item.data.relation}
+                      </p>
+                    )}
 
-                  <!-- Message Preview -->
-                  {item.data.message && (
-                    <p class="text-secondary mb-3" style="font-size: 0.95rem; line-height: 1.6;">
-                      {item.data.message.length > 150 
-                        ? item.data.message.substring(0, 150) + '...' 
-                        : item.data.message}
-                    </p>
-                  )}
+                    <!-- Message Preview -->
+                    {item.data.message && (
+                      <p class="text-secondary mb-3" style="font-size: 0.95rem; line-height: 1.6;">
+                        {item.data.message.length > 120 
+                          ? item.data.message.substring(0, 120) + '...' 
+                          : item.data.message}
+                      </p>
+                    )}
 
-                  <!-- Read More Link -->
-                  <div class="d-flex align-items-center gap-2 text-primary fw-semibold" style="font-size: 0.9rem;">
-                    <span>Read more</span>
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                    </svg>
+                    <!-- Read More Link -->
+                    <div class="d-flex align-items-center gap-2 text-dark fw-semibold" style="font-size: 0.9rem;">
+                      <span>Read more</span>
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="arrow-icon" style="transition: transform 0.2s;">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                      </svg>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        ))}
-      </div>
-    )}
 
-    <!-- Info Box -->
-    <div class="mt-5">
-      <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); color: white;">
-        <div class="card-body p-4 p-md-5">
-          <div class="d-flex flex-column flex-md-row align-items-start gap-3 gap-md-4">
-            <div class="flex-shrink-0">
-              <svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-              </svg>
+                  <!-- Bottom Accent -->
+                  <div style="height: 4px; background: linear-gradient(to right, #1a1a1a 0%, #6c757d 50%, #1a1a1a 100%);"></div>
+                </div>
+              </a>
             </div>
-            <div>
-              <h3 class="h5 fw-bold mb-2">Support and Condolences</h3>
-              <p class="mb-0" style="opacity: 0.9; line-height: 1.7;">
-                If you have information about the passing of a CAAIP member or would like to share memories, 
-                please contact the administration. May they rest in eternal peace.
-              </p>
+          ))}
+        </div>
+      )}
+
+      <!-- Info Box -->
+      <div class="mt-5">
+        <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); color: white;">
+          <div class="card-body p-4 p-md-5">
+            <div class="row align-items-center g-4">
+              <div class="col-auto">
+                <svg width="56" height="56" fill="currentColor" viewBox="0 0 16 16" style="opacity: 0.9;">
+                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+              </div>
+              <div class="col">
+                <h3 class="h5 fw-bold mb-2">Support and Condolences</h3>
+                <p class="mb-0" style="opacity: 0.9; line-height: 1.7;">
+                  If you have information about a CAAIP member who has passed away or would like to share memories, 
+                  please contact the administration. May they rest in eternal peace.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -146,11 +162,24 @@ const kabarDuka = allKabarDuka.sort((a, b) =>
   <style>
     .kabar-card {
       cursor: pointer;
+      position: relative;
     }
     
     .kabar-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15) !important;
+    }
+
+    .kabar-card:hover .arrow-icon {
+      transform: translateX(4px);
+    }
+
+    .kabar-card img {
+      transition: transform 0.4s ease;
+    }
+
+    .kabar-card:hover img {
+      transform: scale(1.05);
     }
   </style>
 </BaseLayout>
