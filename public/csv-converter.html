@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV to JSON Converter - CAAIP Alumni</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .upload-section {
+            text-align: center;
+            padding: 40px 20px;
+            border: 3px dashed #667eea;
+            border-radius: 8px;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+        }
+
+        .upload-section.dragover {
+            border-color: #764ba2;
+            background: #e8ebff;
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #48bb78;
+        }
+
+        .btn-secondary:hover {
+            background: #38a169;
+        }
+
+        .btn-danger {
+            background: #f56565;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+
+        .info-box {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box h3 {
+            color: #234e52;
+            margin-bottom: 8px;
+        }
+
+        .info-box code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .error-box {
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .error-box.show {
+            display: block;
+        }
+
+        .success-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success-box.show {
+            display: block;
+        }
+
+        .table-container {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .table-container.show {
+            display: block;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .table-header h2 {
+            color: #2d3748;
+        }
+
+        .count-badge {
+            background: #667eea;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        tbody tr:nth-child(even):hover {
+            background: #f0f0f0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #3182ce;
+        }
+
+        .btn-delete {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #e53e3e;
+        }
+
+        .json-output {
+            background: #1a202c;
+            color: #68d391;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .copy-notification.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 CSV to JSON Converter</h1>
+            <p>Upload file CSV alumni dan convert ke format JSON untuk CMS</p>
+        </div>
+
+        <div class="card">
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-icon">📁</div>
+                <h2>Klik untuk upload file CSV atau drag & drop di sini</h2>
+                <p style="margin: 15px 0; color: #718096;">Format file: <code>No;Nama;Jurusan</code></p>
+                <button class="btn" onclick="document.getElementById('fileInput').click()">
+                    Pilih File CSV
+                </button>
+                <input type="file" id="fileInput" accept=".csv" />
+            </div>
+
+            <div class="info-box">
+                <h3>📋 Format CSV yang benar:</h3>
+                <p style="margin-top: 8px;">Baris pertama harus header, gunakan <code>;</code> (semicolon) sebagai pemisah</p>
+                <pre style="margin-top: 10px; background: white; padding: 10px; border-radius: 4px;">No;Nama;Jurusan
+1;Taufiq;RB
+2;Fandi;RPL
+3;Hasan;Kripto</pre>
+            </div>
+
+            <div class="error-box" id="errorBox"></div>
+            <div class="success-box" id="successBox"></div>
+        </div>
+
+        <div class="table-container" id="tableContainer">
+            <div class="card">
+                <div class="table-header">
+                    <h2>Data Alumni</h2>
+                    <div class="count-badge" id="countBadge">0 alumni</div>
+                </div>
+
+                <div class="stats" id="stats" style="display: none;">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCount">0</div>
+                        <div class="stat-label">Total Alumni</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="programCount">0</div>
+                        <div class="stat-label">Jurusan</div>
+                    </div>
+                </div>
+
+                <div style="margin: 15px 0;">
+                    <button class="btn btn-secondary" onclick="addRow()">➕ Tambah Alumni</button>
+                    <button class="btn" onclick="generateJSON()">🔄 Generate JSON</button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">No</th>
+                                <th>Nama</th>
+                                <th style="width: 200px;">Jurusan</th>
+                                <th style="width: 150px; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card" id="jsonCard" style="display: none;">
+                <h2 style="margin-bottom: 15px;">📄 JSON Output</h2>
+                <p style="color: #718096; margin-bottom: 15px;">
+                    Copy JSON di bawah ini dan paste di CMS field "Data Alumni"
+                </p>
+                <div class="json-output" id="jsonOutput"></div>
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-secondary" onclick="copyJSON()">📋 Copy JSON</button>
+                    <button class="btn" onclick="downloadJSON()">💾 Download JSON</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">
+        ✅ JSON berhasil di-copy ke clipboard!
+    </div>
+
+    <script>
+        let alumniData = [];
+
+        // Upload section event listeners
+        const uploadSection = document.getElementById('uploadSection');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadSection.addEventListener('click', (e) => {
+            if (e.target !== fileInput) {
+                fileInput.click();
+            }
+        });
+
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        });
+
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.classList.remove('dragover');
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            const errorBox = document.getElementById('errorBox');
+            const successBox = document.getElementById('successBox');
+            
+            // Reset messages
+            errorBox.classList.remove('show');
+            successBox.classList.remove('show');
+
+            // Validate file type
+            if (!file.name.endsWith('.csv')) {
+                showError('File harus berformat .csv');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    parseCSV(content);
+                    showSuccess(`File "${file.name}" berhasil diupload dan diproses!`);
+                } catch (error) {
+                    showError('Gagal memproses file: ' + error.message);
+                }
+            };
+            reader.onerror = function() {
+                showError('Gagal membaca file');
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSV(content) {
+            const lines = content.split('\n').map(line => line.trim()).filter(line => line);
+            
+            if (lines.length < 2) {
+                throw new Error('File CSV harus memiliki minimal 2 baris (header + 1 data)');
+            }
+
+            alumniData = [];
+            
+            // Skip header (line 0), process from line 1
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i];
+                const parts = line.split(';').map(p => p.trim());
+                
+                if (parts.length >= 2) {
+                    alumniData.push({
+                        no: parts[0] || String(i),
+                        name: parts[1] || '',
+                        program: parts[2] || ''
+                    });
+                }
+            }
+
+            renderTable();
+            updateStats();
+            document.getElementById('tableContainer').classList.add('show');
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            alumniData.forEach((alumni, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <input type="text" value="${alumni.no}" onchange="updateData(${index}, 'no', this.value)" />
+                    </td>
+                    <td>
+                        <input type="text" value="${alumni.name}" onchange="updateData(${index}, 'name', this.value)" />
+                    </td>
+                    <td>
+                        <input type="text" value="${alumni.program}" onchange="updateData(${index}, 'program', this.value)" />
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="action-btns">
+                            <button class="btn-small btn-delete" onclick="deleteRow(${index})">🗑️ Hapus</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updateStats();
+        }
+
+        function updateData(index, field, value) {
+            alumniData[index][field] = value;
+            updateStats();
+        }
+
+        function deleteRow(index) {
+            if (confirm('Yakin ingin menghapus data ini?')) {
+                alumniData.splice(index, 1);
+                renderTable();
+                showSuccess('Data berhasil dihapus');
+            }
+        }
+
+        function addRow() {
+            alumniData.push({
+                no: String(alumniData.length + 1),
+                name: '',
+                program: ''
+            });
+            renderTable();
+        }
+
+        function updateStats() {
+            const totalCount = alumniData.length;
+            const programs = [...new Set(alumniData.map(a => a.program).filter(p => p))];
+            
+            document.getElementById('countBadge').textContent = `${totalCount} alumni`;
+            document.getElementById('totalCount').textContent = totalCount;
+            document.getElementById('programCount').textContent = programs.length;
+            document.getElementById('stats').style.display = totalCount > 0 ? 'grid' : 'none';
+        }
+
+        function generateJSON() {
+            if (alumniData.length === 0) {
+                showError('Tidak ada data untuk di-generate');
+                return;
+            }
+
+            const jsonOutput = document.getElementById('jsonOutput');
+            const jsonCard = document.getElementById('jsonCard');
+            
+            const formattedJSON = JSON.stringify(alumniData, null, 2);
+            jsonOutput.textContent = formattedJSON;
+            jsonCard.style.display = 'block';
+            
+            // Scroll to JSON output
+            jsonCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function copyJSON() {
+            const jsonText = document.getElementById('jsonOutput').textContent;
+            
+            navigator.clipboard.writeText(jsonText).then(() => {
+                showCopyNotification();
+            }).catch(err => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = jsonText;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showCopyNotification();
+            });
+        }
+
+        function downloadJSON() {
+            const jsonText = document.getElementById('jsonOutput').textContent;
+            const blob = new Blob([jsonText], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'alumni-data.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showSuccess('JSON file berhasil didownload!');
+        }
+
+        function showError(message) {
+            const errorBox = document.getElementById('errorBox');
+            errorBox.textContent = '❌ ' + message;
+            errorBox.classList.add('show');
+            setTimeout(() => errorBox.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(message) {
+            const successBox = document.getElementById('successBox');
+            successBox.textContent = '✅ ' + message;
+            successBox.classList.add('show');
+            setTimeout(() => successBox.classList.remove('show'), 5000);
+        }
+
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>

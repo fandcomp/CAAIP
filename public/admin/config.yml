@@ -53,8 +53,13 @@ collections:
       - { label: "Tahun Angkatan", name: "year", widget: "string", hint: "Contoh: 1991, 2005, 2026" }
       - label: "Data Alumni"
         name: "csvData"
-        widget: "csv-upload"
+        widget: "list"
         required: false
+        summary: "{{fields.no}}. {{fields.name}} - {{fields.program}}"
+        fields:
+          - { label: "No", name: "no", widget: "string", required: false }
+          - { label: "Nama", name: "name", widget: "string" }
+          - { label: "Jurusan/Program", name: "program", widget: "string", required: false }
 
   - name: "pengurus"
     label: "Pengurus CAAIP"
