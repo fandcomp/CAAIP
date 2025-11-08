@@ -1,11 +1,6 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from 'astro:content';
-import ArticleCard from "~/components/ArticleCard.astro";
-import Pagination from "~/components/Pagination.astro";
-import { useTranslations } from "~/i18n/utils";
-
-const t = useTranslations('en');
 
 // Get all kabar duka (obituaries) that are not drafts and in English
 const allKabarDuka = await getCollection('kabarDuka', ({ data }) => {
@@ -16,86 +11,146 @@ const allKabarDuka = await getCollection('kabarDuka', ({ data }) => {
 const kabarDuka = allKabarDuka.sort((a, b) => 
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
-
-// Pagination
-const ITEMS_PER_PAGE = 9;
-const currentPage = 1;
-const totalPages = Math.ceil(kabarDuka.length / ITEMS_PER_PAGE);
-const paginatedKabarDuka = kabarDuka.slice(
-  (currentPage - 1) * ITEMS_PER_PAGE,
-  currentPage * ITEMS_PER_PAGE
-);
 ---
-<BaseLayout title="In Memoriam — CAAIP" description="Tributes and obituaries for CAAIP members" lang="en">
-  <div class="container-px mx-auto py-16">
+<BaseLayout title="In Memoriam — CAAIP" description="Tributes and condolences for CAAIP members" lang="en">
+  <!-- Google Fonts - Inter & Merriweather -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <section class="container-px mx-auto py-5" style="font-family: 'Inter', sans-serif;">
     <!-- Page Header -->
-    <div class="max-w-4xl mx-auto text-center mb-12">
-      <div class="inline-flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-full mb-4">
-        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.53 2.53 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path>
+    <div class="text-center mb-5" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 3rem 2rem; border-radius: 1rem; color: white;">
+      <!-- Candle Icon -->
+      <div class="mb-3">
+        <svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16" style="opacity: 0.9;">
+          <path d="M8 0a.5.5 0 0 1 .5.5v.5H9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-.5v11h1.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5H7V3h-.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 6.5 1H7V.5A.5.5 0 0 1 8 0z"/>
         </svg>
-        <span class="text-slate-600 font-medium">In Memoriam</span>
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-        In Loving Memory
+      <h1 class="h2 fw-bold mb-3" style="font-family: 'Merriweather', serif; letter-spacing: -0.5px;">
+        In Memoriam
       </h1>
-      <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+      <p class="lead mb-0" style="max-width: 600px; margin: 0 auto; opacity: 0.9;">
         Honoring the lives and contributions of our beloved members who have passed away
       </p>
     </div>
 
     {kabarDuka.length === 0 ? (
-      <div class="max-w-2xl mx-auto">
-        <div class="bg-slate-50 border border-slate-200 rounded-lg p-12 text-center">
-          <svg class="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          <p class="text-slate-600 text-lg">No obituaries available yet</p>
+      <div class="text-center py-5">
+        <div class="card border-0 shadow-sm" style="max-width: 600px; margin: 0 auto;">
+          <div class="card-body p-5">
+            <svg class="mb-3" width="64" height="64" fill="#6c757d" viewBox="0 0 16 16">
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <p class="text-muted mb-0">No announcements available yet</p>
+          </div>
         </div>
       </div>
     ) : (
-      <>
-        <!-- Articles Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {paginatedKabarDuka.map((item) => (
-            <ArticleCard
-              title={item.data.title}
-              excerpt={item.data.excerpt}
-              date={item.data.date}
-              author={item.data.author}
-              slug={`/en/kabar-duka/${item.slug}`}
-              cover={item.data.cover}
-            />
-          ))}
-        </div>
+      <div class="row g-4">
+        {kabarDuka.map((item) => (
+          <div class="col-12 col-md-6 col-lg-4">
+            <a href={`/en/kabar-duka/${item.slug}`} class="text-decoration-none">
+              <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden kabar-card" style="transition: all 0.3s ease;">
+                <!-- Left Accent Bar -->
+                <div class="position-absolute" style="top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, #6c757d 0%, #343a40 100%);"></div>
+                
+                <div class="card-body p-4" style="padding-left: 1.5rem !important;">
+                  <!-- Date Badge - Desktop: Large Box -->
+                  <div class="d-none d-md-flex flex-column align-items-center justify-content-center bg-dark text-white rounded mb-3" style="width: 70px; height: 70px; flex-shrink: 0;">
+                    <div class="fw-bold" style="font-size: 1.5rem; line-height: 1;">{new Date(item.data.date).getDate()}</div>
+                    <div class="text-uppercase small" style="font-size: 0.7rem; opacity: 0.8;">
+                      {new Date(item.data.date).toLocaleDateString('en-US', { month: 'short' })}
+                    </div>
+                  </div>
+                  
+                  <!-- Date Badge - Mobile: Compact -->
+                  <div class="d-md-none mb-3">
+                    <span class="badge bg-dark px-3 py-2">
+                      <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" class="me-1">
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                      </svg>
+                      {new Date(item.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
 
-        <!-- Pagination -->
-        {totalPages > 1 && (
-          <Pagination 
-            currentPage={currentPage} 
-            totalPages={totalPages}
-            basePath="/en/kabar-duka"
-          />
-        )}
-      </>
+                  <!-- Name -->
+                  <h3 class="h5 fw-bold text-dark mb-2" style="font-family: 'Merriweather', serif;">
+                    {item.data.name}
+                  </h3>
+                  
+                  <!-- Relation -->
+                  {item.data.relation && (
+                    <p class="text-muted small mb-3">
+                      {item.data.relation}
+                    </p>
+                  )}
+
+                  <!-- Image Thumbnail (if exists) -->
+                  {item.data.image && (
+                    <div class="mb-3">
+                      <img 
+                        src={item.data.image} 
+                        alt={item.data.imageAlt || `In memoriam of ${item.data.name}`}
+                        class="img-fluid rounded"
+                        style="width: 120px; height: 120px; object-fit: cover; border: 2px solid #e9ecef;"
+                      />
+                    </div>
+                  )}
+
+                  <!-- Message Preview -->
+                  {item.data.message && (
+                    <p class="text-secondary mb-3" style="font-size: 0.95rem; line-height: 1.6;">
+                      {item.data.message.length > 150 
+                        ? item.data.message.substring(0, 150) + '...' 
+                        : item.data.message}
+                    </p>
+                  )}
+
+                  <!-- Read More Link -->
+                  <div class="d-flex align-items-center gap-2 text-primary fw-semibold" style="font-size: 0.9rem;">
+                    <span>Read more</span>
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        ))}
+      </div>
     )}
 
     <!-- Info Box -->
-    <div class="mt-12 max-w-4xl mx-auto bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg shadow-lg p-8 text-white">
-      <div class="flex items-start gap-4">
-        <div class="flex-shrink-0">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-2">Support and Condolences</h3>
-          <p class="text-slate-300 leading-relaxed">
-            If you have information about the passing of a CAAIP member or would like to share memories, 
-            please contact the administration. May they rest in peace.
-          </p>
+    <div class="mt-5">
+      <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); color: white;">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex flex-column flex-md-row align-items-start gap-3 gap-md-4">
+            <div class="flex-shrink-0">
+              <svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="h5 fw-bold mb-2">Support and Condolences</h3>
+              <p class="mb-0" style="opacity: 0.9; line-height: 1.7;">
+                If you have information about the passing of a CAAIP member or would like to share memories, 
+                please contact the administration. May they rest in eternal peace.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <style>
+    .kabar-card {
+      cursor: pointer;
+    }
+    
+    .kabar-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+    }
+  </style>
 </BaseLayout>

@@ -3,14 +3,192 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('kabarDuka', ({ data }) => !data.draft && data.lang === 'en');
-  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+  const items = await getCollection('kabarDuka', ({ data }) => !data.draft && data.lang === 'en');
+  return items.map((i) => ({ params: { slug: i.slug }, props: { item: i } }));
 }
 
-const { post } = Astro.props as { post: any };
-const { Content } = await post.render();
+const { item } = Astro.props as { item: any };
+const { Content } = await item.render();
 ---
-<BaseLayout title={`${post.data.title} — CAAIP`} description={post.data.excerpt} lang="en">
+<BaseLayout title={`In Memoriam — ${item.data.name}`} description={item.data.message} lang="en">
+  <!-- Google Fonts - Inter & Merriweather -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <section class="container-px mx-auto py-5" style="font-family: 'Inter', sans-serif;">
+    <!-- Back Button -->
+    <div class="mb-4">
+      <a href="/en/kabar-duka" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back
+      </a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm overflow-hidden" style="max-width: 900px; margin: 0 auto;">
+      <!-- Header with Black Ribbon -->
+      <div class="position-relative" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 2rem;">
+        <!-- Decorative Ribbon Corner -->
+        <div class="position-absolute" style="top: 0; left: 0; width: 0; height: 0; border-style: solid; border-width: 60px 60px 0 0; border-color: #000 transparent transparent transparent; opacity: 0.3;"></div>
+        
+        <div class="text-center text-white position-relative">
+          <!-- Icon Candle -->
+          <div class="mb-3">
+            <svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16" style="opacity: 0.9;">
+              <path d="M8 0a.5.5 0 0 1 .5.5v.5H9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-.5v11h1.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5H7V3h-.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 6.5 1H7V.5A.5.5 0 0 1 8 0z"/>
+            </svg>
+          </div>
+          
+          <h1 class="h2 fw-bold mb-2" style="font-family: 'Merriweather', serif; letter-spacing: -0.5px;">
+            In Memoriam
+          </h1>
+          <div class="d-flex align-items-center justify-content-center gap-2 text-white-50">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+            </svg>
+            <span class="small">{new Date(item.data.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Body -->
+      <div class="card-body p-4 p-md-5">
+        <!-- Name & Relation -->
+        <div class="text-center mb-4 pb-4 border-bottom">
+          <h2 class="h3 fw-bold text-dark mb-2" style="font-family: 'Merriweather', serif;">
+            {item.data.name}
+          </h2>
+          {item.data.relation && (
+            <p class="text-muted mb-0" style="font-size: 1.1rem;">
+              {item.data.relation}
+            </p>
+          )}
+        </div>
+
+        <!-- Image Ucapan Duka (if exists) -->
+        {item.data.image && (
+          <div class="mb-4">
+            <div class="position-relative" style="border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+              <img 
+                src={item.data.image} 
+                alt={item.data.imageAlt || `In memoriam of ${item.data.name}`}
+                class="img-fluid w-100"
+                style="display: block; max-height: 600px; object-fit: contain; background: #f8f9fa;"
+              />
+              <!-- Optional gradient overlay for better text readability if needed -->
+              <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.02) 100%); pointer-events: none;"></div>
+            </div>
+            {item.data.imageAlt && (
+              <p class="text-center text-muted small mt-2 mb-0">
+                <em>{item.data.imageAlt}</em>
+              </p>
+            )}
+          </div>
+        )}
+
+        <!-- Message Content -->
+        {item.data.message && (
+          <div class="bg-light rounded p-4 mb-4" style="border-left: 4px solid #6c757d;">
+            <p class="text-dark mb-0" style="font-size: 1.05rem; line-height: 1.8; font-style: italic;">
+              "{item.data.message}"
+            </p>
+          </div>
+        )}
+
+        <!-- Markdown Content (if any) -->
+        <div class="prose prose-lg" style="max-width: none;">
+          <Content />
+        </div>
+
+        <!-- Decorative Divider -->
+        <div class="text-center my-5">
+          <div class="d-inline-flex align-items-center gap-3" style="opacity: 0.3;">
+            <div style="width: 40px; height: 1px; background: #dee2e6;"></div>
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1z"/>
+            </svg>
+            <div style="width: 40px; height: 1px; background: #dee2e6;"></div>
+          </div>
+        </div>
+
+        <!-- Footer Message -->
+        <div class="text-center">
+          <p class="text-muted mb-2" style="font-size: 0.95rem;">
+            Our deepest condolences
+          </p>
+          <p class="fw-semibold text-dark mb-0">
+            CAAIP Family
+          </p>
+        </div>
+      </div>
+
+      <!-- Bottom Accent -->
+      <div style="height: 4px; background: linear-gradient(to right, #6c757d 0%, #343a40 50%, #6c757d 100%);"></div>
+    </div>
+
+    <!-- Share or Additional Actions (Optional) -->
+    <div class="text-center mt-4">
+      <small class="text-muted">
+        May their soul rest in eternal peace
+      </small>
+    </div>
+  </section>
+
+  <style>
+    /* Prose styling for markdown content */
+    .prose {
+      color: #374151;
+      line-height: 1.75;
+    }
+    
+    .prose h1, .prose h2, .prose h3 {
+      font-family: 'Merriweather', serif;
+      color: #1f2937;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .prose p {
+      margin-bottom: 1.25rem;
+    }
+    
+    .prose a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+    
+    .prose a:hover {
+      text-decoration: underline;
+    }
+    
+    .prose img {
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .prose blockquote {
+      border-left: 4px solid #e5e7eb;
+      padding-left: 1rem;
+      font-style: italic;
+      color: #6b7280;
+    }
+
+    /* Smooth image loading */
+    img {
+      transition: opacity 0.3s ease;
+    }
+
+    img[loading] {
+      opacity: 0;
+    }
+
+    img:not([loading]) {
+      opacity: 1;
+    }
+  </style>
+</BaseLayout>
   <article class="pb-16">
     <!-- Cover Image -->
     {post.data.cover && (

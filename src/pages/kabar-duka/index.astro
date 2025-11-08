@@ -6,22 +6,133 @@ const items = (await getCollection('kabarDuka', ({ data }) => !data.draft))
   .sort((a, b) => Number(b.data.date) - Number(a.data.date));
 ---
 <BaseLayout title="Kabar Duka — CAAIP" description="Pengumuman resmi duka cita">
-  <section class="section container-px mx-auto">
-    <h1 class="text-2xl font-bold text-caaip-blue">Kabar Duka</h1>
-    <p class="mt-2 text-slate-600">Pengumuman resmi duka cita dari sivitas CAAIP.</p>
+  <!-- Google Fonts - Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <section class="section container-px mx-auto py-5" style="font-family: 'Inter', sans-serif;">
+    <!-- Header -->
+    <div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
+      <div class="card-body text-white py-4">
+        <h1 class="h3 fw-bold mb-2">
+          <svg width="24" height="24" fill="currentColor" class="d-inline me-2" viewBox="0 0 16 16">
+            <path d="M8 0a.5.5 0 0 1 .5.5v.5H9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-.5v11h1.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5H7V3h-.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 6.5 1H7V.5A.5.5 0 0 1 8 0z"/>
+          </svg>
+          Kabar Duka
+        </h1>
+        <p class="mb-0 opacity-90">Pengumuman resmi duka cita dari sivitas CAAIP</p>
+      </div>
+    </div>
 
     {items.length === 0 ? (
-      <p class="mt-6 text-slate-600">Tidak ada pengumuman saat ini.</p>
+      <div class="text-center py-5">
+        <div class="card border-0 shadow-sm" style="max-width: 500px; margin: 0 auto;">
+          <div class="card-body py-5">
+            <svg width="64" height="64" fill="currentColor" class="text-muted mb-3" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+            <p class="text-muted mb-0">Tidak ada pengumuman saat ini.</p>
+          </div>
+        </div>
+      </div>
     ) : (
-      <ul class="mt-6 space-y-4">
+      <div class="row g-4">
         {items.map((i) => (
-          <li class="border rounded-lg p-4">
-            <p class="text-sm text-slate-500">{new Date(i.data.date).toLocaleDateString('id-ID')}</p>
-            <p class="font-semibold text-slate-800">{i.data.name}</p>
-            {i.data.message && <p class="text-slate-700 mt-1">{i.data.message}</p>}
-          </li>
+          <div class="col-12">
+            <a href={`/kabar-duka/${i.slug}`} class="text-decoration-none">
+              <div class="card border-0 shadow-sm h-100 overflow-hidden position-relative" style="transition: all 0.3s ease;">
+                <!-- Left Accent Bar -->
+                <div class="position-absolute" style="left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #6c757d 0%, #343a40 100%);"></div>
+                
+                <div class="card-body p-4 ps-5">
+                  <div class="row align-items-center">
+                    <!-- Date Badge -->
+                    <div class="col-auto d-none d-md-block">
+                      <div class="text-center p-3 rounded" style="background: #f8f9fa; min-width: 80px;">
+                        <div class="fw-bold text-dark" style="font-size: 1.5rem; line-height: 1;">
+                          {new Date(i.data.date).getDate()}
+                        </div>
+                        <div class="text-muted small text-uppercase" style="font-size: 0.75rem;">
+                          {new Date(i.data.date).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="col">
+                      <!-- Mobile Date -->
+                      <div class="d-md-none mb-2">
+                        <span class="badge bg-secondary">
+                          <svg width="12" height="12" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                          </svg>
+                          {new Date(i.data.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
+                      </div>
+
+                      <!-- Name -->
+                      <h3 class="h5 fw-bold text-dark mb-2">
+                        {i.data.name}
+                      </h3>
+
+                      <!-- Relation -->
+                      {i.data.relation && (
+                        <p class="text-muted mb-2" style="font-size: 0.95rem;">
+                          {i.data.relation}
+                        </p>
+                      )}
+
+                      <!-- Message Preview -->
+                      {i.data.message && (
+                        <p class="text-secondary mb-0" style="font-size: 0.9rem; line-height: 1.6;">
+                          {i.data.message.length > 150 
+                            ? i.data.message.substring(0, 150) + '...' 
+                            : i.data.message}
+                        </p>
+                      )}
+
+                      <!-- Read More -->
+                      <div class="mt-3">
+                        <span class="text-primary small fw-semibold">
+                          Baca selengkapnya
+                          <svg width="14" height="14" fill="currentColor" class="ms-1" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Image Thumbnail (if exists) -->
+                    {i.data.image && (
+                      <div class="col-auto d-none d-lg-block">
+                        <div class="rounded overflow-hidden" style="width: 120px; height: 120px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                          <img 
+                            src={i.data.image} 
+                            alt={i.data.imageAlt || i.data.name}
+                            class="w-100 h-100"
+                            style="object-fit: cover;"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
         ))}
-      </ul>
+      </div>
     )}
   </section>
+
+  <style>
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    a:hover .text-primary {
+      text-decoration: underline;
+    }
+  </style>
 </BaseLayout>

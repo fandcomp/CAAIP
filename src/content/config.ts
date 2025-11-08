@@ -21,6 +21,8 @@ const kabarDuka = defineCollection({
     date: z.coerce.date(),
     relation: z.string().optional(),
     message: z.string().optional(),
+    image: z.string().optional(), // URL gambar ucapan duka
+    imageAlt: z.string().optional(), // Alt text untuk gambar
     lang: z.enum(['id', 'en']).default('id'),
     draft: z.boolean().default(false),
   }),
