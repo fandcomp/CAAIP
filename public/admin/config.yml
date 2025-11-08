@@ -53,14 +53,9 @@ collections:
       - { label: "Tahun Angkatan", name: "year", widget: "string", hint: "Contoh: 1991, 2005, 2026" }
       - label: "Data Alumni"
         name: "csvData"
-        widget: "list"
+        widget: "csv-alumni"
         required: false
-        summary: "{{fields.no}}. {{fields.name}} - {{fields.program}}"
-        hint: "💡 CARA MUDAH: Upload CSV → Convert di https://caaip.id/csv-converter.html → Copy JSON → Paste di sini menggunakan tombol 'Edit' (ikon pensil) → Pilih 'Raw' mode → Paste → Save"
-        fields:
-          - { label: "No", name: "no", widget: "string", required: false }
-          - { label: "Nama", name: "name", widget: "string" }
-          - { label: "Jurusan/Program", name: "program", widget: "string", required: false }
+        hint: "Upload file CSV (format: No;Nama;Jurusan) atau input manual dengan klik tombol Tambah Alumni"
 
   - name: "pengurus"
     label: "Pengurus CAAIP"
