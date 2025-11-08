@@ -1,0 +1,26 @@
+# File tidak diperlukan untuk hosting di Hostinger
+
+# File-file ini hanya untuk Netlify deployment
+netlify.toml
+
+# Batch scripts (Windows helper files - opsional)
+preview.bat
+check-deploy.bat
+
+# Documentation files (opsional untuk production)
+*.md
+!README.md
+
+# Development files
+.vscode/
+.DS_Store
+.env
+
+# Build artifacts
+node_modules/
+dist/
+.astro/
+
+# Git
+.git/
+.gitignore

@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
-  site: 'https://caaip.netlify.app',
+  site: 'https://caaip.id',
   integrations: [tailwind({
     applyBaseStyles: true,
   })],
