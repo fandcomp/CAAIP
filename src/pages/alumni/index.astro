@@ -15,79 +15,443 @@ const entries = data
   .sort((a, b) => b.year.localeCompare(a.year)); // Sort descending (newest first)
 ---
 <BaseLayout title="Alumni — CAAIP" description="Direktori Alumni CAAIP">
-  <section class="section container-px mx-auto">
-    <h1 class="text-2xl font-bold text-caaip-blue">Alumni</h1>
-    <p class="mt-2 text-slate-600">Pilih angkatan untuk melihat daftar alumni.</p>
-
+  <!-- Google Fonts - Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <section class="section container-px mx-auto py-5 font-inter">
     {entries.length === 0 ? (
-      <p class="mt-6 text-slate-600">Data alumni belum tersedia.</p>
+      <div class="text-center py-5">
+        <h1 class="h3 fw-bold text-primary mb-3">Alumni</h1>
+        <p class="text-muted">Data alumni belum tersedia.</p>
+      </div>
     ) : (
       <>
-        <div id="alumni-browser" class="mt-6">
-          <div class="flex flex-wrap gap-2">
-            {entries.map((e, idx) => (
-              <button type="button" class={`angkatan-btn px-3 py-2 rounded border text-sm ${idx === 0 ? 'border-caaip-blue text-white bg-caaip-blue' : 'border-slate-300 hover:border-caaip-blue hover:text-caaip-blue'}`} data-angkatan={e.year}>{e.year}</button>
-            ))}
-          </div>
-          <div class="mt-6">
-            {entries.map((e, idx) => (
-              <div id={`panel-${e.year}`} class={`${idx === 0 ? '' : 'hidden'}`} aria-hidden={idx === 0 ? 'false' : 'true'}>
-                <h2 class="text-xl font-semibold text-caaip-blue">Alumni Angkatan {e.year}</h2>
-                {e.csvData && e.csvData.length > 0 ? (
-                  <ul class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {e.csvData.map((m) => (
-                      <li class="border rounded-lg p-4">
-                        <p class="font-semibold">{m.name}</p>
-                        {m.program && <p class="text-sm text-slate-600">{m.program}</p>}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p class="mt-4 text-slate-600">Belum ada data anggota.</p>
-                )}
-              </div>
-            ))}
+        <!-- Header -->
+        <div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+          <div class="card-body text-white py-4">
+            <h1 class="h3 fw-bold mb-2">
+              <svg width="24" height="24" fill="currentColor" class="d-inline me-2" viewBox="0 0 16 16">
+                <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+              </svg>
+              Direktori Alumni
+            </h1>
+            <p class="mb-0 opacity-90">Pilih angkatan untuk melihat daftar alumni</p>
           </div>
         </div>
 
-        <script>
-          (function(){
-            const root = document.getElementById('alumni-browser');
-            if (!root) return;
-            const buttons = Array.from(root.querySelectorAll('.angkatan-btn'));
-            function select(angk) {
-              buttons.forEach(btn => {
-                const isActive = btn.getAttribute('data-angkatan') === angk;
-                btn.classList.toggle('bg-caaip-blue', isActive);
-                btn.classList.toggle('text-white', isActive);
-                btn.classList.toggle('border-caaip-blue', isActive);
-                btn.classList.toggle('hover:border-caaip-blue', !isActive);
-                btn.classList.toggle('hover:text-caaip-blue', !isActive);
-                btn.classList.toggle('border-slate-300', !isActive);
-              });
-              const panels = Array.from(root.querySelectorAll('[id^="panel-"]'));
-              panels.forEach(p => {
-                const match = p.id === `panel-${angk}`;
-                p.classList.toggle('hidden', !match);
-                p.setAttribute('aria-hidden', match ? 'false' : 'true');
-              });
-            }
-            buttons.forEach(btn => {
-              btn.addEventListener('click', () => select(btn.getAttribute('data-angkatan')));
-            });
-          })();
-        </script>
+        <!-- Angkatan Tabs -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <label class="form-label small text-muted fw-semibold mb-2">Pilih Angkatan</label>
+            <div class="d-flex flex-wrap gap-2" id="angkatanTabs">
+              {entries.map((e, idx) => (
+                <button 
+                  type="button" 
+                  class={`btn ${idx === 0 ? 'btn-primary' : 'btn-outline-primary'} angkatan-btn`}
+                  data-angkatan={e.year}
+                  data-index={idx}
+                >
+                  {e.year}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
 
-        <noscript>
-          <ul class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {entries.map((e) => (
-              <li>
-                <a href={`/alumni/${e.slug}`} class="block border rounded-lg p-4 text-center hover:border-caaip-blue hover:text-caaip-blue">{e.angkatan}</a>
-              </li>
-            ))}
-          </ul>
-        </noscript>
+        <!-- Search & Filter Card -->
+        <div class="card border-0 shadow-sm mb-4" id="filterCard">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-5 mb-3 mb-md-0">
+                <label class="form-label small text-muted fw-semibold mb-2">
+                  <svg width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>
+                  Cari Nama Alumni
+                </label>
+                <input 
+                  type="text" 
+                  id="searchInput" 
+                  class="form-control form-control-lg" 
+                  placeholder="Ketik nama alumni..."
+                  style="border: 2px solid #e2e8f0; border-radius: 0.5rem;"
+                >
+              </div>
+              <div class="col-md-4 mb-3 mb-md-0">
+                <label class="form-label small text-muted fw-semibold mb-2">
+                  <svg width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
+                  </svg>
+                  Filter Jurusan
+                </label>
+                <select 
+                  id="programFilter" 
+                  class="form-select form-select-lg"
+                  style="border: 2px solid #e2e8f0; border-radius: 0.5rem;"
+                >
+                  <option value="">Semua Jurusan</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label small text-muted fw-semibold mb-2">Tampilkan</label>
+                <select id="entriesPerPage" class="form-select form-select-lg" style="border: 2px solid #e2e8f0; border-radius: 0.5rem;">
+                  <option value="10">10 entri</option>
+                  <option value="25">25 entri</option>
+                  <option value="50">50 entri</option>
+                  <option value="100">100 entri</option>
+                  <option value="-1">Semua</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alumni Panels -->
+        <div id="alumniPanels">
+          {entries.map((e, idx) => (
+            <div 
+              id={`panel-${e.year}`} 
+              class={`panel-content ${idx === 0 ? '' : 'd-none'}`}
+              data-year={e.year}
+              data-alumni={JSON.stringify(e.csvData || [])}
+            >
+              {e.csvData && e.csvData.length > 0 ? (
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body p-0">
+                    <!-- Desktop Table -->
+                    <div class="table-responsive d-none d-md-block">
+                      <table class="table table-hover align-middle mb-0">
+                        <thead style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                          <tr>
+                            <th class="px-4 py-3 text-muted fw-semibold" style="width: 80px;">No</th>
+                            <th class="px-4 py-3 text-muted fw-semibold">Nama</th>
+                            <th class="px-4 py-3 text-muted fw-semibold" style="width: 250px;">Jurusan</th>
+                          </tr>
+                        </thead>
+                        <tbody class="alumni-table-body">
+                          <!-- Will be populated by JavaScript -->
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- Mobile Cards -->
+                    <div class="d-md-none p-3 alumni-cards-container">
+                      <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Pagination Info -->
+                    <div class="px-4 py-3 border-top d-flex flex-column flex-md-row justify-content-between align-items-center gap-3" style="background-color: #f8fafc;">
+                      <p class="mb-0 small text-muted pagination-info">
+                        Menampilkan <span class="fw-semibold showing-from">0</span> 
+                        sampai <span class="fw-semibold showing-to">0</span> 
+                        dari <span class="fw-semibold total-entries">0</span> entri
+                      </p>
+                      <div class="pagination-controls"></div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div class="alert alert-info">
+                  <svg width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                  </svg>
+                  Belum ada data alumni untuk angkatan ini.
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </>
     )}
   </section>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    .table-hover tbody tr:hover {
+      background-color: #f8fafc;
+      transition: background-color 0.15s ease;
+    }
+    
+    #searchInput:focus,
+    #programFilter:focus,
+    #entriesPerPage:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+    }
+    
+    .alumni-row {
+      transition: all 0.2s ease;
+    }
+    
+    .badge {
+      font-weight: 600;
+    }
+
+    .pagination {
+      margin-bottom: 0;
+    }
+
+    .pagination .page-link {
+      border: none;
+      color: #1e3a8a;
+      font-weight: 500;
+      padding: 0.5rem 0.75rem;
+      margin: 0 0.125rem;
+      border-radius: 0.375rem;
+    }
+
+    .pagination .page-link:hover {
+      background-color: #e0e7ff;
+    }
+
+    .pagination .page-item.active .page-link {
+      background-color: #1e3a8a;
+      color: white;
+    }
+
+    .angkatan-btn {
+      transition: all 0.2s ease;
+    }
+  </style>
+
+  <script define:vars={{ entries }}>
+    // State management
+    let currentAngkatan = entries.length > 0 ? entries[0].year : null;
+    let currentPage = 1;
+    let entriesPerPage = 10;
+    let filteredData = [];
+    let allData = [];
+
+    const searchInput = document.getElementById('searchInput');
+    const programFilter = document.getElementById('programFilter');
+    const entriesSelect = document.getElementById('entriesPerPage');
+    const angkatanButtons = document.querySelectorAll('.angkatan-btn');
+
+    // Initialize
+    function init() {
+      if (!currentAngkatan) return;
+      
+      // Set up angkatan button listeners
+      angkatanButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const angkatan = btn.getAttribute('data-angkatan');
+          switchAngkatan(angkatan);
+        });
+      });
+
+      // Set up filter listeners
+      searchInput.addEventListener('input', filterData);
+      programFilter.addEventListener('change', filterData);
+      entriesSelect.addEventListener('change', (e) => {
+        entriesPerPage = parseInt(e.target.value);
+        currentPage = 1;
+        renderTable();
+      });
+
+      // Load first angkatan
+      loadAngkatanData(currentAngkatan);
+    }
+
+    function switchAngkatan(angkatan) {
+      currentAngkatan = angkatan;
+      currentPage = 1;
+
+      // Update button states
+      angkatanButtons.forEach(btn => {
+        const isActive = btn.getAttribute('data-angkatan') === angkatan;
+        if (isActive) {
+          btn.classList.remove('btn-outline-primary');
+          btn.classList.add('btn-primary');
+        } else {
+          btn.classList.remove('btn-primary');
+          btn.classList.add('btn-outline-primary');
+        }
+      });
+
+      // Show/hide panels
+      document.querySelectorAll('.panel-content').forEach(panel => {
+        if (panel.id === `panel-${angkatan}`) {
+          panel.classList.remove('d-none');
+        } else {
+          panel.classList.add('d-none');
+        }
+      });
+
+      // Load data
+      loadAngkatanData(angkatan);
+    }
+
+    function loadAngkatanData(angkatan) {
+      const panel = document.getElementById(`panel-${angkatan}`);
+      if (!panel) return;
+
+      const dataStr = panel.getAttribute('data-alumni');
+      allData = dataStr ? JSON.parse(dataStr) : [];
+      
+      // Update program filter options
+      updateProgramFilter();
+      
+      // Reset filters
+      searchInput.value = '';
+      programFilter.value = '';
+      
+      // Filter and render
+      filterData();
+    }
+
+    function updateProgramFilter() {
+      // Get unique programs from current data
+      const programs = [...new Set(allData.map(item => item.program).filter(Boolean))].sort();
+      
+      // Update select options
+      programFilter.innerHTML = '<option value="">Semua Jurusan</option>';
+      programs.forEach(program => {
+        const option = document.createElement('option');
+        option.value = program;
+        option.textContent = program;
+        programFilter.appendChild(option);
+      });
+    }
+
+    function filterData() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      const selectedProgram = programFilter.value;
+
+      filteredData = allData.filter(item => {
+        const matchName = !searchTerm || item.name.toLowerCase().includes(searchTerm);
+        const matchProgram = !selectedProgram || item.program === selectedProgram;
+        return matchName && matchProgram;
+      });
+
+      currentPage = 1;
+      renderTable();
+    }
+
+    function renderTable() {
+      const panel = document.getElementById(`panel-${currentAngkatan}`);
+      if (!panel) return;
+
+      const tableBody = panel.querySelector('.alumni-table-body');
+      const cardsContainer = panel.querySelector('.alumni-cards-container');
+      
+      if (!tableBody || !cardsContainer) return;
+
+      const startIndex = (currentPage - 1) * entriesPerPage;
+      const endIndex = entriesPerPage === -1 ? filteredData.length : startIndex + entriesPerPage;
+      const pageData = filteredData.slice(startIndex, endIndex);
+
+      // Render desktop table
+      if (pageData.length > 0) {
+        tableBody.innerHTML = pageData.map((m, index) => `
+          <tr class="alumni-row">
+            <td class="px-4 py-3 text-muted small">${m.no || (startIndex + index + 1)}</td>
+            <td class="px-4 py-3 fw-medium">${m.name}</td>
+            <td class="px-4 py-3 text-muted">${m.program || '-'}</td>
+          </tr>
+        `).join('');
+      } else {
+        tableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-muted">Tidak ada data yang ditemukan</td></tr>';
+      }
+
+      // Render mobile cards
+      if (pageData.length > 0) {
+        cardsContainer.innerHTML = pageData.map((m, index) => `
+          <div class="card alumni-row mb-3 border shadow-sm" style="border-radius: 0.75rem;">
+            <div class="card-body">
+              <div class="d-flex align-items-start gap-3">
+                <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 0.875rem;">
+                  ${m.no || (startIndex + index + 1)}
+                </div>
+                <div class="flex-fill">
+                  <h6 class="mb-1 fw-semibold">${m.name}</h6>
+                  ${m.program ? `
+                    <p class="mb-0 text-muted small">
+                      <svg width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                      </svg>
+                      ${m.program}
+                    </p>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        cardsContainer.innerHTML = '<div class="text-center py-4 text-muted">Tidak ada data yang ditemukan</div>';
+      }
+
+      updatePaginationInfo(panel);
+      renderPagination(panel);
+    }
+
+    function updatePaginationInfo(panel) {
+      const showingFrom = filteredData.length === 0 ? 0 : ((currentPage - 1) * entriesPerPage) + 1;
+      const showingTo = entriesPerPage === -1 ? filteredData.length : Math.min(currentPage * entriesPerPage, filteredData.length);
+      
+      panel.querySelector('.showing-from').textContent = showingFrom;
+      panel.querySelector('.showing-to').textContent = showingTo;
+      panel.querySelector('.total-entries').textContent = filteredData.length;
+    }
+
+    function renderPagination(panel) {
+      const paginationControls = panel.querySelector('.pagination-controls');
+      if (!paginationControls || entriesPerPage === -1) {
+        paginationControls.innerHTML = '';
+        return;
+      }
+
+      const totalPages = Math.ceil(filteredData.length / entriesPerPage);
+      if (totalPages <= 1) {
+        paginationControls.innerHTML = '';
+        return;
+      }
+
+      let html = '<nav><ul class="pagination pagination-sm">';
+      
+      // Previous button
+      html += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>
+      </li>`;
+
+      // Page numbers
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+          html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+          </li>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+          html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+        }
+      }
+
+      // Next button
+      html += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>
+      </li>`;
+
+      html += '</ul></nav>';
+      paginationControls.innerHTML = html;
+
+      // Add click handlers
+      paginationControls.querySelectorAll('.page-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const page = parseInt(e.target.dataset.page);
+          if (page && page !== currentPage && page >= 1 && page <= totalPages) {
+            currentPage = page;
+            renderTable();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+      });
+    }
+
+    // Initialize on page load
+    init();
+  </script>
 </BaseLayout>

@@ -190,6 +190,11 @@ declare module 'astro:content' {
   collection: "alumni";
   data: InferEntrySchema<"alumni">
 };
+"2025": {
+	id: "2025";
+  collection: "alumni";
+  data: InferEntrySchema<"alumni">
+};
 };
 "pengurus": {
 "ketua-umum": {
