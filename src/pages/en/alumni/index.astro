@@ -39,30 +39,33 @@ const entries = data
           </div>
         </div>
 
-        <!-- Class Year Tabs -->
-        <div class="card border-0 shadow-sm mb-4">
-          <div class="card-body">
-            <label class="form-label small text-muted fw-semibold mb-2">Select Class Year</label>
-            <div class="d-flex flex-wrap gap-2" id="angkatanTabs">
-              {entries.map((e, idx) => (
-                <button 
-                  type="button" 
-                  class={`btn ${idx === 0 ? 'btn-primary' : 'btn-outline-primary'} angkatan-btn`}
-                  data-angkatan={e.year}
-                  data-index={idx}
-                >
-                  {e.year}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
         <!-- Search & Filter Card -->
         <div class="card border-0 shadow-sm mb-4" id="filterCard">
           <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-md-5 mb-3 mb-md-0">
+            <div class="row g-3">
+              <!-- Select Class Year - Now Dropdown -->
+              <div class="col-lg-3 col-md-6">
+                <label class="form-label small text-muted fw-semibold mb-2">
+                  <svg width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                    <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
+                  </svg>
+                  Select Class Year
+                </label>
+                <select 
+                  id="angkatanSelect" 
+                  class="form-select form-select-lg"
+                  style="border: 2px solid #e2e8f0; border-radius: 0.5rem;"
+                >
+                  {entries.map((e, idx) => (
+                    <option value={e.year} selected={idx === 0}>
+                      Class of {e.year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <!-- Search Alumni Name -->
+              <div class="col-lg-4 col-md-6">
                 <label class="form-label small text-muted fw-semibold mb-2">
                   <svg width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -77,7 +80,9 @@ const entries = data
                   style="border: 2px solid #e2e8f0; border-radius: 0.5rem;"
                 >
               </div>
-              <div class="col-md-4 mb-3 mb-md-0">
+
+              <!-- Filter by Program -->
+              <div class="col-lg-3 col-md-6">
                 <label class="form-label small text-muted fw-semibold mb-2">
                   <svg width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
                     <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
@@ -92,13 +97,21 @@ const entries = data
                   <option value="">All Programs</option>
                 </select>
               </div>
-              <div class="col-md-3">
+
+              <!-- Show -->
+              <div class="col-lg-2 col-md-6">
                 <label class="form-label small text-muted fw-semibold mb-2">Show</label>
                 <select id="entriesPerPage" class="form-select form-select-lg" style="border: 2px solid #e2e8f0; border-radius: 0.5rem;">
-                  <option value="10">10 entries</option>
-                  <option value="25">25 entries</option>
-                  <option value="50">50 entries</option>
-                  <option value="100">100 entries</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="-1">All</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
                   <option value="-1">All</option>
                 </select>
               </div>
@@ -229,18 +242,16 @@ const entries = data
     const searchInput = document.getElementById('searchInput');
     const programFilter = document.getElementById('programFilter');
     const entriesSelect = document.getElementById('entriesPerPage');
-    const angkatanButtons = document.querySelectorAll('.angkatan-btn');
+    const angkatanSelect = document.getElementById('angkatanSelect');
 
     // Initialize
     function init() {
       if (!currentAngkatan) return;
       
-      // Set up angkatan button listeners
-      angkatanButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const angkatan = btn.getAttribute('data-angkatan');
-          switchAngkatan(angkatan);
-        });
+      // Set up angkatan dropdown listener
+      angkatanSelect.addEventListener('change', () => {
+        const angkatan = parseInt(angkatanSelect.value);
+        switchAngkatan(angkatan);
       });
 
       // Set up filter listeners
@@ -259,18 +270,6 @@ const entries = data
     function switchAngkatan(angkatan) {
       currentAngkatan = angkatan;
       currentPage = 1;
-
-      // Update button states
-      angkatanButtons.forEach(btn => {
-        const isActive = btn.getAttribute('data-angkatan') === angkatan;
-        if (isActive) {
-          btn.classList.remove('btn-outline-primary');
-          btn.classList.add('btn-primary');
-        } else {
-          btn.classList.remove('btn-primary');
-          btn.classList.add('btn-outline-primary');
-        }
-      });
 
       // Show/hide panels
       document.querySelectorAll('.panel-content').forEach(panel => {
