@@ -2,36 +2,49 @@
 
 ## 📋 Overview Setup
 
-**Arsitektur Hybrid:**
+**Arsitektur Hybrid: Hostinger + Netlify CMS**
+
 ```
-┌──────────────────────────────────────────┐
-│   caaip.id (Website Public)              │
-│   Hosted: Hostinger (Static Files)       │
-│   - Homepage, Berita, Alumni, Profil     │
-│   - Super cepat, full control            │
-└──────────────────────────────────────────┘
-                  ↕
-┌──────────────────────────────────────────┐
-│   admin.caaip.id (CMS Admin)             │
-│   Hosted: Netlify (Identity + CMS)       │
-│   - Login dengan Netlify Identity        │
-│   - Edit konten via Decap CMS            │
-│   - Auto commit ke GitHub                │
-└──────────────────────────────────────────┘
-                  ↕
-┌──────────────────────────────────────────┐
-│   GitHub Repository                       │
-│   - Source code                           │
-│   - Content (JSON, Markdown)             │
-│   - Auto sync dari CMS                   │
-└──────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                    CAAIP.ID System                       │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│  🌐 PUBLIC WEBSITE (caaip.id)                           │
+│     └─ Hostinger Web Hosting                            │
+│        └─ Static HTML/CSS/JS files                      │
+│        └─ Fast, SEO-friendly                            │
+│                                                          │
+│  ⚙️ CMS ADMIN (netlify.app/admin)                      │
+│     └─ Netlify (Free Tier)                              │
+│        └─ Decap CMS Interface                           │
+│        └─ Netlify Identity (Login)                      │
+│        └─ Git Gateway → GitHub                          │
+│                                                          │
+│  📦 REPOSITORY (GitHub)                                  │
+│     └─ GitHub (fandcomp/CAAIP)                          │
+│        └─ Source code + Content                         │
+│        └─ GitHub Actions                                │
+│                                                          │
+│  🔄 AUTOMATED WORKFLOW                                   │
+│     1. Editor login via Netlify                         │
+│     2. Edit content → Save & Publish                    │
+│     3. CMS commits to GitHub                            │
+│     4. GitHub Actions triggered                         │
+│     5. Build → Upload to Hostinger (FTP)               │
+│     6. Website updated! (~2-3 menit)                    │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
 ```
 
-**Kenapa Hybrid?**
-- ✅ Website di Hostinger (cepat, murah, kontrol penuh)
-- ✅ CMS tetap berfungsi (Netlify Identity gratis & reliable)
-- ✅ No complex setup (tidak perlu OAuth server sendiri)
-- ✅ Best of both worlds
+**🎯 Keuntungan Setup Hybrid Ini:**
+
+✅ **Website cepat** - Static hosting di Hostinger Indonesia (low latency)
+✅ **CMS mudah** - Netlify Identity untuk login (gratis, no backend)
+✅ **Domain custom** - caaip.id pointing ke Hostinger
+✅ **Auto-deploy** - GitHub Actions build & upload otomatis
+✅ **Cost effective** - Netlify free tier + Hostinger murah
+✅ **Git-based** - Version control lengkap di GitHub
+✅ **No vendor lock-in** - Bisa pindah hosting kapan saja
 
 ---
 
