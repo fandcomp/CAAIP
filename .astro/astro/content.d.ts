@@ -141,23 +141,9 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"berita": {
-"kkb-ditangkap-kst.md": {
-	id: "kkb-ditangkap-kst.md";
-  slug: "kkb-ditangkap-kst";
-  body: string;
-  collection: "berita";
-  data: InferEntrySchema<"berita">
-} & { render(): Render[".md"] };
 "peluncuran-portal-caaip.md": {
 	id: "peluncuran-portal-caaip.md";
   slug: "peluncuran-portal-caaip";
-  body: string;
-  collection: "berita";
-  data: InferEntrySchema<"berita">
-} & { render(): Render[".md"] };
-"selamat-dan-sukses.md": {
-	id: "selamat-dan-sukses.md";
-  slug: "selamat-dan-sukses";
   body: string;
   collection: "berita";
   data: InferEntrySchema<"berita">
@@ -196,15 +182,15 @@ declare module 'astro:content' {
   collection: "alumni";
   data: InferEntrySchema<"alumni">
 };
+"2025-1": {
+	id: "2025-1";
+  collection: "alumni";
+  data: InferEntrySchema<"alumni">
+};
 };
 "pengurus": {
 "ketua-umum": {
 	id: "ketua-umum";
-  collection: "pengurus";
-  data: InferEntrySchema<"pengurus">
-};
-"wakil-ketua": {
-	id: "wakil-ketua";
   collection: "pengurus";
   data: InferEntrySchema<"pengurus">
 };
