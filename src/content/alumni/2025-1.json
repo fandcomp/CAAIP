@@ -1,0 +1,95 @@
+{
+  "year": "2026",
+  "csvData": [
+    {
+      "no": "1",
+      "name": "Taufiq",
+      "program": "RB"
+    },
+    {
+      "no": "2",
+      "name": "Fandi",
+      "program": "RPL"
+    },
+    {
+      "no": "3",
+      "name": "Hasan",
+      "program": "Kripto"
+    },
+    {
+      "no": "4",
+      "name": "Thoriq",
+      "program": "Teknik"
+    },
+    {
+      "no": "5",
+      "name": "Ghiny",
+      "program": "Teknik"
+    },
+    {
+      "no": "6",
+      "name": "Alfi",
+      "program": "Teknik"
+    },
+    {
+      "no": "7",
+      "name": "Nanang",
+      "program": "Teknik"
+    },
+    {
+      "no": "8",
+      "name": "Lamhod",
+      "program": "Teknik"
+    },
+    {
+      "no": "9",
+      "name": "Boy",
+      "program": "Teknik"
+    },
+    {
+      "no": "10",
+      "name": "Agus",
+      "program": "Teknik"
+    },
+    {
+      "no": "11",
+      "name": "Dina",
+      "program": "Teknik"
+    },
+    {
+      "no": "12",
+      "name": "Raras",
+      "program": "Teknik"
+    },
+    {
+      "no": "13",
+      "name": "Ivan",
+      "program": "Teknik"
+    },
+    {
+      "no": "14",
+      "name": "Pandu",
+      "program": "Pelaut"
+    },
+    {
+      "no": "15",
+      "name": "Yusuf",
+      "program": "Teknik"
+    },
+    {
+      "no": "16",
+      "name": "Ali",
+      "program": "Teknik"
+    },
+    {
+      "no": "17",
+      "name": "Dadang",
+      "program": "Teknik"
+    },
+    {
+      "no": "18",
+      "name": "Surya",
+      "program": "Teknik"
+    }
+  ]
+}
