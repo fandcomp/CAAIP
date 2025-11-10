@@ -8,53 +8,54 @@ const pengurusList = allPengurus.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <div class="pengurus-container sticky top-24">
-  <div class="pengurus-card bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-    <!-- Header Section -->
-    <div class="header-section bg-gradient-to-r from-caaip-blue to-blue-700 text-white px-6 py-5">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+  <div class="pengurus-card bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
+    <!-- Header Section - Minimalist -->
+    <div class="header-section px-6 py-4 border-b border-slate-100">
+      <div class="flex items-center gap-2.5">
+        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
         </svg>
-        <h3 class="text-xl font-bold tracking-wide">Pengurus CAAIP</h3>
+        <h3 class="text-base font-semibold text-slate-700 tracking-tight">Pengurus CAAIP</h3>
       </div>
     </div>
 
     <!-- Pengurus List -->
-    <div class="pengurus-list p-6 space-y-6">
+    <div class="pengurus-list p-5 space-y-5">
       {pengurusList.map((item, index) => (
         <div class="pengurus-item group">
-          <div class="flex flex-col items-center text-center space-y-4 p-5 rounded-xl transition-all duration-300 hover:bg-white hover:shadow-md">
-            <!-- Position Badge -->
-            <div class="position-badge">
-              <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-sm">
-                {item.data.position}
-              </span>
-            </div>
+          <div class="flex flex-col items-center text-center space-y-3.5 p-4 rounded-lg transition-all duration-300 hover:bg-slate-50/50">
             
-            <!-- Photo with Decorative Ring -->
+            <!-- Photo with Modern Frame -->
             <div class="photo-wrapper relative">
-              <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full animate-pulse-slow opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <div class="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300">
+              <!-- Subtle background decoration -->
+              <div class="absolute inset-0 bg-slate-100 rounded-2xl -rotate-3 opacity-40 group-hover:rotate-3 transition-transform duration-500"></div>
+              <div class="absolute inset-0 bg-slate-100 rounded-2xl rotate-3 opacity-40 group-hover:-rotate-3 transition-transform duration-500"></div>
+              
+              <!-- Main photo container -->
+              <div class="relative w-40 h-40 rounded-2xl overflow-hidden ring-2 ring-slate-200/80 group-hover:ring-slate-300 transition-all duration-300">
                 <img 
                   src={item.data.photo} 
                   alt={item.data.name}
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                   decoding="async"
                   onerror="this.src='/images/default-avatar.png'"
                 />
+                <!-- Overlay gradient on hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <!-- Decorative Corner Accent -->
-              <div class="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full border-4 border-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <svg class="w-full h-full p-1 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
-              </div>
+            </div>
+            
+            <!-- Position Badge - Subtle -->
+            <div class="position-badge">
+              <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200/60">
+                {item.data.position}
+              </span>
             </div>
             
             <!-- Name -->
             <div class="name-section">
-              <h4 class="font-bold text-base text-slate-800 leading-tight group-hover:text-caaip-blue transition-colors duration-300">
+              <h4 class="font-semibold text-base text-slate-800 leading-tight">
                 {item.data.name}
               </h4>
             </div>
@@ -62,46 +63,30 @@ const pengurusList = allPengurus.sort((a, b) => a.data.order - b.data.order);
           
           <!-- Divider (only between items) -->
           {index < pengurusList.length - 1 && (
-            <div class="divider-line mt-6">
-              <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+            <div class="divider-line mt-5">
+              <div class="h-px bg-slate-100"></div>
             </div>
           )}
         </div>
       ))}
     </div>
-
-    <!-- Footer Accent -->
-    <div class="footer-accent h-1.5 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600"></div>
   </div>
 </div>
 
 <style>
   .pengurus-container {
-    animation: slideInRight 0.6s ease-out;
+    animation: fadeInUp 0.5s ease-out;
   }
 
-  @keyframes slideInRight {
+  @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateX(20px);
+      transform: translateY(10px);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
     }
-  }
-
-  @keyframes pulse-slow {
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.05);
-    }
-  }
-
-  .animate-pulse-slow {
-    animation: pulse-slow 3s ease-in-out infinite;
   }
 
   /* Smooth sticky behavior */
@@ -123,31 +108,8 @@ const pengurusList = allPengurus.sort((a, b) => a.data.order - b.data.order);
     }
     
     .photo-wrapper .relative {
-      width: 6rem;
-      height: 6rem;
-    }
-  }
-
-  /* Hover effects */
-  .pengurus-item:hover .photo-wrapper .relative {
-    box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.4);
-  }
-
-  /* Gradient animation on hover */
-  .pengurus-card:hover .header-section {
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-  }
-
-  .pengurus-card:hover .footer-accent {
-    animation: shimmer 2s ease-in-out infinite;
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -100% 0;
-    }
-    100% {
-      background-position: 200% 0;
+      width: 9rem;
+      height: 9rem;
     }
   }
 </style>
