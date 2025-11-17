@@ -2,13 +2,13 @@
 
 ## 🎯 Akses CMS
 
-**URL CMS:** `https://caaip.co.id/admin`
+**URL CMS:** `https://caaip.id/admin`
 
 **Login:**
 - Email: (email yang sudah di-invite di Netlify Identity)
 - Password: (password yang sudah Anda set)
 
-**Catatan:** Saat ini CMS masih perlu diakses melalui Netlify URL (`https://[nama-site].netlify.app/admin`) sampai setup Netlify Identity selesai. Setelah konfigurasi selesai, CMS dapat diakses langsung via `caaip.co.id/admin`.
+**Catatan:** CMS menggunakan Netlify Identity untuk autentikasi, tapi diakses langsung via domain utama caaip.id/admin (bukan URL Netlify terpisah).
 
 ---
 

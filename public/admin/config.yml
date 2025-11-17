@@ -3,8 +3,8 @@ backend:
   branch: main
 
 # Production site URL
-site_url: https://caaip.co.id
-display_url: https://caaip.co.id
+site_url: https://caaip.id
+display_url: https://caaip.id
 
 # Media upload configuration
 media_folder: "public/uploads"
