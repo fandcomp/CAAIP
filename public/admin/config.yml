@@ -2,48 +2,88 @@ backend:
   name: git-gateway
   branch: main
 
+# Production site URL
+site_url: https://caaip.co.id
+display_url: https://caaip.co.id
+
+# Media upload configuration
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-# Change to simple to publish directly without PR
-# Use editorial_workflow if you want PR-based review
+# Publish mode: simple (direct publish) or editorial_workflow (draft → review → publish)
 publish_mode: simple
+
+# CMS UI Configuration
 logo_url: /caaip-logo.png
+locale: id
+
+# Search & Sorting
+search: true
+sortable_fields: ['title', 'date', 'author']
+
+# Editor Settings
+editor:
+  preview: true
 
 collections:
   - name: "berita"
     label: "Berita"
+    label_singular: "Berita"
+    description: "Kelola berita dan artikel CAAIP"
     folder: "src/content/berita"
     create: true
     slug: "{{slug}}"
     format: "frontmatter"
+    preview_path: "berita/{{slug}}"
+    sortable_fields: ['date', 'title', 'author']
+    view_filters:
+      - label: "Draft"
+        field: draft
+        pattern: true
+      - label: "Published"
+        field: draft
+        pattern: false
+    view_groups:
+      - label: Bahasa
+        field: lang
     fields:
-      - { label: "Judul", name: "title", widget: "string" }
-      - { label: "Tanggal", name: "date", widget: "datetime" }
-      - { label: "Penulis", name: "author", widget: "string", required: false }
-      - { label: "Ringkasan", name: "excerpt", widget: "text", required: false }
-      - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
-      - { label: "Draft", name: "draft", widget: "boolean", default: false }
-      - { label: "Cover", name: "cover", widget: "image", required: false }
-      - { label: "Konten", name: "body", widget: "markdown" }
+      - { label: "Judul", name: "title", widget: "string", required: true }
+      - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm", date_format: "YYYY-MM-DD", time_format: "HH:mm", picker_utc: false, required: true }
+      - { label: "Penulis", name: "author", widget: "string", required: false, default: "Admin CAAIP" }
+      - { label: "Ringkasan", name: "excerpt", widget: "text", required: false, hint: "Ringkasan singkat untuk preview (maks 160 karakter)", pattern: ['.{0,160}', "Maksimal 160 karakter"] }
+      - { label: "Cover Image", name: "cover", widget: "image", required: false, hint: "Gambar utama berita (rekomendasi: 1200x630px)" }
+      - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Kata kunci untuk kategorisasi", max: 5 }
+      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id", required: true }
+      - { label: "Status", name: "draft", widget: "boolean", default: false, hint: "Centang untuk menyimpan sebagai draft (tidak ditampilkan di website)" }
+      - { label: "Konten", name: "body", widget: "markdown", required: true, hint: "Isi berita lengkap dalam format Markdown" }
 
   - name: "kabarDuka"
     label: "Kabar Duka"
+    label_singular: "Kabar Duka"
+    description: "Kelola pengumuman duka cita"
     folder: "src/content/kabarDuka"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     format: "frontmatter"
+    preview_path: "kabar-duka/{{slug}}"
+    sortable_fields: ['date', 'name']
+    view_filters:
+      - label: "Draft"
+        field: draft
+        pattern: true
+      - label: "Published"
+        field: draft
+        pattern: false
     fields:
-      - { label: "Nama", name: "name", widget: "string" }
-      - { label: "Tanggal", name: "date", widget: "datetime" }
-      - { label: "Foto/Gambar Ucapan", name: "image", widget: "image", required: false, hint: "Upload foto almarhum/almarhumah atau gambar ucapan duka cita" }
-      - { label: "Alt Text Gambar", name: "imageAlt", widget: "string", required: false, hint: "Deskripsi gambar untuk accessibility" }
-      - { label: "Keterangan", name: "relation", widget: "string", required: false }
-      - { label: "Pesan", name: "message", widget: "text", required: false }
-      - { label: "Konten Tambahan", name: "body", widget: "markdown", required: false, hint: "Konten tambahan dalam format Markdown (opsional)" }
-      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id" }
-      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Nama Almarhum/Almarhumah", name: "name", widget: "string", required: true }
+      - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm", date_format: "YYYY-MM-DD", time_format: "HH:mm", picker_utc: false, required: true, hint: "Tanggal wafat atau pengumuman" }
+      - { label: "Foto/Gambar Ucapan", name: "image", widget: "image", required: false, hint: "Upload foto almarhum/almarhumah atau gambar ucapan duka cita (rekomendasi: 800x600px)" }
+      - { label: "Alt Text Gambar", name: "imageAlt", widget: "string", required: false, hint: "Deskripsi gambar untuk accessibility (contoh: Foto almarhum Bpk. XXX)" }
+      - { label: "Hubungan/Keterangan", name: "relation", widget: "string", required: false, hint: "Contoh: Alumni Angkatan 1991, Pengurus CAAIP 2020-2025" }
+      - { label: "Pesan Duka", name: "message", widget: "text", required: false, hint: "Ucapan belasungkawa atau pesan singkat" }
+      - { label: "Konten Tambahan", name: "body", widget: "markdown", required: false, hint: "Informasi tambahan, riwayat hidup, atau pesan keluarga (opsional)" }
+      - { label: "Bahasa", name: "lang", widget: "select", options: ["id", "en"], default: "id", required: true }
+      - { label: "Status", name: "draft", widget: "boolean", default: false, hint: "Centang untuk menyimpan sebagai draft" }
 
   - name: "alumni"
     label: "Alumni (Per Angkatan)"
@@ -62,17 +102,21 @@ collections:
 
   - name: "pengurus"
     label: "Pengurus CAAIP"
+    label_singular: "Pengurus"
+    description: "Kelola data pengurus organisasi"
     folder: "src/content/pengurus"
     create: true
     format: "json"
     extension: "json"
     slug: "{{slug}}"
     identifier_field: "position"
+    sortable_fields: ['order', 'position', 'name']
+    summary: "{{position}} - {{name}}"
     fields:
-      - { label: "Nama", name: "name", widget: "string" }
-      - { label: "Jabatan", name: "position", widget: "string", hint: "Contoh: Ketua Umum, Wakil Ketua" }
-      - { label: "Foto", name: "photo", widget: "image", media_folder: "/public/images/pengurus", public_folder: "/images/pengurus" }
-      - { label: "Urutan", name: "order", widget: "number", default: 1, hint: "Nomor urutan tampilan (1 = paling atas)" }
+      - { label: "Nama Lengkap", name: "name", widget: "string", required: true }
+      - { label: "Jabatan", name: "position", widget: "string", required: true, hint: "Contoh: Ketua Umum, Wakil Ketua, Sekretaris, Bendahara" }
+      - { label: "Foto Profil", name: "photo", widget: "image", required: true, media_folder: "/public/images/pengurus", public_folder: "/images/pengurus", hint: "Upload foto formal (rekomendasi: 400x400px, format persegi)" }
+      - { label: "Urutan Tampilan", name: "order", widget: "number", default: 1, required: true, value_type: "int", min: 1, hint: "Nomor urutan tampilan (1 = paling atas, angka lebih kecil = lebih prioritas)" }
 
   - name: "profil"
     label: "Profil CAAIP"
