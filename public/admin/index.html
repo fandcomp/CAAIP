@@ -30,6 +30,183 @@
     <!-- Load Decap CMS from jsDelivr (pinned) -->
     <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js"></script>
     
+    <!-- Admin Security Panel Widget -->
+    <script>
+      // Create Security Panel in CMS Dashboard
+      CMS.registerEventListener({
+        name: 'loginSuccess',
+        handler: () => {
+          console.log('Admin logged in successfully');
+          
+          // Wait for CMS to fully load
+          setTimeout(() => {
+            addSecurityPanel();
+          }, 2000);
+        }
+      });
+
+      function addSecurityPanel() {
+        // Check if panel already exists
+        if (document.getElementById('security-panel')) return;
+
+        // Get CMS container
+        const cmsContainer = document.querySelector('[class*="App"]') || document.body;
+        
+        // Create panel
+        const panel = document.createElement('div');
+        panel.id = 'security-panel';
+        panel.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background: white;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 99999;
+            min-width: 300px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          ">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="margin: 0; font-size: 16px; color: #0066cc;">
+                🔐 Panel Keamanan
+              </h3>
+              <button onclick="this.closest('#security-panel').style.display='none'" 
+                style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">
+                ×
+              </button>
+            </div>
+            
+            <div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-radius: 4px;">
+              <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Status Pendaftaran:</div>
+              <div id="registration-status" style="font-weight: bold; font-size: 14px; color: #0066cc;">
+                🔄 Loading...
+              </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <a href="https://app.netlify.com/sites/caaip/settings/identity" 
+                 target="_blank"
+                 style="
+                   display: block;
+                   width: 100%;
+                   padding: 10px;
+                   background: #0066cc;
+                   color: white;
+                   text-align: center;
+                   text-decoration: none;
+                   border-radius: 4px;
+                   font-size: 13px;
+                   font-weight: 500;
+                   box-sizing: border-box;
+                 ">
+                ⚙️ Toggle Sign Up (Netlify)
+              </a>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <a href="https://app.netlify.com/sites/caaip/identity" 
+                 target="_blank"
+                 style="
+                   display: block;
+                   width: 100%;
+                   padding: 10px;
+                   background: #28a745;
+                   color: white;
+                   text-align: center;
+                   text-decoration: none;
+                   border-radius: 4px;
+                   font-size: 13px;
+                   font-weight: 500;
+                   box-sizing: border-box;
+                 ">
+                👥 Kelola User
+              </a>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+              <a href="https://app.netlify.com/sites/caaip/identity#invite" 
+                 target="_blank"
+                 style="
+                   display: block;
+                   width: 100%;
+                   padding: 10px;
+                   background: #17a2b8;
+                   color: white;
+                   text-align: center;
+                   text-decoration: none;
+                   border-radius: 4px;
+                   font-size: 13px;
+                   font-weight: 500;
+                   box-sizing: border-box;
+                 ">
+                ✉️ Undang User Baru
+              </a>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+              <a href="/admin/security.html" 
+                 target="_blank"
+                 style="
+                   display: block;
+                   width: 100%;
+                   padding: 10px;
+                   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                   color: white;
+                   text-align: center;
+                   text-decoration: none;
+                   border-radius: 4px;
+                   font-size: 13px;
+                   font-weight: 500;
+                   box-sizing: border-box;
+                 ">
+                🛡️ Panel Keamanan Lengkap
+              </a>
+            </div>
+
+            <div style="font-size: 11px; color: #999; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee;">
+              💡 Tip: Set ke "Invite Only" untuk keamanan maksimal
+            </div>
+          </div>
+        `;
+
+        cmsContainer.appendChild(panel);
+
+        // Try to detect registration status (best effort)
+        checkRegistrationStatus();
+      }
+
+      function checkRegistrationStatus() {
+        const statusEl = document.getElementById('registration-status');
+        if (!statusEl) return;
+
+        // Since we can't directly check via API, we show instructions
+        statusEl.innerHTML = `
+          <div style="font-size: 13px;">
+            <div style="margin-bottom: 5px;">
+              🔒 <strong>Invite Only</strong> = AMAN ✅<br>
+              <span style="font-size: 11px; color: #666;">Hanya admin yang bisa undang user</span>
+            </div>
+            <div>
+              🔓 <strong>Open</strong> = TIDAK AMAN ❌<br>
+              <span style="font-size: 11px; color: #666;">Siapa saja bisa daftar</span>
+            </div>
+          </div>
+        `;
+      }
+
+      // Add panel when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(addSecurityPanel, 2000);
+        });
+      } else {
+        setTimeout(addSecurityPanel, 2000);
+      }
+    </script>
+    
     <!-- Custom CSV Upload Widget -->
     <script>
       // Wait for CMS to be ready
