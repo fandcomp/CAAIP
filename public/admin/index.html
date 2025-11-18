@@ -11,6 +11,13 @@
   </head>
   <body>
     <script>
+      // Initialize Netlify Identity with your Netlify site URL
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.init({
+          APIUrl: 'https://caaip.netlify.app/.netlify/identity'
+        });
+      }
+      
       // Refresh page after a successful Identity login so CMS picks up the session
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on('init', function(user){

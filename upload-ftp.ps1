@@ -4,7 +4,7 @@
 $FTP_SERVER = "145.79.14.179"  # FTP IP dari hPanel
 $FTP_USERNAME = "u239743347.caaip.id"   # FTP username dari hPanel
 $FTP_PASSWORD = "Caaip1`$`$"   # Escape $ dengan backtick
-$REMOTE_DIR = "/public_html"      # Folder tujuan di server
+$REMOTE_DIR = ""      # Root directory (public_html akan dibuat otomatis)
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Upload CAAIP ke Hostinger via FTP" -ForegroundColor Cyan
@@ -28,7 +28,7 @@ Write-Host ""
 Write-Host "Mulai upload ke:" -ForegroundColor Cyan
 Write-Host "   Server: $FTP_SERVER" -ForegroundColor White
 Write-Host "   User: $FTP_USERNAME" -ForegroundColor White
-Write-Host "   Remote: $REMOTE_DIR" -ForegroundColor White
+Write-Host "   Remote: / (root FTP directory)" -ForegroundColor White
 Write-Host ""
 
 # Fungsi upload FTP
@@ -101,11 +101,13 @@ Get-ChildItem -Path "dist" -Recurse -File | ForEach-Object {
     $localFile = $_.FullName
     $relativePath = $_.FullName.Substring((Resolve-Path "dist").Path.Length)
     $relativePath = $relativePath.Replace("\", "/")
-    $remoteFile = "$REMOTE_DIR$relativePath"
+    $remoteFile = $relativePath  # Langsung tanpa prefix, upload ke root FTP
     
     # Buat folder jika perlu
     $remoteFolder = [System.IO.Path]::GetDirectoryName($remoteFile).Replace("\", "/")
-    Create-FTPDirectory -RemotePath $remoteFolder -Server $FTP_SERVER -Username $FTP_USERNAME -Password $FTP_PASSWORD | Out-Null
+    if ($remoteFolder -and $remoteFolder -ne ".") {
+        Create-FTPDirectory -RemotePath $remoteFolder -Server $FTP_SERVER -Username $FTP_USERNAME -Password $FTP_PASSWORD | Out-Null
+    }
     
     # Upload file
     Write-Host ">> Uploading: $relativePath" -ForegroundColor Gray
