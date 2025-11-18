@@ -3,7 +3,7 @@
 
 [build]
   command = "npm run build"
-  publish = "dist/admin"  # Hanya deploy folder admin
+  publish = "dist"  # Hanya deploy folder admin
   
 [build.environment]
   NODE_VERSION = "20"
@@ -13,7 +13,6 @@
   from = "/"
   to = "/admin/"
   status = 301
-  force = true
 
 # Redirect apapun selain /admin ke website utama
 [[redirects]]
