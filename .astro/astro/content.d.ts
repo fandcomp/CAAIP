@@ -149,15 +149,6 @@ declare module 'astro:content' {
   data: InferEntrySchema<"berita">
 } & { render(): Render[".md"] };
 };
-"kabar-duka": {
-"in-memoriam-2025-10-31.md": {
-	id: "in-memoriam-2025-10-31.md";
-  slug: "in-memoriam-2025-10-31";
-  body: string;
-  collection: "kabar-duka";
-  data: any
-} & { render(): Render[".md"] };
-};
 "kabarDuka": {
 "2025-11-08-map-lang-id-draft-false-name-haannan-date-2025-11-08t19-51-00-000-07-00-relation-hi-message-innnalillahi.md": {
 	id: "2025-11-08-map-lang-id-draft-false-name-haannan-date-2025-11-08t19-51-00-000-07-00-relation-hi-message-innnalillahi.md";

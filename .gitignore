@@ -4,6 +4,8 @@ node_modules/
 # Builds
 .dist/
 dist/
+dist.zip
+*.zip
 
 # Env
 .env
@@ -19,5 +21,16 @@ pnpm-debug.log*
 .vscode/
 .DS_Store
 
-# Vercel
+# Vercel & Netlify
 .vercel/
+.netlify/
+
+# Scripts & Temp
+*.bat
+*.ps1
+test-*.ps1
+check-*.bat
+
+# FTP
+.deployignore
+.htaccess

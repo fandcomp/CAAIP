@@ -1,13 +1,9 @@
 backend:
-  name: github
-  repo: fandcomp/CAAIP
+  name: git-gateway
   branch: main
-  base_url: https://caaip.netlify.app
-  auth_endpoint: /.netlify/functions/auth
 
-# Production site URLs
-site_url: https://caaip.id  # Website utama di Hostinger
-display_url: https://caaip.id
+site_url: https://caaip.netlify.app
+display_url: https://caaip.netlify.app
 
 # Media upload configuration
 media_folder: "public/uploads"

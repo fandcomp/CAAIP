@@ -1,38 +1,14 @@
-# Netlify Configuration - CMS Admin Only
-# Deploy hanya folder /admin ke Netlify
-
+# Netlify Configuration
 [build]
   command = "npm run build"
-  publish = "dist"  # Hanya deploy folder admin
+  publish = "dist"
   
 [build.environment]
   NODE_VERSION = "20"
 
-# Redirect root ke admin
+# Redirect root ke admin  
 [[redirects]]
   from = "/"
   to = "/admin/"
   status = 301
-
-# Redirect apapun selain /admin ke website utama
-[[redirects]]
-  from = "/*"
-  to = "https://caaip.id/:splat"
-  status = 302
-  force = false
-  conditions = {Path = ["!/.netlify/*", "!/admin/*"]}
-
-# Headers untuk admin
-[[headers]]
-  for = "/admin/*"
-  [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "same-origin"
-    X-XSS-Protection = "1; mode=block"
-
-# Headers untuk OAuth
-[[headers]]
-  for = "/.netlify/*"
-  [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
+  force = true
