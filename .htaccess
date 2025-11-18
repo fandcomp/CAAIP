@@ -10,6 +10,10 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
+# Redirect /admin to Netlify CMS (sebelum rules lainnya)
+RewriteRule ^admin/?$ https://caaip.netlify.app/admin/ [R=302,L,NE]
+RewriteRule ^admin/(.*)$ https://caaip.netlify.app/admin/$1 [R=302,L,NE]
+
 # Handle clean URLs (no .html extension)
 # Skip if the request is for a real file or directory
 RewriteCond %{REQUEST_FILENAME} !-f
